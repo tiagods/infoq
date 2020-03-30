@@ -1,3 +1,6 @@
+# Protected connections
+application.properties
+
 # Compiled class file
 *.class
 
