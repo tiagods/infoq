@@ -8,7 +8,6 @@ package br.com.infoq.view;
 import br.com.infoq.dao.UsuarioDAO;
 import br.com.infoq.fabrica.Conexao;
 import br.com.infoq.model.Usuario;
-import br.com.infoq.model.Usuario.Perfil;
 import static br.com.infoq.view.TelaPrincipal.desktop;
 import java.awt.Color;
 import java.util.Optional;
@@ -26,14 +25,14 @@ public class frmLogin extends javax.swing.JFrame {
      */
     public frmLogin() {
         initComponents();
-        ImageIcon icone = new ImageIcon(getClass().getResource("icons/user.png"));
+        ImageIcon icone = new ImageIcon(getClass().getResource("/icons/user.png"));
         setIconImage(icone.getImage());
 
         boolean conexao = Conexao.testarConexao();
         String imagem = "dbok.png";
         if (!conexao)
             imagem = "dberro.png";
-        lblstatus.setIcon(new javax.swing.ImageIcon(getClass().getResource("icons/"+imagem)));
+        lblstatus.setIcon(new ImageIcon(getClass().getResource("/icons/"+imagem)));
         
     }
 
@@ -183,10 +182,10 @@ public class frmLogin extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
     
     public void logar() {
-        Optional<Usuario> opt = dao.validarLogin(txt_usuario.getText().trim(), String.valueOf(txt_senha.getPassword()));
+        Optional<Usuario> opt = dao.validarLogin(txt_usuario.getText().trim(), new String(txt_senha.getPassword()));
         if(opt.isPresent()){
             Usuario usuario = opt.get();
-            Optional<Perfil> optPerfil = Optional.ofNullable(usuario.getPerfil());
+            Optional<String> optPerfil = Optional.ofNullable(usuario.getPerfil());
 
             TelaPrincipal principal = new TelaPrincipal();
             principal.setVisible(true);
@@ -196,7 +195,7 @@ public class frmLogin extends javax.swing.JFrame {
             desktop.add(menu);
             menu.setVisible(true);
                 
-            if(optPerfil.isPresent() && optPerfil.get().equals(Perfil.ADMIN)){
+            if(optPerfil.isPresent() && optPerfil.get().toUpperCase().equals("ADMIN")){
                 principal.menuCadUsu.setEnabled(true);
                 menu.btn_usuarios.setEnabled(true);
                 principal.lblUsuario.setForeground(Color.blue);
@@ -207,6 +206,4 @@ public class frmLogin extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Usuário ou Senha inválido");
         }
    }
-
-
 }

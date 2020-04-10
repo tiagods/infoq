@@ -6,24 +6,18 @@
 package br.com.infoq.view;
 
 import javax.swing.JOptionPane;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.view.JasperViewer;
-import java.sql.*;
 import br.com.infoq.fabrica.Conexao;
 /**
  *
  * @author hugov
  */
 public class TelaMenu extends javax.swing.JInternalFrame {
-     Connection conexao = null;
     /**
      * Creates new form TelaMenu
      */
     public TelaMenu() {
         initComponents();
-        
-         conexao = Conexao.getConnection();
+        conexao = Conexao.getConnection();
     }
     
 

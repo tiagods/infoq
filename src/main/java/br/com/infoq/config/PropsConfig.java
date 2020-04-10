@@ -18,8 +18,8 @@ import javax.swing.JOptionPane;
  */
 public class PropsConfig implements PropsInterface {
 
-    private Properties props = null;
-    private InputStream stream = null;
+    private static Properties props = null;
+    private static InputStream stream = null;
     public PropsConfig(PropsEnum propsEnum) {
         props = new Properties();
         fileLoad(propsEnum);
@@ -28,14 +28,19 @@ public class PropsConfig implements PropsInterface {
     @Override
     public void fileLoad(PropsEnum propsEnum) {
         try {
-            stream = getClass().getResource(propsEnum.getDescricao()).openStream();
+            stream = getClass().getClassLoader().getResource(propsEnum.getDescricao()).openStream();
             props.load(stream);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Falha ao carregar o arquivo de configurações do Banco de Dados - Atualizador");
         }
     }
+    @Override
     public String getValue(String key) {
         return props.getProperty(key);
+    }
+    @Override
+    public boolean containskey(String key){
+        return props.containsKey(key);
     }
     public Map<String, String> getMap() {
         Map<String, String> map = new HashMap<>();

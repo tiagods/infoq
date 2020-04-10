@@ -11,4 +11,6 @@ package br.com.infoq.config;
  */
 public interface PropsInterface {
     void fileLoad(PropsEnum propsEnum);
+    public String getValue(String key);
+    public boolean containskey(String key);
 }

@@ -22,8 +22,5 @@ public class Usuario {
     private String fone;
     private String login;
     private String senha;
-    private Perfil perfil;
-    public enum Perfil{
-        ADMIN,USER
-    }
+    private String perfil;
 }   

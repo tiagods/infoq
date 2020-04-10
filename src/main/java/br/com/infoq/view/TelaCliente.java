@@ -13,11 +13,6 @@ import net.proteanit.sql.DbUtils;
  * @author hugov
  */
 public class TelaCliente extends javax.swing.JInternalFrame {
-    
-    
-        Connection conexao = null;
-        PreparedStatement pst = null;
-        ResultSet rs = null;
     /**
      * Creates new form TelaUsuario
      */

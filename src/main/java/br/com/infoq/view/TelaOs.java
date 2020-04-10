@@ -21,9 +21,6 @@ import net.sf.jasperreports.view.JasperViewer;
  * @author hugov
  */
 public class TelaOs extends javax.swing.JInternalFrame {
-Connection conexao = null;
-PreparedStatement pst = null;
-ResultSet rs = null;
 
 private String Tipo;
     /**

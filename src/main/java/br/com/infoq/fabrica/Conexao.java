@@ -8,6 +8,9 @@ package br.com.infoq.fabrica;
 import br.com.infoq.config.DataBaseConfig;
 import java.sql.*;
 import java.util.Optional;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Fabrica de conexoes
@@ -15,7 +18,22 @@ import java.util.Optional;
  * @author tiagods
  */
 public class Conexao {
-
+    public enum Tipo{
+        LOCAL, REMOTO
+    }
+    public static Tipo tipo = Tipo.REMOTO;
+    public static Credenciais credenciais;
+    
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Credenciais{
+        private String driver;
+        private String url;
+        private String user;
+        private String password;
+    }
+    
     public static boolean testarConexao() {
         Conexao conexao = new Conexao();
         Optional<Connection> opt = Optional.ofNullable(conexao.getConnection());
@@ -27,21 +45,30 @@ public class Conexao {
         }
     }
 
-    protected Connection getConnection() {
+    protected static Connection getConnection() {
         try {
             DataBaseConfig props = DataBaseConfig.getInstance();
-            Class.forName(props.getValue("driver"));
+            tipo = Tipo.valueOf(props.getValue("tipo").toUpperCase());
+            String param = tipo.toString().toLowerCase();
+            
+            credenciais = new Credenciais(props.getValue("driver_"+param),
+                    props.getValue("url_"+tipo.toString().toLowerCase()),
+                    props.getValue("user_"+tipo.toString().toLowerCase()),
+                    props.getValue("password_"+tipo.toString().toLowerCase())
+            );
+            
+            Class.forName(credenciais.getDriver());
             return DriverManager.getConnection(
-                    props.getValue("url"),
-                    props.getValue("user"),
-                    props.getValue("password"));
+                    credenciais.getUrl(),
+                    credenciais.getUser(),
+                    credenciais.getPassword());
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    protected void closeConnection(Connection con) {
+    protected static void closeConnection(Connection con) {
         try {
             if (con != null) {
                 con.close();

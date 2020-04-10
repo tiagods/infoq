@@ -11,4 +11,5 @@ package br.com.infoq.dao;
  */
 public class ClienteDAO {
     
+
 }

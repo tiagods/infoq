@@ -4,121 +4,103 @@
  * and open the template in the editor.
  */
 package br.com.infoq.view;
-import br.com.infoq.fabrica.Conexao;
+
+import br.com.infoq.dao.UsuarioDAO;
+import br.com.infoq.model.Usuario;
 import java.awt.HeadlessException;
 import java.sql.*;
+import java.util.Optional;
 import javax.swing.JOptionPane;
+
 /**
  *
- * @author hugov
+ * @author hugov,tiagods
  */
 public class TelaUsuario extends javax.swing.JInternalFrame {
-        Connection conexao = null;
-        PreparedStatement pst = null;
-        ResultSet rs = null;
-    /**
-     * Creates new form TelaUsuario
-     */
+
+    private UsuarioDAO usuarioDAO = new UsuarioDAO();
+
     public TelaUsuario() {
         initComponents();
-        conexao = Conexao.getConnection();
+    }
+    public Usuario usuarioBuilder(Optional<Integer> result) {
+        Usuario usuario = new Usuario(
+                result.isPresent() ? result.get(): null,
+                txtNome.getText(),
+                txtTel.getText(),
+                txtLogin.getText(),
+                new String(txtSenha.getPassword()),
+                cbPerfil.getSelectedItem().toString()
+        );
+        return usuario;
+    }
+    public boolean validar(){
+        if ((txtNome.getText().isEmpty()) || (new String(txtSenha.getPassword()).isEmpty()) || (txtLogin.getText().isEmpty()) || (txtId.getText().isEmpty()) || (cbPerfil.getSelectedItem().equals(""))) {
+            JOptionPane.showMessageDialog(null, "Preencha os Dados!!");
+            return true;
+        } 
+        return false;
+    }
+    private Optional<Integer> validarId(){
+        try{
+            Integer id = Integer.parseInt(txtId.getText().trim());
+            return Optional.of(id);
+        } catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Campo id incorreto ou nao informado");
+        }
+        return Optional.empty();
     }
     
-    private void consultar(){
-        String sql = "select * from tbusuarios where iduser=?";
-        try {
-            pst = conexao.prepareStatement(sql);
-            pst.setString(1, txtId.getText());
-            rs = pst.executeQuery();
-            if (rs.next()) {
-                txtNome.setText(rs.getString(2));
-                txtTel.setText(rs.getString(3));
-                txtLogin.setText(rs.getString(4));
-                txtSenha.setText(rs.getString(5));
-                cbPerfil.setSelectedItem(rs.getString(6));
-            } else {
-                JOptionPane.showMessageDialog(null, "Usuário não Cadastrado");
-                limparCampos();
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
+    private void consultar() {
+        Optional<Usuario> opt = usuarioDAO.buscarPorId(txtId.getText());
+        if (opt.isPresent()) {
+            Usuario us = opt.get();
+            txtNome.setText(us.getUsuario());
+            txtTel.setText(us.getFone());
+            txtLogin.setText(us.getLogin());
+            txtSenha.setText(us.getSenha());
+            cbPerfil.setSelectedItem(us.getPerfil());
+        } else {
+            JOptionPane.showMessageDialog(null, "Usuário não Cadastrado");
+            limparCampos();
         }
     }
     
-    
-    private void adicionar(){
-        String sql = "insert into tbusuarios(iduser, usuario, fone, login, senha, perfil) values (?, ?, ?, ?, ?, ?)";
-        try {
-            pst = conexao.prepareStatement(sql);
-            pst.setString(1, txtId.getText());
-            pst.setString(2, txtNome.getText().toUpperCase());
-            pst.setString(3, txtTel.getText());
-            pst.setString(4, txtLogin.getText());
-            pst.setString(5, txtSenha.getText());
-            pst.setString(6, cbPerfil.getSelectedItem().toString());
-            
-            
-            
-            if((txtNome.getText().isEmpty()) || (txtSenha.getText().isEmpty()) || (txtLogin.getText().isEmpty()) || (txtId.getText().isEmpty()) || (cbPerfil.getSelectedItem().equals(""))) {
-                 JOptionPane.showMessageDialog(null, "Preencha os Dados!!");
-            }else{
-            
-            limparCampos();
-            int adicionado = pst.executeUpdate();
-            if(adicionado > 0){
+    private void adicionar() {
+        if(!validar()) return;
+        Optional<Integer> result = validarId();
+        if(result.isPresent()){
+            boolean opt = usuarioDAO.adicionar(usuarioBuilder(result));
+            if(opt){
+                limparCampos();
                 JOptionPane.showMessageDialog(null, "Registro salvo com Sucesso!");
             }
-            } 
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Erro ID já Cadastrado");
         }
     }
     
-    
-    private void alterar(){
-        String sql = "update tbusuarios set usuario = ?, fone = ?, login = ?, senha = ?, perfil = ? where iduser = ?";
-        try {
-            pst = conexao.prepareStatement(sql);
-            pst.setString(1, txtNome.getText());
-            pst.setString(2, txtTel.getText());
-            pst.setString(3, txtLogin.getText());
-            pst.setString(4, txtSenha.getText());
-            pst.setString(5, cbPerfil.getSelectedItem().toString());
-            pst.setString(6, txtId.getText());
-            
-            if((txtNome.getText().isEmpty()) || (txtSenha.getText().isEmpty()) || (txtLogin.getText().isEmpty()) || (txtId.getText().isEmpty()) || (cbPerfil.getSelectedItem().equals(""))) {
-                 JOptionPane.showMessageDialog(null, "Preencha os Dados!!");
-            }else{
-            limparCampos();          
-            int adicionado = pst.executeUpdate();
-            if(adicionado > 0){
+    private void alterar() {
+        if(!validar()) return;
+        Optional<Integer> result = validarId();
+        if(result.isPresent()){
+            boolean opt = usuarioDAO.alterar(usuarioBuilder(result));
+            if(opt){
+                limparCampos();
                 JOptionPane.showMessageDialog(null, "Registro Editado com Sucesso!");
             }
-            } 
-            
-        } catch (SQLException | HeadlessException e) {
-            JOptionPane.showMessageDialog(null, e);
         }
     }
-    
-    
-    private void remover(){
+
+    private void remover() {
         int confirma = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir?", "Atenção", JOptionPane.YES_NO_OPTION);
-        if(confirma == JOptionPane.YES_OPTION){
-            String sql = "delete from tbusuarios where iduser=?";
-            try {
-            pst = conexao.prepareStatement(sql);
-            pst.setString(1, txtId.getText());
-            int apagado = pst.executeUpdate();
-             if(apagado > 0){
+        if (confirma == JOptionPane.YES_OPTION) {
+            Optional<Integer> result = validarId();
+            if(result.isPresent() && usuarioDAO.deletar(result.get())){
                 JOptionPane.showMessageDialog(null, "Registro Apagado com Sucesso!");
-            }   limparCampos();
-            } catch (Exception e) {
-                 JOptionPane.showMessageDialog(null, e);
+                limparCampos();
             }
         }
     }
-    
+
     private void limparCampos() {
         txtNome.setText(null);
         txtTel.setText(null);
@@ -354,7 +336,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-       consultar();
+        consultar();
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
@@ -374,11 +356,11 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_cbPerfilActionPerformed
 
     private void txtIdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdKeyPressed
-        
+
     }//GEN-LAST:event_txtIdKeyPressed
 
     private void txtIdKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdKeyReleased
-        
+
     }//GEN-LAST:event_txtIdKeyReleased
 
     private void txtIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdActionPerformed
