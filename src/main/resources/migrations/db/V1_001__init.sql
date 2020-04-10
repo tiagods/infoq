@@ -31,6 +31,7 @@ CREATE TABLE `tbos` (
   `garantia` varchar(15) NOT NULL,
   PRIMARY KEY (`os`),
   CONSTRAINT `tbos_ibfk_1` FOREIGN KEY (`idcli`) REFERENCES `tbclientes` (`idcli`)
+  ON DELETE CASCADE
 );
 
 CREATE TABLE `tbusuarios` (
