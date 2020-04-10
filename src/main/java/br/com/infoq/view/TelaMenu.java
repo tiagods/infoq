@@ -23,7 +23,7 @@ public class TelaMenu extends javax.swing.JInternalFrame {
     public TelaMenu() {
         initComponents();
         
-         conexao = Conexao.conector();
+         conexao = Conexao.getConnection();
     }
     
 

@@ -21,7 +21,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
      */
     public TelaUsuario() {
         initComponents();
-        conexao = Conexao.conector();
+        conexao = Conexao.getConnection();
     }
     
     private void consultar(){

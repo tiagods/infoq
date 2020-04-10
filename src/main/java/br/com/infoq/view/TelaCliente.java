@@ -25,7 +25,7 @@ public class TelaCliente extends javax.swing.JInternalFrame {
     public TelaCliente() {
         
         initComponents();
-        conexao = Conexao.conector();
+        conexao = Conexao.getConnection();
     }
     
     private void consultar(){

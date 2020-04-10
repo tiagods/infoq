@@ -12,16 +12,22 @@ import java.util.Optional;
 /**
  * Fabrica de conexoes
  *
- * @author Grazi
+ * @author tiagods
  */
 public class Conexao {
 
     public static boolean testarConexao() {
-          Optional<Connection> opt = Optional.ofNullable(new Conexao().conector());
-          return opt.isPresent();
+        Conexao conexao = new Conexao();
+        Optional<Connection> opt = Optional.ofNullable(conexao.getConnection());
+        if (opt.isPresent()) {
+            conexao.closeConnection(opt.get());
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    protected Connection conector() {
+    protected Connection getConnection() {
         try {
             DataBaseConfig props = DataBaseConfig.getInstance();
             Class.forName(props.getValue("driver"));
@@ -36,34 +42,34 @@ public class Conexao {
     }
 
     protected void closeConnection(Connection con) {
-        if (con != null) {
-            try { con.close();
-            } catch (SQLException ex) {
-                System.err.println("ERRO: " + ex);
+        try {
+            if (con != null) {
+                con.close();
             }
+        } catch (SQLException ex) {
+            System.err.println("ERRO: " + ex);
         }
     }
 
     protected void closeConnection(Connection con, PreparedStatement stmt) {
-        if (stmt != null) {
-            try {
+        try {
+            if (stmt != null) {
                 stmt.close();
-            } catch (SQLException ex) {
-                System.err.println("ERRO " + ex);
             }
+        } catch (SQLException ex) {
+            System.err.println("ERRO " + ex);
         }
         closeConnection(con);
     }
 
     protected void closeConnection(Connection con, PreparedStatement stnt, ResultSet rs) {
-        if (rs != null) {
-            try {
+        try {
+            if (rs != null) {
                 rs.close();
-            } catch (SQLException ex) {
-                System.err.println("ERRO " + ex);
             }
+        } catch (SQLException ex) {
+            System.err.println("ERRO " + ex);
         }
         closeConnection(con, stnt);
-
     }
 }

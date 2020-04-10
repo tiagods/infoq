@@ -8,10 +8,6 @@ package br.com.infoq.dao;
 import br.com.infoq.fabrica.Conexao;
 import br.com.infoq.model.Usuario;
 import br.com.infoq.model.Usuario.Perfil;
-import br.com.infoq.view.TelaMenu;
-import br.com.infoq.view.TelaPrincipal;
-import static br.com.infoq.view.TelaPrincipal.desktop;
-import java.awt.Color;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,10 +21,6 @@ import javax.swing.JOptionPane;
  */
 public class UsuarioDAO extends Conexao{
     
-    Connection conexao = null;
-    PreparedStatement pst = null;
-    ResultSet rs = null;
-    
     private Usuario result(ResultSet rs) throws SQLException{
         Usuario usuario = new Usuario();
         usuario.setId(rs.getInt(1));
@@ -41,9 +33,13 @@ public class UsuarioDAO extends Conexao{
     }
     
     public Optional<Usuario> validarLogin(String login, String senha) {
+        Connection conexao = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+ 
         String sql = "select * from tbusuarios where login = ? and senha = ? ";
         try {
-            conexao = conector();
+            conexao = getConnection();
             pst = conexao.prepareStatement(sql);
             pst.setString(1, login);
             pst.setString(2, senha);

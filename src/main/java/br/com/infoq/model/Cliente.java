@@ -17,5 +17,16 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class Cliente {
-    
+    private int id;
+    private String nome;
+    private String end;
+    private String num;
+    private String comp;
+    private String email;
+    private String cpf;
+    private String cnpj;
+    private String rg;
+    private String fone;
+    private String cel;
+    private String bairro;
 }

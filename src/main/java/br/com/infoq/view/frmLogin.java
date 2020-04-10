@@ -11,7 +11,6 @@ import br.com.infoq.model.Usuario;
 import br.com.infoq.model.Usuario.Perfil;
 import static br.com.infoq.view.TelaPrincipal.desktop;
 import java.awt.Color;
-import java.sql.*;
 import java.util.Optional;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -27,14 +26,14 @@ public class frmLogin extends javax.swing.JFrame {
      */
     public frmLogin() {
         initComponents();
-        ImageIcon icone = new ImageIcon("ico/user.png");
+        ImageIcon icone = new ImageIcon(getClass().getResource("icons/user.png"));
         setIconImage(icone.getImage());
 
         boolean conexao = Conexao.testarConexao();
         String imagem = "dbok.png";
         if (!conexao)
             imagem = "dberro.png";
-        lblstatus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/infoq/icones/"+imagem)));
+        lblstatus.setIcon(new javax.swing.ImageIcon(getClass().getResource("icons/"+imagem)));
         
     }
 

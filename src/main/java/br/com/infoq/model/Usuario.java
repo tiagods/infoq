@@ -26,4 +26,4 @@ public class Usuario {
     public enum Perfil{
         ADMIN,USER
     }
-}
+}   

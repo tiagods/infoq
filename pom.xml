@@ -16,7 +16,7 @@
 	<dependencies>
             <dependency>
                 <groupId>net.proteanit.sql</groupId>
-                <artifactId>rs2xml.</artifactId>
+                <artifactId>rs2xml</artifactId>
                 <version>1.0</version>
                 <scope>system</scope>
                 <systemPath>${basedir}/lib/rs2xml.jar</systemPath>

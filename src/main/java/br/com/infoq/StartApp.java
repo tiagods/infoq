@@ -9,7 +9,7 @@ import br.com.infoq.view.frmLogin;
 
 /**
  *
- * @author Resource
+ * @author tiagods
  */
 public class StartApp {
     public static void main(String[] args) {

@@ -31,7 +31,7 @@ private String Tipo;
      */
     public TelaOs() {
         initComponents();
-        conexao = Conexao.conector();
+        conexao = Conexao.getConnection();
     }
     
     

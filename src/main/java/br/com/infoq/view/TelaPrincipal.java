@@ -27,7 +27,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         initComponents();
         ImageIcon icone = new ImageIcon("ico/user.png");
         setIconImage(icone.getImage());
-        conexao = Conexao.conector();
+        conexao = Conexao.getConnection();
         
     }
 
@@ -320,7 +320,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
       
-        int confirma = JOptionPane.showConfirmDialog(null, "Confirma a visualização do Relatório?", "Atenção", JOptionPane.YES_NO_OPTION);
+       int confirma = JOptionPane.showConfirmDialog(null, "Confirma a visualização do Relatório?", "Atenção", JOptionPane.YES_NO_OPTION);
        if (confirma == JOptionPane.YES_OPTION){
            try {
                JasperPrint print = JasperFillManager.fillReport("rel/servicos.jasper", null, conexao);
