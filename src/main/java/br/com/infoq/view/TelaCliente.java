@@ -4,140 +4,57 @@
  * and open the template in the editor.
  */
 package br.com.infoq.view;
-import br.com.infoq.fabrica.Conexao;
-import java.sql.*;
+import br.com.infoq.dao.ClienteDAO;
+import br.com.infoq.model.Cliente;
+import java.util.Optional;
 import javax.swing.JOptionPane;
-import net.proteanit.sql.DbUtils;
+import javax.swing.table.TableModel;
 /**
  *
- * @author hugov
+ * @author tiaods
  */
 public class TelaCliente extends javax.swing.JInternalFrame {
     /**
      * Creates new form TelaUsuario
      */
+    ClienteDAO clienteDAO=new ClienteDAO();
         
     public TelaCliente() {
         
         initComponents();
-        conexao = Conexao.getConnection();
     }
-    
-    private void consultar(){
-       String sql = "select * from tbclientes where nomecli like ?";
-       
-        try {
-            pst = conexao.prepareStatement(sql);
-            pst.setString(1, txtBuscar.getText() + "%"); 
-            rs = pst.executeQuery();
-            
-            // usar a biblioteca rs2 xml para preencher a tabela
-            tblClientes.setModel(DbUtils.resultSetToTableModel(rs));
-            
-        } catch (Exception e) {
-             JOptionPane.showMessageDialog(null, e);
+    private Optional<Integer> validarId(){
+        try{
+            Integer id = Integer.parseInt(txtId.getText().trim());
+            return Optional.of(id);
+        } catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Campo id incorreto ou nao informado");
         }
+        return Optional.empty();
     }
-    
-    
-    private void adicionar(){
-        
-        String sql = "insert into tbclientes(nomecli, endcli, numcli, compcli, emailcli, cpfcli, cnpjcli, rgcli, fonecli, celcli, bairrocli) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try {
-            pst = conexao.prepareStatement(sql);
-            pst.setString(1, txtNome.getText().toUpperCase());
-            pst.setString(2, txtEnd.getText().toUpperCase());
-            pst.setString(3, txtNum.getText());
-            pst.setString(4, txtCom.getText().toUpperCase());
-            pst.setString(5, txtEmail.getText().toUpperCase());
-            pst.setString(6, txtCpf.getText());
-            pst.setString(7, txtCnpj.getText());
-            pst.setString(8, txtRg.getText());
-            pst.setString(9, txtTel.getText());
-            pst.setString(10, txtCel.getText());
-            pst.setString(11, txtBairro.getText().toUpperCase());
-                
-            txtBuscar.setText(txtNome.getText().toUpperCase());
-            
-            
-            if((txtNome.getText().isEmpty()) || (txtTel.getText().isEmpty()) ) {
-                 JOptionPane.showMessageDialog(null, "Preencha os Dados!!");
-            }else{
-            
-            
-            
-            limparCampos();
-            
-            int adicionado = pst.executeUpdate();
-            if(adicionado > 0){
-                JOptionPane.showMessageDialog(null, "Registro salvo com Sucesso!");
-            }
-            } 
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
+    public boolean validar(){
+        if((txtNome.getText().isEmpty()) || (txtTel.getText().isEmpty()) ) {
+            JOptionPane.showMessageDialog(null, "Preencha os Dados Corretamenre!!");
+            return false;
         }
+        return true;
     }
-    
-    
-    private void alterar(){
-        String sql = "update tbclientes set nomecli = ?, endcli = ?, numcli = ?, compcli = ?, emailcli = ?, cpfcli = ?, cnpjcli = ?, rgcli = ?, fonecli = ?, celcli = ?, bairrocli = ?  where idcli = ?";
-        try {
-             pst = conexao.prepareStatement(sql);
-            pst.setString(1, txtNome.getText().toUpperCase());
-            pst.setString(2, txtEnd.getText().toUpperCase());
-            pst.setString(3, txtNum.getText());
-            pst.setString(4, txtCom.getText().toUpperCase());
-            pst.setString(5, txtEmail.getText().toUpperCase());
-            pst.setString(6, txtCpf.getText());
-            pst.setString(7, txtCnpj.getText());
-            pst.setString(8, txtRg.getText());
-            pst.setString(9, txtTel.getText());
-            pst.setString(10, txtCel.getText());
-            pst.setString(11, txtBairro.getText().toUpperCase());
-            pst.setString(12, txtId.getText());
-            
-            btnInserir.setEnabled(true);
-            txtBuscar.setText(txtNome.getText());
-            
-            if((txtNome.getText().isEmpty()) || (txtTel.getText().isEmpty()) ) {
-                 JOptionPane.showMessageDialog(null, "Preencha os Dados Corretamenre!!");
-            }else{
-            limparCampos();          
-            int adicionado = pst.executeUpdate();
-            if(adicionado > 0){
-                JOptionPane.showMessageDialog(null, "Registro do Cliente Editado com Sucesso!");
-            }
-            } 
-            
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
-        }
+    private Cliente clienteBuilder(Optional<Integer> result){
+        return new Cliente(
+            result.isPresent() ? result.get() : null,
+            txtNome.getText().toUpperCase(),
+            txtEnd.getText().toUpperCase(),
+            txtNum.getText(),
+            txtCom.getText().toUpperCase(),
+            txtEmail.getText().toUpperCase(),
+            txtCpf.getText(),
+            txtCnpj.getText(),
+            txtRg.getText(),
+            txtTel.getText(),
+            txtCel.getText(),
+            txtBairro.getText().toUpperCase()
+        );
     }
-    
-    
-    private void remover(){
-        int confirma = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir?", "AtenÃ§Ã£o", JOptionPane.YES_NO_OPTION);
-        if(confirma == JOptionPane.YES_OPTION){
-            String sql = "delete from tbclientes where idcli=?";
-            try {
-            pst = conexao.prepareStatement(sql);
-            pst.setString(1, txtId.getText());
-            btnInserir.setEnabled(true);
-            
-           
-            
-            int apagado = pst.executeUpdate();
-             if(apagado > 0){
-                JOptionPane.showMessageDialog(null, "Registro Apagado com Sucesso!");
-            }   limparCampos();
-            } catch (Exception e) {
-                 JOptionPane.showMessageDialog(null, "Erro! Cliente Vinculado Ã  uma Ordem de ServiÃ§o, favor remover a Ordem de ServiÃ§o Primeiro!");
-            }
-        }
-    }
-    
-    
-    
     
     public void setar_campos(){
         int setar = tblClientes.getSelectedRow();
@@ -638,4 +555,52 @@ public class TelaCliente extends javax.swing.JInternalFrame {
     private javax.swing.JFormattedTextField txtRg;
     private javax.swing.JFormattedTextField txtTel;
     // End of variables declaration//GEN-END:variables
+    
+    private void consultar(){
+        TableModel model = clienteDAO.consultar(txtBuscar.getText());
+        if(model!=null) tblClientes.setModel(model);        
+    }
+    
+    
+    private void adicionar(){
+        if(!validar()) return;
+        
+        boolean result = clienteDAO.adicionar(clienteBuilder(Optional.empty()));
+        if(result){
+            JOptionPane.showMessageDialog(null, "Registro salvo com Sucesso!");
+        }
+    }
+    
+    
+    private void alterar(){
+        if(!validar()) return;
+        Optional<Integer> result = validarId();
+        if(result.isPresent()){
+            boolean opt = clienteDAO.adicionar(clienteBuilder(result));
+            btnInserir.setEnabled(true);
+            txtBuscar.setText(txtNome.getText());
+            if(opt){
+                JOptionPane.showMessageDialog(null, "Registro do Cliente Editado com Sucesso!");
+                btnInserir.setEnabled(true);
+                txtBuscar.setText(txtNome.getText());
+                limparCampos();
+            }
+        }
+    }
+    
+    
+    private void remover(){
+        int confirma = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir?", "Atenção", JOptionPane.YES_NO_OPTION);
+        if (confirma == JOptionPane.YES_OPTION) {
+            Optional<Integer> result = validarId();
+            btnInserir.setEnabled(true);
+            if(result.isPresent() && clienteDAO.deletar(result.get())){
+                JOptionPane.showMessageDialog(null, "Registro Apagado com Sucesso!");
+                limparCampos();
+            }
+        }
+        
+    }
+    
+
 }

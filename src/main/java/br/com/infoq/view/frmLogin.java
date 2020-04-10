@@ -19,7 +19,7 @@ import javax.swing.JOptionPane;
  * @author Grazi
  */
 public class frmLogin extends javax.swing.JFrame {
-    UsuarioDAO dao = new UsuarioDAO();
+    private UsuarioDAO dao = new UsuarioDAO();
     /**
      * Creates new form frmLogin
      */

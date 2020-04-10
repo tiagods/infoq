@@ -7,14 +7,12 @@ package br.com.infoq.view;
 
 import br.com.infoq.dao.UsuarioDAO;
 import br.com.infoq.model.Usuario;
-import java.awt.HeadlessException;
-import java.sql.*;
 import java.util.Optional;
 import javax.swing.JOptionPane;
 
 /**
  *
- * @author hugov,tiagods
+ * @author tiagods
  */
 public class TelaUsuario extends javax.swing.JInternalFrame {
 
@@ -23,6 +21,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
     public TelaUsuario() {
         initComponents();
     }
+    
     public Usuario usuarioBuilder(Optional<Integer> result) {
         Usuario usuario = new Usuario(
                 result.isPresent() ? result.get(): null,
@@ -50,57 +49,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
         }
         return Optional.empty();
     }
-    
-    private void consultar() {
-        Optional<Usuario> opt = usuarioDAO.buscarPorId(txtId.getText());
-        if (opt.isPresent()) {
-            Usuario us = opt.get();
-            txtNome.setText(us.getUsuario());
-            txtTel.setText(us.getFone());
-            txtLogin.setText(us.getLogin());
-            txtSenha.setText(us.getSenha());
-            cbPerfil.setSelectedItem(us.getPerfil());
-        } else {
-            JOptionPane.showMessageDialog(null, "Usuário não Cadastrado");
-            limparCampos();
-        }
-    }
-    
-    private void adicionar() {
-        if(!validar()) return;
-        Optional<Integer> result = validarId();
-        if(result.isPresent()){
-            boolean opt = usuarioDAO.adicionar(usuarioBuilder(result));
-            if(opt){
-                limparCampos();
-                JOptionPane.showMessageDialog(null, "Registro salvo com Sucesso!");
-            }
-        }
-    }
-    
-    private void alterar() {
-        if(!validar()) return;
-        Optional<Integer> result = validarId();
-        if(result.isPresent()){
-            boolean opt = usuarioDAO.alterar(usuarioBuilder(result));
-            if(opt){
-                limparCampos();
-                JOptionPane.showMessageDialog(null, "Registro Editado com Sucesso!");
-            }
-        }
-    }
-
-    private void remover() {
-        int confirma = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir?", "Atenção", JOptionPane.YES_NO_OPTION);
-        if (confirma == JOptionPane.YES_OPTION) {
-            Optional<Integer> result = validarId();
-            if(result.isPresent() && usuarioDAO.deletar(result.get())){
-                JOptionPane.showMessageDialog(null, "Registro Apagado com Sucesso!");
-                limparCampos();
-            }
-        }
-    }
-
+   
     private void limparCampos() {
         txtNome.setText(null);
         txtTel.setText(null);
@@ -391,4 +340,55 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
     private javax.swing.JPasswordField txtSenha;
     private javax.swing.JFormattedTextField txtTel;
     // End of variables declaration//GEN-END:variables
+
+    private void consultar() {
+        Optional<Usuario> opt = usuarioDAO.buscarPorId(txtId.getText());
+        if (opt.isPresent()) {
+            Usuario us = opt.get();
+            txtNome.setText(us.getUsuario());
+            txtTel.setText(us.getFone());
+            txtLogin.setText(us.getLogin());
+            txtSenha.setText(us.getSenha());
+            cbPerfil.setSelectedItem(us.getPerfil());
+        } else {
+            JOptionPane.showMessageDialog(null, "Usuário não Cadastrado");
+            limparCampos();
+        }
+    }
+    
+    private void adicionar() {
+        if(!validar()) return;
+        Optional<Integer> result = validarId();
+        if(result.isPresent()){
+            boolean opt = usuarioDAO.adicionar(usuarioBuilder(result));
+            if(opt){
+                limparCampos();
+                JOptionPane.showMessageDialog(null, "Registro salvo com Sucesso!");
+            }
+        }
+    }
+    
+    private void alterar() {
+        if(!validar()) return;
+        Optional<Integer> result = validarId();
+        if(result.isPresent()){
+            boolean opt = usuarioDAO.alterar(usuarioBuilder(result));
+            if(opt){
+                limparCampos();
+                JOptionPane.showMessageDialog(null, "Registro Editado com Sucesso!");
+            }
+        }
+    }
+
+    private void remover() {
+        int confirma = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir?", "Atenção", JOptionPane.YES_NO_OPTION);
+        if (confirma == JOptionPane.YES_OPTION) {
+            Optional<Integer> result = validarId();
+            if(result.isPresent() && usuarioDAO.deletar(result.get())){
+                JOptionPane.showMessageDialog(null, "Registro Apagado com Sucesso!");
+                limparCampos();
+            }
+        }
+    }
+
 }
