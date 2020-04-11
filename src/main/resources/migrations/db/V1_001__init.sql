@@ -25,7 +25,7 @@ CREATE TABLE `tbos` (
   `valor` decimal(10,2) DEFAULT NULL,
   `entrada` decimal(10,0) DEFAULT NULL,
   `idcli` int(11) NOT NULL,
-  `obs` varchar(250) DEFAULT NULL,
+  `obs` text DEFAULT NULL,
   `tecnico` varchar(20) DEFAULT NULL,
   `situacao` varchar(28) NOT NULL,
   `garantia` varchar(15) NOT NULL,
