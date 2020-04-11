@@ -6,7 +6,7 @@
 package br.com.infoq.fabrica;
 
 import br.com.infoq.config.DataBaseConfig;
-import br.com.infoq.utils.TipoEnum;
+import br.com.infoq.utils.ProviderEnum;
 import java.sql.*;
 import java.util.Optional;
 import javax.swing.JOptionPane;
@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
  *
  * @author tiagods
  */
-public class Conexao {
+public class Factory {
     
     public static Credenciais credenciais;
     
@@ -34,7 +34,7 @@ public class Conexao {
     }
     
     public static boolean testarConexao() {
-        Conexao conexao = new Conexao();
+        Factory conexao = new Factory();
         Optional<Connection> opt = Optional.ofNullable(conexao.getConnection());
         if (opt.isPresent()) {
             conexao.closeConnection(opt.get());
@@ -48,7 +48,7 @@ public class Conexao {
         try {
             DataBaseConfig props = DataBaseConfig.getInstance();
             
-            TipoEnum tipo = TipoEnum.getInstance();
+            ProviderEnum tipo = ProviderEnum.getInstance();
             String param = tipo.getTipo().toString().toLowerCase();
             
             credenciais = new Credenciais(props.getValue("driver_"+param),
@@ -89,27 +89,5 @@ public class Conexao {
         } catch (SQLException ex) {
             System.err.println("ERRO: " + ex);
         }
-    }
-
-    protected void closeConnection(Connection con, PreparedStatement stmt) {
-        try {
-            if (stmt != null) {
-                stmt.close();
-            }
-        } catch (SQLException ex) {
-            System.err.println("ERRO " + ex);
-        }
-        closeConnection(con);
-    }
-
-    protected void closeConnection(Connection con, PreparedStatement stnt, ResultSet rs) {
-        try {
-            if (rs != null) {
-                rs.close();
-            }
-        } catch (SQLException ex) {
-            System.err.println("ERRO " + ex);
-        }
-        closeConnection(con, stnt);
     }
 }

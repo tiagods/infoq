@@ -6,9 +6,9 @@
 package br.com.infoq;
 
 import br.com.infoq.config.DataBaseConfig;
-import br.com.infoq.fabrica.Conexao;
+import br.com.infoq.fabrica.Factory;
 import br.com.infoq.utils.FlywayUtil;
-import br.com.infoq.utils.TipoEnum;
+import br.com.infoq.utils.ProviderEnum;
 import br.com.infoq.view.frmLogin;
 import java.sql.Connection;
 
@@ -16,25 +16,24 @@ import java.sql.Connection;
  *
  * @author tiagods
  */
-public class StartApp extends Conexao{
+public class StartApp extends Factory{
     public static void main(String[] args) {
         DataBaseConfig props = DataBaseConfig.getInstance();
-        TipoEnum.Tipo tipo = TipoEnum.Tipo.valueOf(props.getValue("tipo").toUpperCase());
+        ProviderEnum.Scope tipo = ProviderEnum.Scope.valueOf(props.getValue("tipo").toUpperCase());
         if(tipo==null){
-            tipo = TipoEnum.Tipo.LOCAL;
+            tipo = ProviderEnum.Scope.LOCAL;
         }
         
-        TipoEnum.getInstance().setTipo(tipo);
+        ProviderEnum.getInstance().setTipo(tipo);
         Connection con = null;
         try{
             con = getConnection();
-            if(!tipo.equals(TipoEnum.Tipo.REMOTO)){
+            if(!tipo.equals(ProviderEnum.Scope.REMOTO)){
                 FlywayUtil.initialize(credenciais);
                 FlywayUtil.flwvayInfo(con);
             }
         }catch(Exception e){
             e.printStackTrace();
-            throw new RuntimeException("Falha ao iniciar a aplicacao "+e.getMessage());
         } finally {
             closeConnection(con);
         }

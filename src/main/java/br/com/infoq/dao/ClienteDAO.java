@@ -5,12 +5,15 @@
  */
 package br.com.infoq.dao;
 
-import br.com.infoq.fabrica.Conexao;
+import br.com.infoq.fabrica.Factory;
 import br.com.infoq.model.Cliente;
+import br.com.infoq.model.Usuario;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Optional;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableModel;
 import net.proteanit.sql.DbUtils;
@@ -19,27 +22,21 @@ import net.proteanit.sql.DbUtils;
  *
  * @author tiagods
  */
-public class ClienteDAO extends Conexao{
-    public TableModel pesquisarCliente(String cliente) {
+public class ClienteDAO extends Factory{
+    public TableModel pesquisarClienteOsTable(String nome) {
         String sql = "select idcli as ID, nomecli as NOME, fonecli as TELFONE, celcli as CELULAR from tbclientes where nomecli like ?";
-        Connection conexao = null;
-        try {
-            conexao = getConnection();
-            PreparedStatement pst = conexao.prepareStatement(sql);
-            pst.setString(1, cliente + "%");
-            ResultSet rs = pst.executeQuery();
-            return DbUtils.resultSetToTableModel(rs);
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e);
-        }
-        return null;
+        return buscar(sql, nome);
     }
     
     public TableModel consultar(String nome){
+        String sql = "select * from tbclientes where nomecli like ?";
+        return buscar(sql,nome);
+    }
+    
+    private TableModel buscar(String sql,String nome){
         Connection conexao = null;
         try {
             conexao = getConnection();
-            String sql = "select * from tbclientes where nomecli like ?";
             PreparedStatement pst = conexao.prepareStatement(sql);
             pst.setString(1, nome + "%"); 
             ResultSet rs = pst.executeQuery();
@@ -51,13 +48,31 @@ public class ClienteDAO extends Conexao{
         }
         return null;
     }
-    
-    public boolean adicionar(Cliente cliente){
+    public Optional<Integer> buscarPorId(Integer id){
+        String sql = "select * from tbclientes where idcli=?";
         Connection conexao = null;
         try {
             conexao = getConnection();
-            String sql = "insert into tbclientes(nomecli, endcli, numcli, compcli, emailcli, cpfcli, cnpjcli, rgcli, fonecli, celcli, bairrocli) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement pst = conexao.prepareStatement(sql);
+            pst.setInt(1, id);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                return Optional.of(rs.getInt(1));
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        } finally {
+            closeConnection(conexao);
+        }
+        return Optional.empty();
+    }
+    public Optional<Integer> adicionar(Cliente cliente){
+        Connection conexao = null;
+        
+        try {
+            conexao = getConnection();
+            String sql = "insert into tbclientes(nomecli, endcli, numcli, compcli, emailcli, cpfcli, cnpjcli, rgcli, fonecli, celcli, bairrocli) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement pst = conexao.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
             pst.setString(1, cliente.getNome());
             pst.setString(2, cliente.getEnd());
             pst.setString(3, cliente.getNum());
@@ -70,19 +85,21 @@ public class ClienteDAO extends Conexao{
             pst.setString(10, cliente.getCel());
             pst.setString(11, cliente.getBairro());
             
-            if(pst.executeUpdate() > 0){
-                JOptionPane.showMessageDialog(null, "Registro salvo com Sucesso!");
-                return true;
+            pst.executeUpdate();
+            ResultSet rs = pst.getGeneratedKeys();
+            if(rs.next()){
+                int key = rs.getInt(1);
+                return Optional.of(key);
             }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e);
         } finally {
             closeConnection(conexao);
         }
-        return false;
+        return Optional.empty();
     }
     
-    private boolean alterar(Cliente cli){
+    public boolean alterar(Cliente cli){
         Connection conexao = null;
         String sql = "update tbclientes set nomecli = ?, endcli = ?, numcli = ?, compcli = ?, emailcli = ?, cpfcli = ?, cnpjcli = ?, rgcli = ?, fonecli = ?, celcli = ?, bairrocli = ?  where idcli = ?";
         try {

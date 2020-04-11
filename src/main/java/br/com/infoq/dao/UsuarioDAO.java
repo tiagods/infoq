@@ -5,7 +5,7 @@
  */
 package br.com.infoq.dao;
 
-import br.com.infoq.fabrica.Conexao;
+import br.com.infoq.fabrica.Factory;
 import br.com.infoq.model.Usuario;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,7 +18,7 @@ import javax.swing.JOptionPane;
  *
  * @author tiagods
  */
-public class UsuarioDAO extends Conexao{
+public class UsuarioDAO extends Factory{
     
     private Usuario result(ResultSet rs) throws SQLException{
         Usuario usuario = new Usuario();
@@ -43,12 +43,13 @@ public class UsuarioDAO extends Conexao{
                 return Optional.of(result(rs));
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e);
+            JOptionPane.showMessageDialog(null, e.getMessage());
         } finally {
             closeConnection(conexao);
         }
         return Optional.empty();
     }
+    
     public boolean adicionar(Usuario usuario) {
         String sql = "insert into tbusuarios(iduser, usuario, fone, login, senha, perfil) values (?, ?, ?, ?, ?, ?)";
         Connection conexao = null;
@@ -63,7 +64,7 @@ public class UsuarioDAO extends Conexao{
             pst.setString(6, usuario.getPerfil());
             return (pst.executeUpdate() > 0);
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Erro ID já Cadastrado");
+            JOptionPane.showMessageDialog(null, e.getMessage());
         } finally {
             closeConnection(conexao);
         }
@@ -105,6 +106,23 @@ public class UsuarioDAO extends Conexao{
             PreparedStatement pst = conexao.prepareStatement(sql);
             pst.setString(1, login);
             pst.setString(2, senha);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) 
+                return Optional.of(result(rs));
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        } finally {
+            closeConnection(conexao);
+        }
+        return Optional.empty();
+    }
+    public Optional<Usuario> buscarLogin(String login) {
+        Connection conexao = null;
+        String sql = "select * from tbusuarios where login = ?";
+        try {
+            conexao = getConnection();
+            PreparedStatement pst = conexao.prepareStatement(sql);
+            pst.setString(1, login);
             ResultSet rs = pst.executeQuery();
             if (rs.next()) 
                 return Optional.of(result(rs));

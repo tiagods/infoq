@@ -8,7 +8,7 @@ package br.com.infoq.view;
 import br.com.infoq.dao.ClienteDAO;
 import br.com.infoq.dao.OsDAO;
 import java.util.*;
-import br.com.infoq.fabrica.Conexao;
+import br.com.infoq.fabrica.Factory;
 import br.com.infoq.model.Os;
 import br.com.infoq.utils.DateUtil;
 import br.com.infoq.utils.Relatorio;
@@ -41,7 +41,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
     
     private Os osBuilder(Optional<Integer> result){
         return new Os(
-                result.isPresent() ? result.get() : null,   
+                result.isPresent() ? result.get() : -1,   
                 new Date(),
                 Tipo,
                 txtAparelho.getText().toUpperCase().trim(),
@@ -57,12 +57,16 @@ public class TelaOs extends javax.swing.JInternalFrame {
         );
     }
     private boolean validar(){
-        if ((txtClienteCodigo.getText().isEmpty()) || (txtAparelho.getText().isEmpty()) || (txtDefeito.getText().isEmpty())) {
+        if (txtClienteCodigo.getText().isEmpty() || txtAparelho.getText().isEmpty() || txtDefeito.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Preencha todos os campos!");
             return false;
         }
         if(!Validator.validarNumero(txtClienteCodigo.getText())){
             JOptionPane.showMessageDialog(null, "Campo Id Cliente deve ser numerico!");
+            return false;
+        }
+        if(!clienteDAO.buscarPorId(Integer.parseInt(txtClienteCodigo.getText())).isPresent()){
+            JOptionPane.showMessageDialog(null, "Campo Id Cliente - Nao existe cliente com o id informado!");
             return false;
         }
         if(txtValor.getText().trim().equals("")) txtValor.setText("0");
@@ -268,7 +272,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/infoq/icones/busca 25x25.png"))); // NOI18N
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/busca 25x25.png"))); // NOI18N
         jLabel4.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -318,7 +322,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
                         .addComponent(txtClienteNome, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                         .addComponent(jLabel5)
                         .addGap(39, 39, 39)
                         .addComponent(txtClienteCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -334,7 +338,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
                     .addComponent(jLabel4)
                     .addComponent(txtClienteNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -396,7 +400,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel10.setText("ENTRADA: R$");
 
-        btnImprimir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/infoq/icones/print.png"))); // NOI18N
+        btnImprimir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/print.png"))); // NOI18N
         btnImprimir.setText("IMPRIMIR");
         btnImprimir.setToolTipText("Imprimir");
         btnImprimir.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -704,7 +708,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
     // End of variables declaration//GEN-END:variables
 
     private void pesquisar_cliente() {
-        TableModel model = clienteDAO.pesquisarCliente(txtClienteNome.getText());
+        TableModel model = clienteDAO.pesquisarClienteOsTable(txtClienteNome.getText());
         if(model!=null) tblClientes.setModel(model);
     }
 

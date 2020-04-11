@@ -7,10 +7,10 @@ package br.com.infoq.utils;
 
 /**
  *
- * @author tiago
+ * @author tiagods
  */
 public class Validator {
-    public static String patternNumerico = "[0-9]+$";
+    private static final String patternNumerico = "[0-9]+$";
     
     public static boolean validarNumero(String valor){
         return valor.matches(patternNumerico);

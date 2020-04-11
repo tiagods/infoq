@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.TableModel;
 /**
  *
- * @author tiaods
+ * @author Grazi,tiagods
  */
 public class TelaCliente extends javax.swing.JInternalFrame {
     /**
@@ -42,7 +42,7 @@ public class TelaCliente extends javax.swing.JInternalFrame {
     }
     private Cliente clienteBuilder(Optional<Integer> result){
         return new Cliente(
-            result.isPresent() ? result.get() : null,
+            result.isPresent() ? result.get() : -1,
             txtNome.getText().toUpperCase(),
             txtEnd.getText().toUpperCase(),
             txtNum.getText(),
@@ -194,7 +194,7 @@ public class TelaCliente extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/infoq/icones/clientes.png"))); // NOI18N
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/clientes.png"))); // NOI18N
 
         txtEnd.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         txtEnd.addActionListener(new java.awt.event.ActionListener() {
@@ -218,7 +218,7 @@ public class TelaCliente extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/infoq/icones/buscar pequeno.png"))); // NOI18N
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/buscar pequeno.png"))); // NOI18N
         jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -418,7 +418,7 @@ public class TelaCliente extends javax.swing.JInternalFrame {
                         .addContainerGap()
                         .addComponent(jButton1)))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -566,8 +566,8 @@ public class TelaCliente extends javax.swing.JInternalFrame {
     private void adicionar(){
         if(!validar()) return;
         
-        boolean result = clienteDAO.adicionar(clienteBuilder(Optional.empty()));
-        if(result){
+        Optional<Integer> result = clienteDAO.adicionar(clienteBuilder(Optional.empty()));
+        if(result.isPresent()){
             JOptionPane.showMessageDialog(null, "Registro salvo com Sucesso!");
         }
     }
@@ -577,7 +577,7 @@ public class TelaCliente extends javax.swing.JInternalFrame {
         if(!validar()) return;
         Optional<Integer> result = validarId();
         if(result.isPresent()){
-            boolean opt = clienteDAO.adicionar(clienteBuilder(result));
+            boolean opt = clienteDAO.alterar(clienteBuilder(result));
             btnInserir.setEnabled(true);
             txtBuscar.setText(txtNome.getText());
             if(opt){

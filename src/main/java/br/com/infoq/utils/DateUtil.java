@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat;
 
 /**
  *
- * @author tiago
+ * @author tiagods
  */
 public class DateUtil {
     public static String formatarData(Date data, String pattern){

@@ -6,7 +6,7 @@
 package br.com.infoq.view;
 
 import javax.swing.JOptionPane;
-import br.com.infoq.fabrica.Conexao;
+import br.com.infoq.fabrica.Factory;
 /**
  *
  * @author hugov
@@ -42,7 +42,7 @@ public class TelaMenu extends javax.swing.JInternalFrame {
         getContentPane().setLayout(null);
 
         btn_os.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/btn_os_2.png"))); // NOI18N
-        btn_os.setText("ORDEM DE SERVI�O");
+        btn_os.setText("ORDEM DE SERVIÇO");
         btn_os.setToolTipText("OS");
         btn_os.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btn_os.addActionListener(new java.awt.event.ActionListener() {
@@ -51,7 +51,7 @@ public class TelaMenu extends javax.swing.JInternalFrame {
             }
         });
         getContentPane().add(btn_os);
-        btn_os.setBounds(10, 20, 220, 70);
+        btn_os.setBounds(10, 20, 220, 80);
 
         btn_sair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/btn_sair.png"))); // NOI18N
         btn_sair.setText("SAIR");
@@ -63,11 +63,11 @@ public class TelaMenu extends javax.swing.JInternalFrame {
             }
         });
         getContentPane().add(btn_sair);
-        btn_sair.setBounds(780, 20, 130, 70);
+        btn_sair.setBounds(780, 20, 130, 80);
 
         btn_usuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/btn_users.png"))); // NOI18N
-        btn_usuarios.setText("USU�RIOS");
-        btn_usuarios.setToolTipText("Usu�rio");
+        btn_usuarios.setText("USUÁRIOS");
+        btn_usuarios.setToolTipText("Usuário");
         btn_usuarios.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btn_usuarios.setEnabled(false);
         btn_usuarios.addActionListener(new java.awt.event.ActionListener() {
@@ -76,7 +76,7 @@ public class TelaMenu extends javax.swing.JInternalFrame {
             }
         });
         getContentPane().add(btn_usuarios);
-        btn_usuarios.setBounds(410, 20, 160, 70);
+        btn_usuarios.setBounds(410, 20, 160, 80);
 
         btn_clientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/btn_clientes.png"))); // NOI18N
         btn_clientes.setText("CLIENTES");
@@ -88,7 +88,7 @@ public class TelaMenu extends javax.swing.JInternalFrame {
             }
         });
         getContentPane().add(btn_clientes);
-        btn_clientes.setBounds(240, 20, 160, 70);
+        btn_clientes.setBounds(240, 20, 160, 80);
 
         btn_buscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/btn_buscar.png"))); // NOI18N
         btn_buscar.setText("PESQUISA");
@@ -100,9 +100,9 @@ public class TelaMenu extends javax.swing.JInternalFrame {
             }
         });
         getContentPane().add(btn_buscar);
-        btn_buscar.setBounds(590, 20, 170, 70);
+        btn_buscar.setBounds(590, 20, 170, 80);
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/infoq/icones/imagem de fundo.jpeg"))); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/imagem de fundo.jpeg"))); // NOI18N
         getContentPane().add(jLabel2);
         jLabel2.setBounds(0, 0, 930, 750);
 

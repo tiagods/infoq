@@ -5,11 +5,8 @@
  */
 package br.com.infoq.utils;
 
-import br.com.infoq.fabrica.Conexao;
-import java.io.File;
+import br.com.infoq.fabrica.Factory;
 import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JOptionPane;
 import net.sf.jasperreports.engine.JRException;
@@ -23,7 +20,7 @@ import net.sf.jasperreports.view.JasperViewer;
  *
  * @author tiagods
  */
-public class Relatorio extends Conexao {
+public class Relatorio extends Factory {
 
     public enum Relatorios {
         CLIENTES("clientes"), SERVICOS("servicos"), OS("os");

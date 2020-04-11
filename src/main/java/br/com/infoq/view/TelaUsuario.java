@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author tiagods
+ * @author hugov,tiagods
  */
 public class TelaUsuario extends javax.swing.JInternalFrame {
 
@@ -24,7 +24,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
     
     public Usuario usuarioBuilder(Optional<Integer> result) {
         Usuario usuario = new Usuario(
-                result.isPresent() ? result.get(): null,
+                result.isPresent() ? result.get(): -1,
                 txtNome.getText(),
                 txtTel.getText(),
                 txtLogin.getText(),
@@ -87,7 +87,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
         txtTel = new javax.swing.JFormattedTextField();
 
         setClosable(true);
-        setTitle("Usu�rios");
+        setTitle("Usuários");
         setPreferredSize(new java.awt.Dimension(948, 688));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -194,7 +194,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/infoq/icones/users.png"))); // NOI18N
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/users.png"))); // NOI18N
 
         try {
             txtTel.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("(##)#####-####")));
@@ -360,6 +360,11 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
         if(!validar()) return;
         Optional<Integer> result = validarId();
         if(result.isPresent()){
+            Optional<Usuario> buscarLogin = usuarioDAO.buscarLogin(txtLogin.getText());
+            if(buscarLogin.isPresent()) {
+                JOptionPane.showMessageDialog(null, "Login ja existe, tente informar outro!");
+                return;
+            }
             boolean opt = usuarioDAO.adicionar(usuarioBuilder(result));
             if(opt){
                 limparCampos();

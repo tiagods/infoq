@@ -7,7 +7,7 @@ package br.com.infoq.config;
 
 /**
  *
- * @author Resource
+ * @author tiagods
  */
 public enum PropsEnum {
         GERAL("application.properties");

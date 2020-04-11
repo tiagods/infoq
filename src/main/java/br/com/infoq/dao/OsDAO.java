@@ -5,31 +5,21 @@
  */
 package br.com.infoq.dao;
 
-import br.com.infoq.fabrica.Conexao;
-import br.com.infoq.model.Cliente;
+import br.com.infoq.fabrica.Factory;
 import br.com.infoq.model.Os;
-import java.io.InputStream;
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Date;
 import java.util.Optional;
-import java.util.Properties;
 import javax.swing.JOptionPane;
-import javax.swing.table.TableModel;
-import net.proteanit.sql.DbUtils;
-import org.mentabean.BeanManager;
-import org.mentabean.BeanSession;
-import org.mentabean.jdbc.MySQLBeanSession;
 
 /**
  *
  * @author tiagods
  */
-public class OsDAO extends Conexao{
+public class OsDAO extends Factory{
     
     public Os result(ResultSet rs) throws SQLException{
         

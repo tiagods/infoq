@@ -5,7 +5,7 @@
  */
 package br.com.infoq.utils;
 
-import br.com.infoq.fabrica.Conexao.Credenciais;
+import br.com.infoq.fabrica.Factory.Credenciais;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -14,7 +14,7 @@ import org.flywaydb.core.Flyway;
 
 /**
  *
- * @author tiago
+ * @author tiagods
  */
 public class FlywayUtil{
     public static void initialize(Credenciais credenciais) {

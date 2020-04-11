@@ -41,5 +41,5 @@ CREATE TABLE `tbusuarios` (
   `login` varchar(15) NOT NULL,
   `senha` varchar(15) NOT NULL,
   `perfil` varchar(15) NOT NULL,
-  PRIMARY KEY (`iduser`,`login`)
+  PRIMARY KEY (`iduser`)
 );

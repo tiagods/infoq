@@ -6,7 +6,7 @@
 package br.com.infoq.view;
 
 import br.com.infoq.dao.UsuarioDAO;
-import br.com.infoq.fabrica.Conexao;
+import br.com.infoq.fabrica.Factory;
 import br.com.infoq.model.Usuario;
 import static br.com.infoq.view.TelaPrincipal.desktop;
 import java.awt.Color;
@@ -28,7 +28,7 @@ public class frmLogin extends javax.swing.JFrame {
         ImageIcon icone = new ImageIcon(getClass().getResource("/icons/user.png"));
         setIconImage(icone.getImage());
 
-        boolean conexao = Conexao.testarConexao();
+        boolean conexao = Factory.testarConexao();
         String imagem = "dbok.png";
         if (!conexao)
             imagem = "dberro.png";
