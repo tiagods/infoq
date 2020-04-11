@@ -6,6 +6,7 @@
 package br.com.infoq.model;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Data;
@@ -18,16 +19,16 @@ import lombok.Data;
 @Data
 public class Os {
     private int id;
-    private Data data;
+    private Date data;
     private String tipo;
     private String aparelho;
     private String defeito;
     private String servico;
     private BigDecimal valor = BigDecimal.ZERO;
     private BigDecimal entrada = BigDecimal.ZERO;
-    private Cliente cli;
+    private int cli_id;
     private String obs;
     private String tecnico;
     private String situacao;
-    private String garantia;
+    private String garantia = "";
 }

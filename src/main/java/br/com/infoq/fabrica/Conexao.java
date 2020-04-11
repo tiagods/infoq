@@ -6,8 +6,10 @@
 package br.com.infoq.fabrica;
 
 import br.com.infoq.config.DataBaseConfig;
+import br.com.infoq.utils.TipoEnum;
 import java.sql.*;
 import java.util.Optional;
+import javax.swing.JOptionPane;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,10 +20,7 @@ import lombok.NoArgsConstructor;
  * @author tiagods
  */
 public class Conexao {
-    public enum Tipo{
-        LOCAL, REMOTO
-    }
-    public static Tipo tipo = Tipo.REMOTO;
+    
     public static Credenciais credenciais;
     
     @Data
@@ -44,17 +43,18 @@ public class Conexao {
             return false;
         }
     }
-
+    
     protected static Connection getConnection() {
         try {
             DataBaseConfig props = DataBaseConfig.getInstance();
-            tipo = Tipo.valueOf(props.getValue("tipo").toUpperCase());
-            String param = tipo.toString().toLowerCase();
+            
+            TipoEnum tipo = TipoEnum.getInstance();
+            String param = tipo.getTipo().toString().toLowerCase();
             
             credenciais = new Credenciais(props.getValue("driver_"+param),
-                    props.getValue("url_"+tipo.toString().toLowerCase()),
-                    props.getValue("user_"+tipo.toString().toLowerCase()),
-                    props.getValue("password_"+tipo.toString().toLowerCase())
+                    props.getValue("url_"+param),
+                    props.getValue("user_"+param),
+                    props.getValue("password_"+param)
             );
             
             Class.forName(credenciais.getDriver());
@@ -67,7 +67,20 @@ public class Conexao {
             return null;
         }
     }
-
+    public boolean deletar(Integer id, String sql) {
+        Connection conexao = null;
+        try {
+            conexao = getConnection();
+            PreparedStatement pst = conexao.prepareStatement(sql);
+            pst.setInt(1, id);
+            return (pst.executeUpdate() > 0);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        } finally {
+            closeConnection(conexao);
+        }
+        return false;
+    }
     protected static void closeConnection(Connection con) {
         try {
             if (con != null) {

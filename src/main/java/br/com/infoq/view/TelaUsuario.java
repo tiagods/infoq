@@ -36,9 +36,9 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
     public boolean validar(){
         if ((txtNome.getText().isEmpty()) || (new String(txtSenha.getPassword()).isEmpty()) || (txtLogin.getText().isEmpty()) || (txtId.getText().isEmpty()) || (cbPerfil.getSelectedItem().equals(""))) {
             JOptionPane.showMessageDialog(null, "Preencha os Dados!!");
-            return true;
+            return false;
         } 
-        return false;
+        return true;
     }
     private Optional<Integer> validarId(){
         try{

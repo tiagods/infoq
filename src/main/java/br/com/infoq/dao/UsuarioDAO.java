@@ -53,6 +53,7 @@ public class UsuarioDAO extends Conexao{
         String sql = "insert into tbusuarios(iduser, usuario, fone, login, senha, perfil) values (?, ?, ?, ?, ?, ?)";
         Connection conexao = null;
         try {
+            conexao = getConnection();
             PreparedStatement pst = conexao.prepareStatement(sql);
             pst.setInt(1, usuario.getId());
             pst.setString(2, usuario.getUsuario());
@@ -60,9 +61,7 @@ public class UsuarioDAO extends Conexao{
             pst.setString(4, usuario.getLogin());
             pst.setString(5, usuario.getSenha());
             pst.setString(6, usuario.getPerfil());
-            if (pst.executeUpdate() > 0) {
-                return true;
-            }
+            return (pst.executeUpdate() > 0);
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro ID já Cadastrado");
         } finally {
@@ -74,6 +73,7 @@ public class UsuarioDAO extends Conexao{
         String sql = "update tbusuarios set usuario = ?, fone = ?, login = ?, senha = ?, perfil = ? where iduser = ?";
         Connection conexao = null;
         try {
+            conexao = getConnection();
             PreparedStatement pst = conexao.prepareStatement(sql);
             pst.setString(1, usuario.getUsuario());
             pst.setString(2, usuario.getFone());
@@ -93,42 +93,25 @@ public class UsuarioDAO extends Conexao{
         return false;
     }
     public boolean deletar(Integer id) {
-        Connection conexao = null;
-        try {
-            conexao = getConnection();
-            String sql = "delete from tbusuarios where iduser=?";
-            PreparedStatement pst = conexao.prepareStatement(sql);
-            pst.setInt(1, id);
-            int apagado = pst.executeUpdate();
-            if (apagado > 0) {
-                return true;
-            }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e);
-        } finally {
-            closeConnection(conexao);
-        }
-        return false;
+        String sql = "delete from tbusuarios where iduser=?";
+        return deletar(id, sql);
     }
     
     public Optional<Usuario> validarLogin(String login, String senha) {
         Connection conexao = null;
-        PreparedStatement pst = null;
-        ResultSet rs = null;
- 
         String sql = "select * from tbusuarios where login = ? and senha = ? ";
         try {
             conexao = getConnection();
-            pst = conexao.prepareStatement(sql);
+            PreparedStatement pst = conexao.prepareStatement(sql);
             pst.setString(1, login);
             pst.setString(2, senha);
-            rs = pst.executeQuery();
+            ResultSet rs = pst.executeQuery();
             if (rs.next()) 
                 return Optional.of(result(rs));
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e);
         } finally {
-            closeConnection(conexao, pst, rs);
+            closeConnection(conexao);
         }
         return Optional.empty();
     }

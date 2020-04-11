@@ -4,250 +4,107 @@
  * and open the template in the editor.
  */
 package br.com.infoq.view;
-import java.sql.*;
+
+import br.com.infoq.dao.ClienteDAO;
+import br.com.infoq.dao.OsDAO;
+import java.util.*;
 import br.com.infoq.fabrica.Conexao;
+import br.com.infoq.model.Os;
+import br.com.infoq.utils.DateUtil;
+import br.com.infoq.utils.Relatorio;
+import br.com.infoq.utils.Validator;
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import javax.swing.JOptionPane;
-import net.proteanit.sql.DbUtils;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.view.JasperViewer;
+import javax.swing.table.TableModel;
+
 /**
  *
  * @author hugov
  */
 public class TelaOs extends javax.swing.JInternalFrame {
+    private Relatorio rel = new Relatorio();
+    private String Tipo;
+    
+    private OsDAO osDAO = new OsDAO();
+    private ClienteDAO clienteDAO = new ClienteDAO();
 
-private String Tipo;
     /**
      * Creates new form TelaOs
      */
     public TelaOs() {
         initComponents();
-        conexao = Conexao.getConnection();
     }
     
-    
-    private void pesquisar_cliente(){
-        String sql = "select idcli as ID, nomecli as NOME, fonecli as TELFONE, celcli as CELULAR from tbclientes where nomecli like ?";
-        try {
-            pst = conexao.prepareStatement(sql);
-            pst.setString(1, txtCliente.getText() + "%");
-            rs = pst.executeQuery();
-            tblClientes.setModel(DbUtils.resultSetToTableModel(rs));
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
+    private Os osBuilder(Optional<Integer> result){
+        return new Os(
+                result.isPresent() ? result.get() : null,   
+                new Date(),
+                Tipo,
+                txtAparelho.getText().toUpperCase().trim(),
+                txtDefeito.getText().toUpperCase().trim(),
+                txtServico.getText().toUpperCase().trim(),
+                new BigDecimal(txtValor.getText().replace(",", ".")),
+                new BigDecimal(txtEntrada.getText().replace(",", ".")),
+                Integer.parseInt(txtClienteCodigo.getText().trim()),
+                txtObs.getText().toUpperCase(),
+                txtTecnico.getText().toUpperCase().trim(),
+                cbSituacao.getSelectedItem().toString(),
+                ""
+        );
+    }
+    private boolean validar(){
+        if ((txtClienteCodigo.getText().isEmpty()) || (txtAparelho.getText().isEmpty()) || (txtDefeito.getText().isEmpty())) {
+            JOptionPane.showMessageDialog(null, "Preencha todos os campos!");
+            return false;
         }
+        if(!Validator.validarNumero(txtClienteCodigo.getText())){
+            JOptionPane.showMessageDialog(null, "Campo Id Cliente deve ser numerico!");
+            return false;
+        }
+        if(txtValor.getText().trim().equals("")) txtValor.setText("0");
+        if(!Validator.validarNumero(txtValor.getText().replace(",", ""))){
+            JOptionPane.showMessageDialog(null, "Campo valor deve ser do tipo 0,00!");
+            return false;
+        }
+        if(txtEntrada.getText().trim().equals("")) txtEntrada.setText("0");
+        if(!Validator.validarNumero(txtEntrada.getText().replace(",", ""))){
+            JOptionPane.showMessageDialog(null, "Campo entrada deve ser do tipo 0,00!");
+            return false;
+        }
+        return true;
     }
-    
-    private void setar_campos(){
+    private Optional<Integer> validarId(String value){
+        try{
+            Integer id = Integer.parseInt(value.trim());
+            return Optional.of(id);
+        } catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Campo id incorreto ou nao informado");
+        }
+        return Optional.empty();
+    }
+    private void setar_campos() {
         int setar = tblClientes.getSelectedRow();
-        txtCodigo.setText(tblClientes.getModel().getValueAt(setar, 0).toString());
+        txtClienteCodigo.setText(tblClientes.getModel().getValueAt(setar, 0).toString());
     }
-    
-    private void emitir_os(){
-        String sql = "insert into tbos(Tipo, situacao, aparelho, defeito, servico, tecnico, valor, entrada, obs, idcli, garantia) values (?,?,?,?,?,?,?,?,?,?,?)";
-        try {
-             pst = conexao.prepareStatement(sql);
-             pst.setString(1, Tipo);
-             pst.setString(2, cbSituacao.getSelectedItem().toString());
-             pst.setString(3, txtAparelho.getText().toUpperCase());
-             pst.setString(4, txtDefeito.getText().toUpperCase());
-             pst.setString(5, txtServico.getText().toUpperCase());
-             pst.setString(6, txtTecnico.getText().toUpperCase());
-             pst.setString(7, txtValor.getText().replace(",", "."));
-             pst.setString(8, txtEntrada.getText().replace(",", "."));
-             pst.setString(9, txtObs.getText().toUpperCase().toUpperCase());
-             pst.setString(10, txtCodigo.getText());
-             pst.setString(11, txtGarantia.getText().toUpperCase());
-             
-             if((txtCodigo.getText().isEmpty()) || (txtAparelho.getText().isEmpty()) || (txtDefeito.getText().isEmpty())){
-                  JOptionPane.showMessageDialog(null, "Preencha todos os campos!");
-             }else{
-                 int adicionado = pst.executeUpdate();
-                 if(adicionado > 0){
-                      JOptionPane.showMessageDialog(null, "OS Salva com Sucesso!!");
-                      
-                      consultarOS();
-                      imprimir();
-                      limparCampos();
-                      pesquisar_cliente();
-                 }
-             }
-             
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
-        }
-    }
-    
-    private void consultarOS(){
-       
-         String sql = "select * from tbos order by os desc";
-            try {
-                pst = conexao.prepareStatement(sql);
-                rs = pst.executeQuery();
-                if(rs.next()){
-                txtOs.setText(rs.getString(1));
-                }else{
-                    JOptionPane.showMessageDialog(null, "Nao encontrada");
-                }
-            }catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
-        }
-    }
-    
-    
-    private void pesquisar_os(){
-        String num_os = JOptionPane.showInputDialog("Numero da OS");
-        String sql = "select * from tbos where os = " + num_os;
-        try {
-             pst = conexao.prepareStatement(sql);
-             rs = pst.executeQuery();
-             if(rs.next()){
-                 txtOs.setText(rs.getString(1));
-                 txtData.setText(rs.getString(2));
-                 String rbTipo = rs.getString(3);
-                 if(rbTipo.equals("OS")){
-                     rbos.setSelected(true);
-                     Tipo="OS";
-                     
-                 }else{
-                     rbgarantia.setSelected(true);
-                     Tipo = "Garantia";
-                 }
-                 cbSituacao.setSelectedItem(rs.getString(11));
-                 txtAparelho.setText(rs.getString(4));
-                 txtDefeito.setText(rs.getString(5));
-                 txtServico.setText(rs.getString(6));
-                 txtTecnico.setText(rs.getString(10));
-                 txtValor.setText(rs.getString(7));
-                 txtEntrada.setText(rs.getString(8));
-                 txtCodigo.setText(rs.getString(9));
-                 txtObs.setText(rs.getString(10));
-                 
-                 btnInserir.setEnabled(false);
-                 txtCliente.setEnabled(false);
-                 tblClientes.setVisible(false);
-                 
-                 
-             }else{
-                JOptionPane.showMessageDialog(null, "OS não cadastrada!");
-             }
-        } catch (com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException e) {
-             JOptionPane.showMessageDialog(null, "OS Inválida, digite apenas números!");
-             //System.out.println(e);
-        } catch(Exception e2){
-             JOptionPane.showMessageDialog(null, e2);
-        }
-    }
-    
-    
-    private void alterar(){
-        String sql = "update tbos set tipo=?, situacao=?, aparelho=?, defeito=?, servico=?, tecnico=?, valor=?, entrada=?, obs=? where os=?";
-        
-        try {
-             pst = conexao.prepareStatement(sql);
-             pst.setString(1, Tipo);
-             pst.setString(2, cbSituacao.getSelectedItem().toString());
-             pst.setString(3, txtAparelho.getText().toUpperCase().toUpperCase());
-             pst.setString(4, txtDefeito.getText().toUpperCase().toUpperCase());
-             pst.setString(5, txtServico.getText().toUpperCase().toUpperCase());
-             pst.setString(6, txtTecnico.getText().toLowerCase());
-             pst.setString(7, txtValor.getText().replace(",", "."));
-             pst.setString(8, txtEntrada.getText().replace(",", "."));
-             pst.setString(9, txtObs.getText().toUpperCase().toUpperCase());
-            pst.setString(10, txtOs.getText().toUpperCase());
 
-            btnInserir.setEnabled(true);
-            txtCliente.setEnabled(true);
-            tblClientes.setVisible(true);
-             
-             if((txtCodigo.getText().isEmpty()) || (txtAparelho.getText().isEmpty()) || (txtDefeito.getText().isEmpty())){
-                  JOptionPane.showMessageDialog(null, "Preencha todos os campos!");
-             }else{
-                 int adicionado = pst.executeUpdate();
-                 if(adicionado > 0){
-                      JOptionPane.showMessageDialog(null, "OS Editada com Sucesso!!");
-                      imprimir();
-                      limparCampos();
-                      pesquisar_cliente();
-                 }
-             }
-             
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
-        }
-    }
-    
-    
-    private void excluir(){
-        int confirma = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja realmente excluir o registro?", "AtenÃ§Ã£o", JOptionPane.YES_NO_OPTION);
-        if(confirma == JOptionPane.YES_OPTION){
-            String sql = "delete from tbos where os=?";
-            try {
-                 pst = conexao.prepareStatement(sql);
-                pst.setString(1, txtOs.getText());
-
-                btnInserir.setEnabled(true);
-                txtCliente.setEnabled(true);
-                tblClientes.setVisible(true);
-                 
-                 int apagado = pst.executeUpdate();
-                 if (apagado > 0){
-                     JOptionPane.showMessageDialog(null, "Registro deletado com sucesso!!");
-                     limparCampos();
-                 }
-                 
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, e);
-            }
-        }
-    }
-    
-    
-    private void limparCampos(){
-        txtCodigo.setText(null);
+    private void limparCampos() {
+        txtClienteCodigo.setText(null);
         txtAparelho.setText(null);
         txtDefeito.setText(null);
         txtValor.setText("0");
         txtEntrada.setText("0");
         txtTecnico.setText(null);
         txtServico.setText(null);
-        txtCliente.setText(null);
+        txtClienteNome.setText(null);
         txtData.setText(null);
         txtObs.setText(null);
-       // txtOs.setText(null);
+        // txtOs.setText(null);
     }
-    
-    private void imprimir(){
-        int confirma = JOptionPane.showConfirmDialog(null, "Confirma a visualizaÃ§Ã£o do RelatÃ³rio?", "AtenÃ§Ã£o", JOptionPane.YES_NO_OPTION);
-       if (confirma == JOptionPane.YES_OPTION){
-           Map p = new HashMap();
-           p.put("codigo_os", txtOs.getText());
-           JasperReport relatorio;
-           JasperPrint impressao;
-           try {
-               if(!txtOs.getText().equals("")){
-               relatorio = JasperCompileManager.compileReport(new File("").getAbsolutePath()+"/rel/os.jrxml");
-               impressao = JasperFillManager.fillReport(relatorio, p, conexao);
-               JasperViewer view = new JasperViewer(impressao, false); 
-               view.setTitle("RelatÃ³rio de Ordem de ServiÃ§os");
-               view.setVisible(true);
-               }else{
-                   JOptionPane.showMessageDialog(null, "Pesquise uma OS para ImpressÃ£o!!"); 
-               }
-               
-           } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, e);
-           }
-       }
-    }
- 
-  
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -261,17 +118,17 @@ private String Tipo;
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        txtOs = new javax.swing.JTextField();
+        txtCodOs = new javax.swing.JTextField();
         txtData = new javax.swing.JTextField();
         rbos = new javax.swing.JRadioButton();
         rbgarantia = new javax.swing.JRadioButton();
         jLabel3 = new javax.swing.JLabel();
         cbSituacao = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
-        txtCliente = new javax.swing.JTextField();
+        txtClienteNome = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        txtCodigo = new javax.swing.JTextField();
+        txtClienteCodigo = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblClientes = new javax.swing.JTable();
         jLabel6 = new javax.swing.JLabel();
@@ -300,20 +157,20 @@ private String Tipo;
         setClosable(true);
         setTitle("ORÇAMENTO"); // NOI18N
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
-            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
-            }
-            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameOpened(evt);
             }
             public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
             }
-            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
-            }
-            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
             }
             public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
             }
-            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
-                formInternalFrameOpened(evt);
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
             }
         });
 
@@ -323,9 +180,9 @@ private String Tipo;
 
         jLabel2.setText("DATA");
 
-        txtOs.setEditable(false);
-        txtOs.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        txtOs.setEnabled(false);
+        txtCodOs.setEditable(false);
+        txtCodOs.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        txtCodOs.setEnabled(false);
 
         txtData.setEditable(false);
         txtData.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
@@ -357,7 +214,7 @@ private String Tipo;
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtOs, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtCodOs, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -380,7 +237,7 @@ private String Tipo;
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtOs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCodOs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -404,10 +261,10 @@ private String Tipo;
         jPanel2.setName(""); // NOI18N
         jPanel2.setPreferredSize(new java.awt.Dimension(300, 176));
 
-        txtCliente.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        txtCliente.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtClienteNome.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        txtClienteNome.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtClienteKeyReleased(evt);
+                txtClienteNomeKeyReleased(evt);
             }
         });
 
@@ -421,9 +278,9 @@ private String Tipo;
 
         jLabel5.setText("CÓDIOG");
 
-        txtCodigo.setEditable(false);
-        txtCodigo.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        txtCodigo.setEnabled(false);
+        txtClienteCodigo.setEditable(false);
+        txtClienteCodigo.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        txtClienteCodigo.setEnabled(false);
 
         tblClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -458,13 +315,13 @@ private String Tipo;
                         .addComponent(jScrollPane1)
                         .addContainerGap())
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtClienteNome, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
                         .addComponent(jLabel5)
                         .addGap(39, 39, 39)
-                        .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtClienteCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(144, 144, 144))))
         );
         jPanel2Layout.setVerticalGroup(
@@ -473,11 +330,11 @@ private String Tipo;
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel5)
-                        .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtClienteCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel4)
-                    .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtClienteNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -500,7 +357,6 @@ private String Tipo;
         jLabel9.setText("TÉCNICO:");
 
         txtTecnico.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        txtTecnico.setText("Moniel Ferreira");
         txtTecnico.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtTecnicoActionPerformed(evt);
@@ -733,40 +589,40 @@ private String Tipo;
     }//GEN-LAST:event_btnInserirActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-         alterar();
+        alterar();
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnDeletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeletarActionPerformed
-        excluir()    ;    
+        excluir();
     }//GEN-LAST:event_btnDeletarActionPerformed
 
     private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirActionPerformed
-         imprimir();
-         limparCampos();
-         btnInserir.setEnabled(true);
-         txtCliente.setEnabled(true);
-         tblClientes.setVisible(true);
-         pesquisar_cliente();
+        imprimir();
+        limparCampos();
+        btnInserir.setEnabled(true);
+        txtClienteNome.setEnabled(true);
+        tblClientes.setVisible(true);
+        pesquisar_cliente();
     }//GEN-LAST:event_btnImprimirActionPerformed
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
-       pesquisar_os();
+        pesquisar_os();
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
         pesquisar_cliente();
     }//GEN-LAST:event_jLabel4MouseClicked
 
-    private void txtClienteKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtClienteKeyReleased
+    private void txtClienteNomeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtClienteNomeKeyReleased
         pesquisar_cliente();
-    }//GEN-LAST:event_txtClienteKeyReleased
+    }//GEN-LAST:event_txtClienteNomeKeyReleased
 
     private void rbgarantiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbgarantiaActionPerformed
         Tipo = "Garantia";
     }//GEN-LAST:event_rbgarantiaActionPerformed
 
     private void rbosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbosActionPerformed
-         Tipo = "OS";
+        Tipo = "OS";
     }//GEN-LAST:event_rbosActionPerformed
 
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
@@ -788,7 +644,7 @@ private String Tipo;
     }//GEN-LAST:event_txtEntradaActionPerformed
 
     private void txtEntradaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtEntradaFocusLost
-       
+
 
     }//GEN-LAST:event_txtEntradaFocusLost
 
@@ -834,16 +690,130 @@ private String Tipo;
     private javax.swing.JRadioButton rbos;
     private javax.swing.JTable tblClientes;
     private javax.swing.JTextField txtAparelho;
-    private javax.swing.JTextField txtCliente;
-    private javax.swing.JTextField txtCodigo;
+    private javax.swing.JTextField txtClienteCodigo;
+    private javax.swing.JTextField txtClienteNome;
+    private javax.swing.JTextField txtCodOs;
     private javax.swing.JTextField txtData;
     private javax.swing.JTextField txtDefeito;
     private javax.swing.JFormattedTextField txtEntrada;
     private javax.swing.JTextField txtGarantia;
     private javax.swing.JTextPane txtObs;
-    private javax.swing.JTextField txtOs;
     private javax.swing.JTextField txtServico;
     private javax.swing.JTextField txtTecnico;
     private javax.swing.JFormattedTextField txtValor;
     // End of variables declaration//GEN-END:variables
+
+    private void pesquisar_cliente() {
+        TableModel model = clienteDAO.pesquisarCliente(txtClienteNome.getText());
+        if(model!=null) tblClientes.setModel(model);
+    }
+
+//    private void consultarOS() {
+//        Optional<Os> result = osDAO.consultar();
+//        
+//        String sql = "select * from tbos order by os desc";
+//        try {
+//            pst = conexao.prepareStatement(sql);
+//            rs = pst.executeQuery();
+//            if (rs.next()) {
+//                txtOs.setText(rs.getString(1));
+//            } else {
+//                JOptionPane.showMessageDialog(null, "Nao encontrada");
+//            }
+//        } catch (Exception e) {
+//            JOptionPane.showMessageDialog(null, e);
+//        }
+//    }
+
+    private void pesquisar_os() {
+        String num_os = JOptionPane.showInputDialog("Numero da OS");
+        Optional<Integer> result = validarId(num_os);
+        if(!result.isPresent()) return;
+        Optional<Os> osOpt = osDAO.buscarPorId(result.get());
+        if(osOpt.isPresent()){
+            Os os = osOpt.get();
+            txtCodOs.setText(""+os.getId());
+            txtData.setText(DateUtil.formatarData(os.getData()));
+            String rbTipo = os.getTipo();
+            if (rbTipo.equals("OS")) {
+                rbos.setSelected(true);
+                Tipo = "OS";
+
+            } else {
+                rbgarantia.setSelected(true);
+                Tipo = "Garantia";
+            }
+            cbSituacao.setSelectedItem(os.getSituacao());
+            txtAparelho.setText(os.getAparelho());
+            txtDefeito.setText(os.getDefeito());
+            txtServico.setText(os.getServico());
+            txtTecnico.setText(os.getTecnico());
+            txtValor.setText(os.getValor().toString().replace(".", ","));
+            txtEntrada.setText(os.getEntrada().toString().replace(".",","));
+            txtClienteCodigo.setText(os.getCli_id()+"");
+            txtObs.setText(os.getObs());
+
+            btnInserir.setEnabled(false);
+            txtClienteNome.setEnabled(false);
+            tblClientes.setVisible(false);
+
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "OS não cadastrada!");
+        }
+    }
+
+    private void alterar() {
+        if(!validar()) return;
+        Optional<Integer> id = validarId(txtCodOs.getText().trim());
+        if(!id.isPresent()) return;
+        else{
+            btnInserir.setEnabled(true);
+            txtClienteNome.setEnabled(true);
+            tblClientes.setVisible(true);  
+            boolean result = osDAO.alterar(osBuilder(id));
+            if(result){
+                JOptionPane.showMessageDialog(null, "OS Editada com Sucesso!!");
+                imprimir();
+                limparCampos();
+                pesquisar_cliente();
+            }
+        }
+    }
+
+    private void excluir() {
+        int confirma = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir?", "Atenção", JOptionPane.YES_NO_OPTION);
+        if (confirma == JOptionPane.YES_OPTION) {
+            Optional<Integer> result = validarId(txtCodOs.getText());
+            btnInserir.setEnabled(true);
+            txtClienteNome.setEnabled(true);
+            tblClientes.setVisible(true);
+            if(result.isPresent() && osDAO.deletar(result.get())){
+                JOptionPane.showMessageDialog(null, "Registro Apagado com Sucesso!");
+                limparCampos();
+            }
+        }
+    }
+
+    private void imprimir() {
+        if (txtCodOs.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Pesquise uma OS para Impressao!!");
+            return;
+        }
+        Map p = new HashMap();
+        p.put("codigo_os", txtCodOs.getText());
+        rel.imprimir(rel.pegarResultadoImpressao(), p, Relatorio.Relatorios.OS);
+    }
+
+    private void emitir_os() {
+        if(!validar()) return;
+        Optional<Integer> result = osDAO.inserir(osBuilder(Optional.empty()));
+        if(result.isPresent()){
+            JOptionPane.showMessageDialog(null, "OS Salva com Sucesso!!");
+            txtCodOs.setText(result.get()+"");
+            imprimir();
+            limparCampos();
+            pesquisar_cliente();
+        }
+    }
 }

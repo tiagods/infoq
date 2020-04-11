@@ -6,6 +6,7 @@
 package br.com.infoq.view;
 import br.com.infoq.dao.ClienteDAO;
 import br.com.infoq.model.Cliente;
+import br.com.infoq.utils.Validator;
 import java.util.Optional;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableModel;

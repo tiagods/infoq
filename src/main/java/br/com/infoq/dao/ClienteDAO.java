@@ -20,9 +20,25 @@ import net.proteanit.sql.DbUtils;
  * @author tiagods
  */
 public class ClienteDAO extends Conexao{
+    public TableModel pesquisarCliente(String cliente) {
+        String sql = "select idcli as ID, nomecli as NOME, fonecli as TELFONE, celcli as CELULAR from tbclientes where nomecli like ?";
+        Connection conexao = null;
+        try {
+            conexao = getConnection();
+            PreparedStatement pst = conexao.prepareStatement(sql);
+            pst.setString(1, cliente + "%");
+            ResultSet rs = pst.executeQuery();
+            return DbUtils.resultSetToTableModel(rs);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        return null;
+    }
+    
     public TableModel consultar(String nome){
         Connection conexao = null;
         try {
+            conexao = getConnection();
             String sql = "select * from tbclientes where nomecli like ?";
             PreparedStatement pst = conexao.prepareStatement(sql);
             pst.setString(1, nome + "%"); 
@@ -39,6 +55,7 @@ public class ClienteDAO extends Conexao{
     public boolean adicionar(Cliente cliente){
         Connection conexao = null;
         try {
+            conexao = getConnection();
             String sql = "insert into tbclientes(nomecli, endcli, numcli, compcli, emailcli, cpfcli, cnpjcli, rgcli, fonecli, celcli, bairrocli) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement pst = conexao.prepareStatement(sql);
             pst.setString(1, cliente.getNome());
@@ -53,8 +70,7 @@ public class ClienteDAO extends Conexao{
             pst.setString(10, cliente.getCel());
             pst.setString(11, cliente.getBairro());
             
-            int adicionado = pst.executeUpdate();
-            if(adicionado > 0){
+            if(pst.executeUpdate() > 0){
                 JOptionPane.showMessageDialog(null, "Registro salvo com Sucesso!");
                 return true;
             }
@@ -70,6 +86,7 @@ public class ClienteDAO extends Conexao{
         Connection conexao = null;
         String sql = "update tbclientes set nomecli = ?, endcli = ?, numcli = ?, compcli = ?, emailcli = ?, cpfcli = ?, cnpjcli = ?, rgcli = ?, fonecli = ?, celcli = ?, bairrocli = ?  where idcli = ?";
         try {
+            conexao = getConnection();
             PreparedStatement pst = conexao.prepareStatement(sql);
             pst.setString(1, cli.getNome());
             pst.setString(2, cli.getEnd());
@@ -84,10 +101,8 @@ public class ClienteDAO extends Conexao{
             pst.setString(11, cli.getBairro());
             pst.setInt(12, cli.getId());
             
-            int adicionado = pst.executeUpdate();
-            if(adicionado > 0){
-                return true;
-            }
+            return (pst.executeUpdate()>0);
+            
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e);
         }  finally {
@@ -97,21 +112,7 @@ public class ClienteDAO extends Conexao{
     }
     
     public boolean deletar(Integer id) {
-        Connection conexao = null;
-        try {
-            conexao = getConnection();
-            String sql = "delete from tbclientes where idcli=?";
-            PreparedStatement pst = conexao.prepareStatement(sql);
-            pst.setInt(1, id);
-            int apagado = pst.executeUpdate();
-            if (apagado > 0) {
-                return true;
-            }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e);
-        } finally {
-            closeConnection(conexao);
-        }
-        return false;
+        String sql = "delete from tbclientes where idcli=?";
+        return deletar(id, sql);
     }
 }

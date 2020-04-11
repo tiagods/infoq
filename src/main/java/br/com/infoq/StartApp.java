@@ -5,11 +5,12 @@
  */
 package br.com.infoq;
 
+import br.com.infoq.config.DataBaseConfig;
 import br.com.infoq.fabrica.Conexao;
 import br.com.infoq.utils.FlywayUtil;
+import br.com.infoq.utils.TipoEnum;
 import br.com.infoq.view.frmLogin;
 import java.sql.Connection;
-import java.sql.SQLException;
 
 /**
  *
@@ -17,10 +18,17 @@ import java.sql.SQLException;
  */
 public class StartApp extends Conexao{
     public static void main(String[] args) {
+        DataBaseConfig props = DataBaseConfig.getInstance();
+        TipoEnum.Tipo tipo = TipoEnum.Tipo.valueOf(props.getValue("tipo").toUpperCase());
+        if(tipo==null){
+            tipo = TipoEnum.Tipo.LOCAL;
+        }
+        
+        TipoEnum.getInstance().setTipo(tipo);
         Connection con = null;
         try{
             con = getConnection();
-            if(tipo.equals(Tipo.LOCAL)){
+            if(!tipo.equals(TipoEnum.Tipo.REMOTO)){
                 FlywayUtil.initialize(credenciais);
                 FlywayUtil.flwvayInfo(con);
             }
