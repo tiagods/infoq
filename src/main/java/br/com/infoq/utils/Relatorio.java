@@ -21,7 +21,8 @@ import net.sf.jasperreports.view.JasperViewer;
  * @author tiagods
  */
 public class Relatorio extends Factory {
-
+    
+    
     public enum Relatorios {
         CLIENTES("clientes"), SERVICOS("servicos"), OS("os");
         private String valor;
