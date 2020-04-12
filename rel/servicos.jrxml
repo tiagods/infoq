@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="servicos" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5aef327d-df19-4119-8987-1274e58c4f02">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT
+     tbos.`os` AS tbos_os,
+     tbos.`data_os` AS tbos_data_os,
+     tbos.`tipo` AS tbos_tipo,
+     tbos.`aparelho` AS tbos_aparelho,
+     tbos.`defeito` AS tbos_defeito,
+     tbos.`servico` AS tbos_servico,
+     tbos.`valor` AS tbos_valor,
+     tbos.`idcli` AS tbos_idcli,
+     tbos.`obs` AS tbos_obs,
+     tbos.`tecnico` AS tbos_tecnico,
+     tbos.`situacao` AS tbos_situacao,
+     tbclientes.`idcli` AS tbclientes_idcli,
+     tbclientes.`nomecli` AS tbclientes_nomecli,
+     tbclientes.`endcli` AS tbclientes_endcli,
+     tbclientes.`numcli` AS tbclientes_numcli,
+     tbclientes.`compcli` AS tbclientes_compcli,
+     tbclientes.`emailcli` AS tbclientes_emailcli,
+     tbclientes.`cpfcli` AS tbclientes_cpfcli,
+     tbclientes.`fonecli` AS tbclientes_fonecli,
+     tbclientes.`celcli` AS tbclientes_celcli,
+     tbclientes.`bairrocli` AS tbclientes_bairrocli
+FROM
+     `tbclientes` tbclientes INNER JOIN `tbos` tbos ON tbclientes.`idcli` = tbos.`idcli`]]>
+	</queryString>
+	<field name="tbos_os" class="java.lang.Integer"/>
+	<field name="tbos_data_os" class="java.sql.Timestamp"/>
+	<field name="tbos_tipo" class="java.lang.String"/>
+	<field name="tbos_aparelho" class="java.lang.String"/>
+	<field name="tbos_defeito" class="java.lang.String"/>
+	<field name="tbos_servico" class="java.lang.String"/>
+	<field name="tbos_valor" class="java.math.BigDecimal"/>
+	<field name="tbos_idcli" class="java.lang.Integer"/>
+	<field name="tbos_obs" class="java.lang.String"/>
+	<field name="tbos_tecnico" class="java.lang.String"/>
+	<field name="tbos_situacao" class="java.lang.String"/>
+	<field name="tbclientes_idcli" class="java.lang.Integer"/>
+	<field name="tbclientes_nomecli" class="java.lang.String"/>
+	<field name="tbclientes_endcli" class="java.lang.String"/>
+	<field name="tbclientes_numcli" class="java.lang.String"/>
+	<field name="tbclientes_compcli" class="java.lang.String"/>
+	<field name="tbclientes_emailcli" class="java.lang.String"/>
+	<field name="tbclientes_cpfcli" class="java.lang.String"/>
+	<field name="tbclientes_fonecli" class="java.lang.String"/>
+	<field name="tbclientes_celcli" class="java.lang.String"/>
+	<field name="tbclientes_bairrocli" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="28" y="19" width="195" height="21" uuid="331df570-1bb6-46db-86de-a3a84c7ff972"/>
+				<textElement>
+					<font size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RELATÓRIO DE SERVIÇOS]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="579" y="20" width="141" height="20" uuid="0f38cce2-9da8-4e25-9a5f-1171f986e1b9"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="69" height="20" uuid="61305561-3011-46f0-aa66-831b47db92a4"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[OS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="69" y="0" width="62" height="20" uuid="ce215cdd-74ba-4818-b7a7-3fc80cac6b83"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TIPO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="131" y="0" width="80" height="20" uuid="4e7273d1-7799-43e8-b6ef-bbaa985b4463"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[SITUAÇÃO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="217" y="0" width="143" height="20" uuid="27f543a5-a543-436d-be52-a8062b19534d"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[APARELHO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="675" y="0" width="72" height="20" uuid="3b4b8a9d-7181-490a-960d-62908de92c31"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[VALOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="574" y="0" width="100" height="20" uuid="6869928c-18e4-44b8-ac4a-72a862f3da20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLIENTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="370" y="0" width="100" height="20" uuid="c8de6c12-2324-4a3b-836b-68987136799b"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DEFEITO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="474" y="0" width="100" height="20" uuid="d21a6a4b-1872-470b-9f13-e73e56585439"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[SERVIÇO]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="25" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="69" height="20" uuid="842a9050-4c21-4b78-ad6a-527a390c2a2d"/>
+				<textFieldExpression><![CDATA[$F{tbos_os}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="69" y="0" width="62" height="20" uuid="36973e2a-ef37-49c5-a365-299a54bb3e86"/>
+				<textFieldExpression><![CDATA[$F{tbos_tipo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="131" y="0" width="80" height="20" uuid="31d1a458-94a0-49af-af22-d2d9e3afe664"/>
+				<textFieldExpression><![CDATA[$F{tbos_situacao}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="217" y="0" width="143" height="20" uuid="6aa8a1fc-00ac-4b56-8c24-04d3d5d21a4a"/>
+				<textFieldExpression><![CDATA[$F{tbos_aparelho}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="675" y="0" width="72" height="20" uuid="72783386-94a1-4705-8847-165909a8d0a9"/>
+				<textFieldExpression><![CDATA[$F{tbos_valor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="574" y="0" width="100" height="20" uuid="9883fb68-7121-45ea-82f7-60d1a97aa831"/>
+				<textFieldExpression><![CDATA[$F{tbclientes_nomecli}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="370" y="0" width="100" height="20" uuid="4396a792-70af-4a99-897c-180d30525b2a"/>
+				<textFieldExpression><![CDATA[$F{tbos_defeito}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="474" y="0" width="100" height="20" uuid="2294b7ad-eefd-436f-b651-99cb942004b4"/>
+				<textFieldExpression><![CDATA[$F{tbos_servico}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="2" y="21" width="750" height="1" uuid="d381f635-aaf2-4c88-a165-b8c1ef6df82f"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="44" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<textField>
+				<reportElement x="624" y="32" width="80" height="20" uuid="b7555cfc-819a-4373-9f97-154b8dcee751"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="710" y="32" width="40" height="20" uuid="fb0cc6b4-a38c-441b-b7ef-5385a2787812"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -27,8 +27,7 @@
 FROM
      `tbclientes` tbclientes INNER JOIN `tbos` tbos ON tbclientes.`idcli` = tbos.`idcli`
 
-where tbos. `os`=$P{codigo_os}
-]]>
+where tbos. `os`=$P{codigo_os}]]>
 	</queryString>
 	<field name="tbclientes_idcli" class="java.lang.Integer"/>
 	<field name="tbclientes_nomecli" class="java.lang.String"/>
@@ -64,12 +63,7 @@ where tbos. `os`=$P{codigo_os}
 		</band>
 	</title>
 	<pageHeader>
-		<band height="128" splitType="Stretch">
-			<image>
-				<reportElement x="295" y="0" width="358" height="128" uuid="58aff846-138a-4e65-9455-7d78c11af413"/>
-				<imageExpression><![CDATA["C:\\Users\\hugov\\Desktop\\Itens\\Sistema Ordem de Serviços\\Arquivos\\Imagens\\os.jpg"]]></imageExpression>
-			</image>
-		</band>
+		<band height="128" splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
 		<band height="16" splitType="Stretch"/>
