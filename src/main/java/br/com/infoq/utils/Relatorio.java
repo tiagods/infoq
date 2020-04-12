@@ -41,7 +41,7 @@ public class Relatorio extends Factory {
     /**
      *
      * @param result O valor do metodo pegarResultadoImpressao()
-     * @param relatorio o tipo de relatorio
+     * @param relEnum o tipo de relatorio
      */
     public void imprimirRelatorio(int result, Relatorios relEnum) {
         if (result == JOptionPane.YES_OPTION) {

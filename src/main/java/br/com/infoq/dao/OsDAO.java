@@ -83,7 +83,7 @@ public class OsDAO extends Factory{
         return deletar(id, sql);
     }
     public boolean alterar(Os os) {
-        String sql = "update tbos set tipo=?, situacao=?, aparelho=?, defeito=?, servico=?, tecnico=?, valor=?, entrada=?, obs=? where os=?";
+        String sql = "update tbos set tipo=?, situacao=?, aparelho=?, defeito=?, servico=?, tecnico=?, valor=?, entrada=?, obs=?, garantia=? where os=?";
         Connection conexao = null;
         try {
             conexao = getConnection();
@@ -97,7 +97,8 @@ public class OsDAO extends Factory{
             pst.setBigDecimal(7, os.getValor());
             pst.setBigDecimal(8, os.getEntrada());
             pst.setString(9, os.getObs());
-            pst.setInt(10, os.getId());
+            pst.setString(10, os.getGarantia());
+            pst.setInt(11, os.getId());
             return pst.executeUpdate()>0;
 
         } catch (SQLException e) {

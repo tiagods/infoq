@@ -32,7 +32,7 @@ public class UsuarioTest extends Factory{
     public static void init(){
         TestDB.init();
         user = new Usuario(
-            1,"Tiago","(11) 9666-9666","tiagods","tiagods","user"
+            55,"Tiago","(11) 9666-9666","tiagods","tiagods","user"
         );
     }
     
@@ -81,7 +81,11 @@ public class UsuarioTest extends Factory{
     }
     @Test
     public void usuario_7_buscar(){
-        Optional<Usuario> buscarPorId = usuarioDAO.buscarPorId("1");
+        Usuario u2 = user;
+        u2.setId(11);
+        boolean adicionar = usuarioDAO.adicionar(u2);
+        Assert.assertTrue(adicionar);
+        Optional<Usuario> buscarPorId = usuarioDAO.buscarPorId(u2.getId()+"");
         Assert.assertTrue(buscarPorId.isPresent());
     }
     @Test
@@ -105,7 +109,7 @@ public class UsuarioTest extends Factory{
         Connection con = getConnection();
         PreparedStatement ps;
         try {
-            ps = con.prepareStatement("TRUNCATE TABLE tbusuarios");
+            ps = con.prepareStatement("DELETE FROM tbusuarios");
             ps.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();

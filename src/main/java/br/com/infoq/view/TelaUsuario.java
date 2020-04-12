@@ -7,8 +7,14 @@ package br.com.infoq.view;
 
 import br.com.infoq.dao.UsuarioDAO;
 import br.com.infoq.model.Usuario;
+import br.com.infoq.utils.SwingUtils;
+import java.awt.Component;
+import java.util.Arrays;
 import java.util.Optional;
+import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 /**
  *
@@ -51,12 +57,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
     }
    
     private void limparCampos() {
-        txtNome.setText(null);
-        txtTel.setText(null);
-        txtLogin.setText(null);
-        txtSenha.setText(null);
-        cbPerfil.setSelectedItem(null);
-        txtId.setText(null);
+        SwingUtils.limparCampos(getContentPane());
     }
 
     /**
@@ -141,7 +142,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
         });
 
         cbPerfil.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        cbPerfil.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "admin", "user" }));
+        cbPerfil.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "user", "admin" }));
         cbPerfil.setToolTipText("");
         cbPerfil.setMaximumSize(new java.awt.Dimension(0, 0));
         cbPerfil.addActionListener(new java.awt.event.ActionListener() {

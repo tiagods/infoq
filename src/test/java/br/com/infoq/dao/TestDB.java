@@ -18,7 +18,7 @@ import org.junit.Test;
  * @author tiagods
  */
 public class TestDB extends Factory{
-    @Test
+    
     public static void init(){
         ProviderEnum.getInstance().setTipo(ProviderEnum.Scope.TEST);
         Connection con = null;
@@ -27,7 +27,6 @@ public class TestDB extends Factory{
             FlywayUtil.initialize(credenciais);
             FlywayUtil.flwvayInfo(con);
         }catch(Exception e){
-            Assert.fail();
             e.printStackTrace();
         } finally {
             closeConnection(con);

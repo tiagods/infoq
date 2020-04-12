@@ -106,7 +106,7 @@ public class OsTest extends Factory{
         Connection con = getConnection();
         PreparedStatement ps;
         try {
-            ps = con.prepareStatement("TRUNCATE TABLE tbos");
+            ps = con.prepareStatement("delete from tbos; delete from tbclientes");
             ps.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();

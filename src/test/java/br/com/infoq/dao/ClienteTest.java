@@ -54,7 +54,11 @@ public class ClienteTest extends Factory{
     }
     @Test
     public void cliente_3_buscar(){
-        Optional<Integer> buscarPorId = dao.buscarPorId(1);
+        Cliente c2 = cliente;
+        Optional<Integer> adicionar = dao.adicionar(c2);
+        Assert.assertTrue(adicionar.isPresent());
+        c2.setId(adicionar.get());
+        Optional<Integer> buscarPorId = dao.buscarPorId(c2.getId());
         Assert.assertTrue(buscarPorId.isPresent());
     }
     @Test
@@ -87,7 +91,7 @@ public class ClienteTest extends Factory{
         Connection con = getConnection();
         PreparedStatement ps;
         try {
-            ps = con.prepareStatement("TRUNCATE TABLE tbclientes");
+            ps = con.prepareStatement("DELETE FROM tbclientes");
             ps.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();

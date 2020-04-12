@@ -6,6 +6,7 @@
 package br.com.infoq.view;
 import br.com.infoq.dao.ClienteDAO;
 import br.com.infoq.model.Cliente;
+import br.com.infoq.utils.SwingUtils;
 import br.com.infoq.utils.Validator;
 import java.util.Optional;
 import javax.swing.JOptionPane;
@@ -23,6 +24,7 @@ public class TelaCliente extends javax.swing.JInternalFrame {
     public TelaCliente() {
         
         initComponents();
+        tblClientes.putClientProperty("terminateEditOnFocusLost", Boolean.FALSE);
     }
     private Optional<Integer> validarId(){
         try{
@@ -65,28 +67,17 @@ public class TelaCliente extends javax.swing.JInternalFrame {
         txtNum.setText(tblClientes.getModel().getValueAt(setar, 3).toString());
         txtCom.setText(tblClientes.getModel().getValueAt(setar, 4).toString());
         txtEmail.setText(tblClientes.getModel().getValueAt(setar, 5).toString());
-        txtCpf.setText(tblClientes.getModel().getValueAt(setar, 6).toString());
-        txtCnpj.setText(tblClientes.getModel().getValueAt(setar, 7).toString());
+        txtCpf.setValue(tblClientes.getModel().getValueAt(setar, 6).toString());
+        txtCnpj.setValue(tblClientes.getModel().getValueAt(setar, 7).toString());
         txtRg.setText(tblClientes.getModel().getValueAt(setar, 8).toString());
-        txtTel.setText(tblClientes.getModel().getValueAt(setar, 9).toString());
-        txtCel.setText(tblClientes.getModel().getValueAt(setar, 10).toString());
+        txtTel.setValue(tblClientes.getModel().getValueAt(setar, 9).toString());
+        txtCel.setValue(tblClientes.getModel().getValueAt(setar, 10).toString());
         txtBairro.setText(tblClientes.getModel().getValueAt(setar, 11).toString());
         btnInserir.setEnabled(false);
     }
     
     private void limparCampos() {
-        txtId.setText(null);
-        txtNome.setText(null);
-        txtEnd.setText(null);
-        txtNum.setText(null);
-        txtCom.setText(null);
-        txtEmail.setText(null);
-        txtCpf.setText(null);
-        txtCnpj.setText(null);
-        txtRg.setText(null);
-        txtTel.setText(null);
-        txtCel.setText(null);
-        txtBairro.setText(null);
+        SwingUtils.limparCampos(getContentPane());
     }
 
     /**
@@ -197,6 +188,7 @@ public class TelaCliente extends javax.swing.JInternalFrame {
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/clientes.png"))); // NOI18N
 
         txtEnd.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        txtEnd.setFocusTraversalPolicyProvider(true);
         txtEnd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtEndActionPerformed(evt);
@@ -280,23 +272,10 @@ public class TelaCliente extends javax.swing.JInternalFrame {
         jLabel11.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel11.setText("CPF:");
 
-        try {
-            txtTel.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("(##)####-####")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
         txtTel.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        txtTel.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtTelActionPerformed(evt);
-            }
-        });
 
-        try {
-            txtCel.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("(##)#####-####")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
+        txtCel.setText("");
+        txtCel.setFocusLostBehavior(javax.swing.JFormattedTextField.COMMIT);
         txtCel.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
 
         jLabel12.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
@@ -304,25 +283,11 @@ public class TelaCliente extends javax.swing.JInternalFrame {
 
         jLabel13.setText("RG:");
 
-        try {
-            txtRg.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##.###.###-##")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
+        txtRg.setText("");
         txtRg.setFont(new java.awt.Font("Ubuntu", 0, 15)); // NOI18N
 
-        try {
-            txtCnpj.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##.###.###/####-##")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
         txtCnpj.setFont(new java.awt.Font("Ubuntu", 0, 15)); // NOI18N
 
-        try {
-            txtCpf.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
         txtCpf.setFont(new java.awt.Font("Ubuntu", 0, 15)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -334,11 +299,13 @@ public class TelaCliente extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel11))
-                        .addGap(18, 18, 18)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel11)
+                                .addGap(33, 33, 33))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 442, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(txtCpf, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
@@ -346,9 +313,13 @@ public class TelaCliente extends javax.swing.JInternalFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(txtCnpj, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(34, 34, 34)
-                                .addComponent(jLabel13)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtRg, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(jLabel13))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(30, 30, 30)
+                                .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtRg, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel6)
@@ -397,13 +368,11 @@ public class TelaCliente extends javax.swing.JInternalFrame {
                         .addGap(74, 74, 74)
                         .addComponent(btnDeletar)
                         .addGap(39, 39, 39)
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 887, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -422,7 +391,8 @@ public class TelaCliente extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -463,8 +433,7 @@ public class TelaCliente extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnInserir)
                             .addComponent(btnEditar))
-                        .addComponent(btnDeletar)
-                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnDeletar)))
                 .addGap(35, 35, 35))
         );
 
@@ -504,18 +473,13 @@ public class TelaCliente extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_formKeyReleased
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
-              
-        txtId.setVisible(false);
-         consultar();
+        txtId.setEditable(false);
+        consultar();
     }//GEN-LAST:event_formComponentShown
 
     private void txtEndActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEndActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtEndActionPerformed
-
-    private void txtTelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTelActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtTelActionPerformed
 
     private void txtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarActionPerformed
         // TODO add your handling code here:
@@ -569,6 +533,7 @@ public class TelaCliente extends javax.swing.JInternalFrame {
         Optional<Integer> result = clienteDAO.adicionar(clienteBuilder(Optional.empty()));
         if(result.isPresent()){
             JOptionPane.showMessageDialog(null, "Registro salvo com Sucesso!");
+            limparCampos();
         }
     }
     
