@@ -10,7 +10,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.Statement;
-import org.flywaydb.core.Flyway;
 
 /**
  *
@@ -18,14 +17,14 @@ import org.flywaydb.core.Flyway;
  */
 public class FlywayUtil{
     public static void initialize(Credenciais credenciais) {
-        Flyway flyway = new Flyway();
-        flyway.setDataSource( 
-                        credenciais.getUrl(),
-                        credenciais.getUser(),
-                        credenciais.getPassword()); 
-        flyway.setLocations("classpath:migrations/db");
-        flyway.setTable("FLYWAY_SCHEMA_TABLE");
-        flyway.migrate();
+//        Flyway flyway = new Flyway();
+//        flyway.setDataSource( 
+//                        credenciais.getUrl(),
+//                        credenciais.getUser(),
+//                        credenciais.getPassword()); 
+//        flyway.setLocations("classpath:migrations/db");
+//        flyway.setTable("FLYWAY_SCHEMA_TABLE");
+//        flyway.migrate();
     }
     public static void flwvayInfo(Connection c) {
         try {

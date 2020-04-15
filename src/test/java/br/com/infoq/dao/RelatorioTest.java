@@ -6,7 +6,10 @@
 package br.com.infoq.dao;
 
 import br.com.infoq.model.Cliente;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -15,6 +18,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
@@ -61,13 +65,31 @@ public class RelatorioTest {
         
         File file = new File("message.pdf");
         OutputStream outputStream = new FileOutputStream(file);
+        
+        
+        Document document = new Document();
+        
+//        PdfWriter.getInstance(document, outputStream);
+//        document.open();
+//        
+//        Scanner sc= new  Scanner(html).useDelimiter("\n");
+//        while(sc.hasNext()){
+//            
+//            Chunk chunk = new Chunk(sc.next());
+//            document.add(chunk);
+//            
+//        }
+        
         ITextRenderer renderer = new ITextRenderer();
         renderer.setDocumentFromString(html);
-        renderer.layout();
+        renderer.setScaleToFit(true);
         renderer.layout();
         renderer.createPDF(outputStream);
+        
+        document.close();
         outputStream.close();
         
-        Desktop.getDesktop().open(file);
+        
+       Desktop.getDesktop().open(file);
     }
 }

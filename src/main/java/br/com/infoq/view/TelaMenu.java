@@ -7,10 +7,12 @@ package br.com.infoq.view;
 
 import javax.swing.JOptionPane;
 import br.com.infoq.fabrica.Factory;
+import org.springframework.stereotype.Component;
 /**
  *
  * @author hugov
  */
+@Component
 public class TelaMenu extends javax.swing.JInternalFrame {
     /**
      * Creates new form TelaMenu

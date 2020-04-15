@@ -8,19 +8,29 @@ package br.com.infoq.view;
 import br.com.infoq.dao.UsuarioDAO;
 import br.com.infoq.fabrica.Factory;
 import br.com.infoq.model.Usuario;
+import br.com.infoq.service.UsuarioService;
 import static br.com.infoq.view.TelaPrincipal.desktop;
 import java.awt.Color;
 import java.util.Optional;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  *
- * @author Grazi
+ * @author Grazi, tiagods
  */
+@Component
 public class frmLogin extends javax.swing.JFrame {
-    private UsuarioDAO dao = new UsuarioDAO();
-    /**
+    
+    @Autowired
+    UsuarioService usuarios;
+    @Autowired
+    TelaPrincipal principal;
+    @Autowired
+    TelaMenu menu;
+            /**
      * Creates new form frmLogin
      */
     public frmLogin() {
@@ -147,16 +157,14 @@ public class frmLogin extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
     
     public void logar() {
-        Optional<Usuario> opt = dao.validarLogin(txt_usuario.getText().trim(), new String(txt_senha.getPassword()));
+        Optional<Usuario> opt = usuarios.validarLoginESenha(txt_usuario.getText().trim(), new String(txt_senha.getPassword()));
         if(opt.isPresent()){
             Usuario usuario = opt.get();
             Optional<String> optPerfil = Optional.ofNullable(usuario.getPerfil());
 
-            TelaPrincipal principal = new TelaPrincipal();
             principal.setVisible(true);
             principal.lblUsuario.setText(usuario.getUsuario());
                 
-            TelaMenu menu = new TelaMenu();
             desktop.add(menu);
             menu.setVisible(true);
                 
