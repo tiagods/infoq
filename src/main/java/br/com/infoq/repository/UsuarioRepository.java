@@ -13,6 +13,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
  *
  * @author tiagods
  */
-public interface UsuarioRepository extends JpaRepository<Usuario,Integer> {
+public interface UsuarioRepository extends JpaRepository<Usuario,Long> {
     Optional<Usuario> findByLoginAndSenha(String login, String senha);
+
+    public Optional<Usuario> findByLogin(String text);
 }

@@ -9,6 +9,7 @@ import br.com.infoq.dao.UsuarioDAO;
 import br.com.infoq.fabrica.Factory;
 import br.com.infoq.model.Usuario;
 import br.com.infoq.service.UsuarioService;
+import br.com.infoq.service.UsuarioServiceImpl;
 import static br.com.infoq.view.TelaPrincipal.desktop;
 import java.awt.Color;
 import java.util.Optional;
@@ -25,14 +26,12 @@ import org.springframework.stereotype.Component;
 public class frmLogin extends javax.swing.JFrame {
     
     @Autowired
-    UsuarioService usuarios;
+    private UsuarioService usuarios;
     @Autowired
-    TelaPrincipal principal;
+    private TelaPrincipal principal;
     @Autowired
-    TelaMenu menu;
-            /**
-     * Creates new form frmLogin
-     */
+    private TelaMenu menu;
+           
     public frmLogin() {
         initComponents();
         ImageIcon icone = new ImageIcon(getClass().getResource("/icons/user.png"));

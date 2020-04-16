@@ -28,7 +28,7 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="iduser")
-    private Integer id;
+    private Long id;
     private String usuario;
     private String fone;
     private String login;

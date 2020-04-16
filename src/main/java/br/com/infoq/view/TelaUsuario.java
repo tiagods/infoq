@@ -1,36 +1,30 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.infoq.view;
 
-import br.com.infoq.dao.UsuarioDAO;
 import br.com.infoq.model.Usuario;
+import br.com.infoq.service.UsuarioService;
 import br.com.infoq.utils.SwingUtils;
-import java.awt.Component;
-import java.util.Arrays;
+import br.com.infoq.utils.Validator;
 import java.util.Optional;
-import javax.swing.JComboBox;
-import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 /**
  *
  * @author hugov,tiagods
- */
-public class TelaUsuario extends javax.swing.JInternalFrame {
+ **/
 
-    private UsuarioDAO usuarioDAO = new UsuarioDAO();
+@Component
+public class TelaUsuario extends javax.swing.JInternalFrame {
+    
+    @Autowired private UsuarioService usuarios;
 
     public TelaUsuario() {
         initComponents();
     }
     
-    public Usuario usuarioBuilder(Optional<Integer> result) {
+    public Usuario usuarioBuilder(Optional<Long> result) {
         Usuario usuario = new Usuario(
-                result.isPresent() ? result.get(): -1,
+                result.isPresent() ? result.get(): -1L,
                 txtNome.getText(),
                 txtTel.getText(),
                 txtLogin.getText(),
@@ -343,7 +337,8 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
     // End of variables declaration//GEN-END:variables
 
     private void consultar() {
-        Optional<Usuario> opt = usuarioDAO.buscarPorId(txtId.getText());
+        if(!Validator.validarNumero(txtId.getText())) return;
+        Optional<Usuario> opt = usuarios.buscarPorId(Long.parseLong(txtId.getText()));
         if (opt.isPresent()) {
             Usuario us = opt.get();
             txtNome.setText(us.getUsuario());
@@ -359,14 +354,14 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
     
     private void adicionar() {
         if(!validar()) return;
-        Optional<Integer> result = validarId();
+        Optional<Long> result = validarId();
         if(result.isPresent()){
-            Optional<Usuario> buscarLogin = usuarioDAO.buscarLogin(txtLogin.getText());
+            Optional<Usuario> buscarLogin = usuarios.buscarLogin(txtLogin.getText());
             if(buscarLogin.isPresent()) {
                 JOptionPane.showMessageDialog(null, "Login ja existe, tente informar outro!");
                 return;
             }
-            boolean opt = usuarioDAO.adicionar(usuarioBuilder(result));
+            boolean opt = usuarios.adicionar(usuarioBuilder(result));
             if(opt){
                 limparCampos();
                 JOptionPane.showMessageDialog(null, "Registro salvo com Sucesso!");
@@ -376,9 +371,9 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
     
     private void alterar() {
         if(!validar()) return;
-        Optional<Integer> result = validarId();
+        Optional<Long> result = validarId();
         if(result.isPresent()){
-            boolean opt = usuarioDAO.alterar(usuarioBuilder(result));
+            boolean opt = usuarios.alterar(usuarioBuilder(result));
             if(opt){
                 limparCampos();
                 JOptionPane.showMessageDialog(null, "Registro Editado com Sucesso!");
@@ -389,8 +384,8 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
     private void remover() {
         int confirma = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir?", "Atenção", JOptionPane.YES_NO_OPTION);
         if (confirma == JOptionPane.YES_OPTION) {
-            Optional<Integer> result = validarId();
-            if(result.isPresent() && usuarioDAO.deletar(result.get())){
+            Optional<Long> result = validarId();
+            if(result.isPresent() && usuarios.deletar(result.get())){
                 JOptionPane.showMessageDialog(null, "Registro Apagado com Sucesso!");
                 limparCampos();
             }

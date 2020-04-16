@@ -13,6 +13,7 @@ import br.com.infoq.utils.Relatorio;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 /**
  *
@@ -20,6 +21,15 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class TelaPrincipal extends javax.swing.JFrame {
+    @Autowired
+    private TelaSobre sobre;
+    @Autowired
+    private TelaUsuario usuario;
+    @Autowired
+    private TelaCliente cliente;
+    @Autowired
+    private TelaOs os;
+        
     Relatorio relatorio = new Relatorio();
     public TelaPrincipal() {
         initComponents();
@@ -294,24 +304,20 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void menuSobreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSobreActionPerformed
-        TelaSobre sobre = new TelaSobre();
         sobre.setVisible(true);
     }//GEN-LAST:event_menuSobreActionPerformed
 
     private void menuCadUsuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadUsuActionPerformed
-       TelaUsuario usuario = new TelaUsuario();
        desktop.add(usuario);
        usuario.setVisible(true);
     }//GEN-LAST:event_menuCadUsuActionPerformed
 
     private void menuCadCliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadCliActionPerformed
-       TelaCliente cliente = new TelaCliente();
        desktop.add(cliente);
        cliente.setVisible(true);
     }//GEN-LAST:event_menuCadCliActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        TelaOs os = new TelaOs();
         desktop.add(os);
         os.setVisible(true);
         

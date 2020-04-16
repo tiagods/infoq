@@ -5,10 +5,13 @@
  */
 package br.com.infoq.view;
 
+import org.springframework.stereotype.Component;
+
 /**
  *
  * @author hugov
  */
+@Component
 public class TelaSobre extends javax.swing.JFrame {
 
     /**

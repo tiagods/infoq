@@ -21,12 +21,15 @@ import java.util.Map;
 import java.util.Optional;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableModel;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author hugov
  */
+@Component
 public class TelaOs extends javax.swing.JInternalFrame {
+
     private Relatorio rel = new Relatorio();
     private String Tipo;
     

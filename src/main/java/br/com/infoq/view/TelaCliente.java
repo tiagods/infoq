@@ -11,17 +11,19 @@ import br.com.infoq.utils.Validator;
 import java.util.Optional;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableModel;
+import org.springframework.stereotype.Component;
 /**
  *
  * @author Grazi,tiagods
  */
+@Component
 public class TelaCliente extends javax.swing.JInternalFrame {
     /**
      * Creates new form TelaUsuario
      */
     ClienteDAO clienteDAO=new ClienteDAO();
         
-    public TelaCliente() {
+    private TelaCliente() {
         
         initComponents();
         tblClientes.putClientProperty("terminateEditOnFocusLost", Boolean.FALSE);
@@ -274,7 +276,6 @@ public class TelaCliente extends javax.swing.JInternalFrame {
 
         txtTel.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
 
-        txtCel.setText("");
         txtCel.setFocusLostBehavior(javax.swing.JFormattedTextField.COMMIT);
         txtCel.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
 
@@ -283,7 +284,6 @@ public class TelaCliente extends javax.swing.JInternalFrame {
 
         jLabel13.setText("RG:");
 
-        txtRg.setText("");
         txtRg.setFont(new java.awt.Font("Ubuntu", 0, 15)); // NOI18N
 
         txtCnpj.setFont(new java.awt.Font("Ubuntu", 0, 15)); // NOI18N
@@ -389,10 +389,11 @@ public class TelaCliente extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtId, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2)
+                        .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

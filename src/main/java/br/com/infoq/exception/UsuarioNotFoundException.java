@@ -3,12 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.com.infoq.service;
+package br.com.infoq.exception;
 
 /**
  *
  * @author tiagods
  */
-public interface UsuarioService {
-    
+public class UsuarioNotFoundException extends Exception{
+    public UsuarioNotFoundException(String message){
+        super(message);
+    }
 }

@@ -7,6 +7,7 @@ package br.com.infoq.view;
 
 import javax.swing.JOptionPane;
 import br.com.infoq.fabrica.Factory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 /**
  *
@@ -14,6 +15,10 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class TelaMenu extends javax.swing.JInternalFrame {
+    @Autowired private TelaOs os;
+    @Autowired private TelaUsuario user;
+    @Autowired private TelaCliente cliente;
+
     /**
      * Creates new form TelaMenu
      */
@@ -112,7 +117,6 @@ public class TelaMenu extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_osActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_osActionPerformed
-        TelaOs os = new TelaOs();
         TelaPrincipal.desktop.add(os);
         os.setVisible(true);
     }//GEN-LAST:event_btn_osActionPerformed
@@ -125,19 +129,16 @@ public class TelaMenu extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btn_sairActionPerformed
 
     private void btn_usuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_usuariosActionPerformed
-        TelaUsuario user = new TelaUsuario();
         TelaPrincipal.desktop.add(user);
         user.setVisible(true);
     }//GEN-LAST:event_btn_usuariosActionPerformed
 
     private void btn_clientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_clientesActionPerformed
-        TelaCliente cliente = new TelaCliente();
         TelaPrincipal.desktop.add(cliente);
         cliente.setVisible(true);
     }//GEN-LAST:event_btn_clientesActionPerformed
 
     private void btn_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscarActionPerformed
-        TelaOs os = new TelaOs();
         TelaPrincipal.desktop.add(os);
         os.setVisible(true);
         
