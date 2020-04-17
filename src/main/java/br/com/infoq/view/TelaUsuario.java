@@ -42,7 +42,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
         return usuario;
     }
     public boolean validar(){
-        if ((txtNome.getText().isEmpty()) || (new String(txtSenha.getPassword()).isEmpty()) || (txtLogin.getText().isEmpty()) || (txtId.getText().isEmpty()) || (cbPerfil.getSelectedItem().equals(""))) {
+        if ((txtNome.getText().isEmpty()) || (new String(txtSenha.getPassword()).isEmpty()) || (txtLogin.getText().isEmpty()) || (cbPerfil.getSelectedItem().equals(""))) {
             JOptionPane.showMessageDialog(null, "Preencha os Dados!!");
             return false;
         } 
@@ -349,18 +349,23 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
     	try {
         	Optional<Usuario> opt = usuarios.buscarPorId(result.get());
         	Usuario us = opt.get();
-        	txtNome.setText(us.getUsuario());
-        	txtTel.setText(us.getFone());
-        	txtLogin.setText(us.getLogin());
-        	txtSenha.setText(us.getSenha());
-        	cbPerfil.setSelectedItem(us.getPerfil());
+        	preencherForm(us);
 		} catch (UsuarioNotFoundException e) {
 			JOptionPane.showMessageDialog(null, "Usuário não Cadastrado");
 		    limparCampos();
 		}
     }
     
-    private void adicionar() {
+    private void preencherForm(Usuario us) {
+    	txtId.setText(us.getId()+"");
+    	txtNome.setText(us.getUsuario());
+    	txtTel.setText(us.getFone());
+    	txtLogin.setText(us.getLogin());
+    	txtSenha.setText(us.getSenha());
+    	cbPerfil.setSelectedItem(us.getPerfil());
+	}
+
+	private void adicionar() {
         if(!validar()) return;
             Optional<Usuario> buscarLogin = usuarios.buscarLogin(txtLogin.getText());
             if(buscarLogin.isPresent()) {
@@ -369,7 +374,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
             }
             Optional<Usuario> opt = Optional.ofNullable(usuarios.adicionar(usuarioBuilder(Optional.empty())));
             if(opt.isPresent()){
-            	limparCampos();
+            	preencherForm(opt.get());
                 JOptionPane.showMessageDialog(null, "Registro salvo com Sucesso!");
             };
     }

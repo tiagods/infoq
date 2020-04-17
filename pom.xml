@@ -38,14 +38,6 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-        <dependency>
-            <groupId>net.proteanit.sql</groupId>
-            <artifactId>rs2xml</artifactId>
-            <version>1.0</version>
-           <scope>system</scope>
-            <systemPath>${basedir}/lib/rs2xml.jar</systemPath>
-            <type>jar</type>
-        </dependency>
         <!-- https://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports -->
         <dependency>
             <groupId>net.sf.jasperreports</groupId>
@@ -58,16 +50,10 @@
             <artifactId>groovy-all</artifactId>
             <version>1.7.5</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.39</version>
-        </dependency>   
+
        <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
-            <version>4.0.3</version>
         </dependency>
 		<dependency>
 	        <groupId>org.projectlombok</groupId>
@@ -89,14 +75,12 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.13</version>
             <scope>test</scope>
         </dependency>
         
         <dependency>
             <groupId>org.thymeleaf</groupId>
             <artifactId>thymeleaf</artifactId>
-            <version>3.0.6.RELEASE</version>
         </dependency>
         
         <dependency>

@@ -52,6 +52,6 @@ public class ClienteService  {
     }
 
 	public List<Cliente> buscarClientePorNome(String name) {
-		return repository.findAllByName(name);
+		return repository.findAllByNome(name);
 	}
 }

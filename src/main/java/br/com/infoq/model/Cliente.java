@@ -5,6 +5,7 @@
  */
 package br.com.infoq.model;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,12 +20,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
+@Entity
 public class Cliente {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
-    private String end;
+    private String endereco;
     private String num;
     private String comp;
     private String email;
@@ -34,7 +36,6 @@ public class Cliente {
     private String fone;
     private String cel;
     private String bairro;
-    
     public Cliente(Long id) {
     	this.id = id;
     }

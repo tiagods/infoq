@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package br.com.infoq.view;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -530,7 +531,7 @@ public class TelaCliente extends javax.swing.JInternalFrame {
         	Cliente cli = lista.get(i);
         	tblClientes.getModel().setValueAt(cli.getId(), i, 0);
         	tblClientes.getModel().setValueAt(cli.getNome(), i, 1);
-        	tblClientes.getModel().setValueAt(cli.getEnd(), i, 2);
+        	tblClientes.getModel().setValueAt(cli.getEndereco(), i, 2);
         	tblClientes.getModel().setValueAt(cli.getFone(), i, 3);
         	tblClientes.getModel().setValueAt(cli.getEmail(), i, 4);
         }

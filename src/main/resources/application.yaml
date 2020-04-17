@@ -1,0 +1,10 @@
+spring:
+ jpa:
+  hibernate:ddl-auto: none
+ datasource:
+  url: jdbc:h2:./data/db
+  username: root
+  password: Info@1234
+ flyway:
+  baselineOnMigrate:true
+  validate-on-migrate:false

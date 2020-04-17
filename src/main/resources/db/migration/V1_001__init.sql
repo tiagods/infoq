@@ -1,7 +1,7 @@
 CREATE TABLE `cliente` (
   `id` int AUTO_INCREMENT,
   `nome` varchar(50) NOT NULL,
-  `end` varchar(50) DEFAULT NULL,
+  `endereco` varchar(50) DEFAULT NULL,
   `num` varchar(15) DEFAULT NULL,
   `comp` varchar(15) DEFAULT NULL,
   `email` varchar(40) DEFAULT NULL,
@@ -11,7 +11,7 @@ CREATE TABLE `cliente` (
   `fone` varchar(15) DEFAULT NULL,
   `cel` varchar(15) DEFAULT NULL,
   `bairro` varchar(30) DEFAULT NULL,
-  PRIMARY KEY (`cli_id`)
+  PRIMARY KEY (`id`)
 );
 
 
@@ -29,8 +29,8 @@ CREATE TABLE `os` (
   `tecnico` varchar(20) DEFAULT NULL,
   `situacao` varchar(28) NOT NULL,
   `garantia` varchar(15) NOT NULL,
-  PRIMARY KEY (`os`),
-  CONSTRAINT `os_ibfk_1` FOREIGN KEY (`id`) REFERENCES `cliente` (`cli_id`)
+  PRIMARY KEY (`id`),
+  CONSTRAINT `os_ibfk_1` FOREIGN KEY (`cli_id`) REFERENCES `cliente` (`id`)
   ON DELETE CASCADE
 );
 

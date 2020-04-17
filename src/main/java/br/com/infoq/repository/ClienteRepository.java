@@ -8,6 +8,6 @@ import br.com.infoq.model.Cliente;
 
 public interface ClienteRepository extends JpaRepository<Cliente, Long>{
 
-	List<Cliente> findAllByName(String name);
+	List<Cliente> findAllByNome(String name);
 
 }
