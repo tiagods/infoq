@@ -34,12 +34,17 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+        <dependency>
             <groupId>net.proteanit.sql</groupId>
             <artifactId>rs2xml</artifactId>
             <version>1.0</version>
-<!--            <scope>system</scope>
+           <scope>system</scope>
             <systemPath>${basedir}/lib/rs2xml.jar</systemPath>
-            <type>jar</type>-->
+            <type>jar</type>
         </dependency>
         <!-- https://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports -->
         <dependency>
@@ -59,17 +64,17 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.39</version>
         </dependency>   
-<!--        <dependency>
+       <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
             <version>4.0.3</version>
-        </dependency>-->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.12</version>
-            <scope>provided</scope>
         </dependency>
+		<dependency>
+	        <groupId>org.projectlombok</groupId>
+	        <artifactId>lombok</artifactId>
+	        <version>1.18.10</version>
+	        <scope>provided</scope>
+	    </dependency>
         <dependency>
             <groupId>me.soliveirajr</groupId>
             <artifactId>menta-bean</artifactId>

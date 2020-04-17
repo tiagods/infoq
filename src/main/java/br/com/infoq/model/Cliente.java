@@ -5,6 +5,10 @@
  */
 package br.com.infoq.model;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +20,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class Cliente {
-    private int id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String nome;
     private String end;
     private String num;
@@ -28,4 +34,8 @@ public class Cliente {
     private String fone;
     private String cel;
     private String bairro;
+    
+    public Cliente(Long id) {
+    	this.id = id;
+    }
 }

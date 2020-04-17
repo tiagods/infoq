@@ -6,13 +6,12 @@
 package br.com.infoq.view;
 
 import java.text.DateFormat;
-import java.util.Date;
-import javax.swing.JOptionPane;
-import javax.swing.ImageIcon;
-import br.com.infoq.utils.Relatorio;
 import java.text.SimpleDateFormat;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Date;
+
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 /**
@@ -21,7 +20,11 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class TelaPrincipal extends javax.swing.JFrame {
-    @Autowired
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@Autowired
     private TelaSobre sobre;
     @Autowired
     private TelaUsuario usuario;
@@ -29,14 +32,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private TelaCliente cliente;
     @Autowired
     private TelaOs os;
-        
-    Relatorio relatorio = new Relatorio();
+    @Autowired    
+    Relatorio relatorio;
+    
     public TelaPrincipal() {
         initComponents();
         ImageIcon icone = new ImageIcon(getClass().getResource("/icons/user.png"));
         setIconImage(icone.getImage());
     }
-    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 

@@ -5,10 +5,57 @@
  */
 package br.com.infoq.service;
 
+import br.com.infoq.exception.UsuarioInvalidCredentialsException;
+import br.com.infoq.exception.UsuarioNotFoundException;
+import br.com.infoq.model.Usuario;
+import br.com.infoq.repository.UsuarioRepository;
+import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 /**
  *
  * @author tiagods
  */
-public interface UsuarioService {
+@Service
+public class UsuarioService  {
     
+    @Autowired
+    private UsuarioRepository repository;
+    
+    public Usuario validarLoginESenha(String login, String senha) throws UsuarioInvalidCredentialsException{
+        Optional<Usuario> user = repository.findByLoginAndSenha(login, senha);
+        if(user.isPresent()) return user.get();
+        else throw new UsuarioInvalidCredentialsException("Dados de acesso invalidos");
+    }
+
+    public Optional<Usuario> buscarLogin(String login) {
+        return repository.findByLogin(login);
+    }
+
+    public Usuario adicionar(Usuario usuario) {
+        return repository.save(usuario);
+    }
+
+    public Optional<Usuario> buscarPorId(long id) throws UsuarioNotFoundException {
+        if(verificarSeExiste(id)) return repository.findById(id);
+        else throw new UsuarioNotFoundException("Usuario nao existe");
+    }
+
+    public void alterar(Usuario usuario, Long id) throws UsuarioNotFoundException {
+        if(verificarSeExiste(id)){
+            usuario.setId(id);
+            repository.save(usuario);
+        } 
+        else throw new UsuarioNotFoundException("Usuario nao existe"); 
+    }
+
+    public void deletar(Long id) throws UsuarioNotFoundException {
+        if(verificarSeExiste(id)) 
+            repository.deleteById(id);
+        else throw new UsuarioNotFoundException("Usuario nao existe"); 
+    }
+    private boolean verificarSeExiste(Long id){
+        return repository.existsById(id);
+    }
 }
