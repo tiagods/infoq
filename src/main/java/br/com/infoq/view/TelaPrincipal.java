@@ -6,25 +6,40 @@
 package br.com.infoq.view;
 
 import java.text.DateFormat;
-import java.util.Date;
-import javax.swing.JOptionPane;
-import javax.swing.ImageIcon;
-import br.com.infoq.utils.Relatorio;
 import java.text.SimpleDateFormat;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Date;
+
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 /**
  *
  * @author hugov, tiagods
  */
+@Component
 public class TelaPrincipal extends javax.swing.JFrame {
-    Relatorio relatorio = new Relatorio();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@Autowired
+    private TelaSobre sobre;
+    @Autowired
+    private TelaUsuario usuario;
+    @Autowired
+    private TelaCliente cliente;
+    @Autowired
+    private TelaOs os;
+    @Autowired    
+    Relatorio relatorio;
+    
     public TelaPrincipal() {
         initComponents();
         ImageIcon icone = new ImageIcon(getClass().getResource("/icons/user.png"));
         setIconImage(icone.getImage());
     }
-    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -292,24 +307,20 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void menuSobreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSobreActionPerformed
-        TelaSobre sobre = new TelaSobre();
         sobre.setVisible(true);
     }//GEN-LAST:event_menuSobreActionPerformed
 
     private void menuCadUsuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadUsuActionPerformed
-       TelaUsuario usuario = new TelaUsuario();
        desktop.add(usuario);
        usuario.setVisible(true);
     }//GEN-LAST:event_menuCadUsuActionPerformed
 
     private void menuCadCliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadCliActionPerformed
-       TelaCliente cliente = new TelaCliente();
        desktop.add(cliente);
        cliente.setVisible(true);
     }//GEN-LAST:event_menuCadCliActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        TelaOs os = new TelaOs();
         desktop.add(os);
         os.setVisible(true);
         

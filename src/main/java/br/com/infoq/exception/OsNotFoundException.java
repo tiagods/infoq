@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.com.infoq.config;
+package br.com.infoq.exception;
 
 /**
  *
  * @author tiagods
  */
-public interface PropsInterface {
-    void fileLoad(PropsEnum propsEnum);
-    public String getValue(String key);
-    public boolean containskey(String key);
+public class OsNotFoundException extends Exception{
+    public OsNotFoundException(String message){
+        super(message);
+    }
 }

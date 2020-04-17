@@ -5,39 +5,25 @@
  */
 package br.com.infoq;
 
-import br.com.infoq.config.DataBaseConfig;
-import br.com.infoq.fabrica.Factory;
-import br.com.infoq.utils.FlywayUtil;
-import br.com.infoq.utils.ProviderEnum;
-import br.com.infoq.view.frmLogin;
-import java.sql.Connection;
+import org.springframework.boot.WebApplicationType;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.ApplicationContext;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import br.com.infoq.view.frmLogin;
 /**
  *
  * @author tiagods
  */
-public class StartApp extends Factory{
+@SpringBootApplication
+@EnableTransactionManagement
+public class StartApp  {
+    
     public static void main(String[] args) {
-        DataBaseConfig props = DataBaseConfig.getInstance();
-        ProviderEnum.Scope tipo = ProviderEnum.Scope.valueOf(props.getValue("tipo").toUpperCase());
-        if(tipo==null){
-            tipo = ProviderEnum.Scope.LOCAL;
-        }
-        
-        ProviderEnum.getInstance().setTipo(tipo);
-        Connection con = null;
-        try{
-            con = getConnection();
-            if(!tipo.equals(ProviderEnum.Scope.REMOTO)){
-                FlywayUtil.initialize(credenciais);
-                FlywayUtil.flwvayInfo(con);
-            }
-        }catch(Exception e){
-            e.printStackTrace();
-        } finally {
-            closeConnection(con);
-        }
-        frmLogin login = new frmLogin();
+        ApplicationContext context = new SpringApplicationBuilder(StartApp.class)
+                .web(WebApplicationType.NONE).headless(false).run(args);
+        frmLogin login = context.getBean(frmLogin.class);
         login.setVisible(true);
     }
 }

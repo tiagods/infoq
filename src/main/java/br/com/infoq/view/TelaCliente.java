@@ -4,31 +4,45 @@
  * and open the template in the editor.
  */
 package br.com.infoq.view;
-import br.com.infoq.dao.ClienteDAO;
-import br.com.infoq.model.Cliente;
-import br.com.infoq.utils.SwingUtils;
-import br.com.infoq.utils.Validator;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import br.com.infoq.exception.ClienteNotFoundException;
+import br.com.infoq.model.Cliente;
+import br.com.infoq.service.ClienteService;
+import br.com.infoq.utils.SwingUtils;
 /**
  *
  * @author Grazi,tiagods
  */
+@Component
 public class TelaCliente extends javax.swing.JInternalFrame {
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
      * Creates new form TelaUsuario
      */
-    ClienteDAO clienteDAO=new ClienteDAO();
+    @Autowired
+    private ClienteService clientes;
         
-    public TelaCliente() {
+    private TelaCliente() {
         
         initComponents();
         tblClientes.putClientProperty("terminateEditOnFocusLost", Boolean.FALSE);
     }
-    private Optional<Integer> validarId(){
+    private Optional<Long> validarId(){
         try{
-            Integer id = Integer.parseInt(txtId.getText().trim());
+        	Long id = Long.parseLong(txtId.getText().trim());
             return Optional.of(id);
         } catch(Exception e){
             JOptionPane.showMessageDialog(null, "Campo id incorreto ou nao informado");
@@ -42,7 +56,7 @@ public class TelaCliente extends javax.swing.JInternalFrame {
         }
         return true;
     }
-    private Cliente clienteBuilder(Optional<Integer> result){
+    private Cliente clienteBuilder(Optional<Long> result){
         return new Cliente(
             result.isPresent() ? result.get() : -1,
             txtNome.getText().toUpperCase(),
@@ -221,17 +235,6 @@ public class TelaCliente extends javax.swing.JInternalFrame {
         tblClientes.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         tblClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
             },
             new String [] {
                 "ID", "NOME", "ENDEREÇO", "TELEFONE", "E-MAIL"
@@ -274,7 +277,6 @@ public class TelaCliente extends javax.swing.JInternalFrame {
 
         txtTel.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
 
-        txtCel.setText("");
         txtCel.setFocusLostBehavior(javax.swing.JFormattedTextField.COMMIT);
         txtCel.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
 
@@ -283,7 +285,6 @@ public class TelaCliente extends javax.swing.JInternalFrame {
 
         jLabel13.setText("RG:");
 
-        txtRg.setText("");
         txtRg.setFont(new java.awt.Font("Ubuntu", 0, 15)); // NOI18N
 
         txtCnpj.setFont(new java.awt.Font("Ubuntu", 0, 15)); // NOI18N
@@ -297,6 +298,7 @@ public class TelaCliente extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                		
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -389,10 +391,11 @@ public class TelaCliente extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtId, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2)
+                        .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -522,51 +525,58 @@ public class TelaCliente extends javax.swing.JInternalFrame {
     // End of variables declaration//GEN-END:variables
     
     private void consultar(){
-        TableModel model = clienteDAO.consultar(txtBuscar.getText());
-        if(model!=null) tblClientes.setModel(model);        
+    	((DefaultTableModel)tblClientes.getModel()).setRowCount(0);
+        List<Cliente> lista = clientes.buscarClientePorNome(txtBuscar.getText());
+        for(int i=0;i<lista.size();i++) {
+        	Cliente cli = lista.get(i);
+        	tblClientes.getModel().setValueAt(cli.getId(), i, 0);
+        	tblClientes.getModel().setValueAt(cli.getNome(), i, 1);
+        	tblClientes.getModel().setValueAt(cli.getEndereco(), i, 2);
+        	tblClientes.getModel().setValueAt(cli.getFone(), i, 3);
+        	tblClientes.getModel().setValueAt(cli.getEmail(), i, 4);
+        }
     }
-    
     
     private void adicionar(){
         if(!validar()) return;
-        
-        Optional<Integer> result = clienteDAO.adicionar(clienteBuilder(Optional.empty()));
-        if(result.isPresent()){
-            JOptionPane.showMessageDialog(null, "Registro salvo com Sucesso!");
-            limparCampos();
-        }
+        clientes.adicionar(clienteBuilder(Optional.empty()));
+        JOptionPane.showMessageDialog(null, "Registro salvo com Sucesso!");
+        limparCampos();
+
     }
-    
     
     private void alterar(){
         if(!validar()) return;
-        Optional<Integer> result = validarId();
-        if(result.isPresent()){
-            boolean opt = clienteDAO.alterar(clienteBuilder(result));
-            btnInserir.setEnabled(true);
-            txtBuscar.setText(txtNome.getText());
-            if(opt){
-                JOptionPane.showMessageDialog(null, "Registro do Cliente Editado com Sucesso!");
-                btnInserir.setEnabled(true);
-                txtBuscar.setText(txtNome.getText());
-                limparCampos();
-            }
-        }
+        Optional<Long> result = validarId();
+        if(!result.isPresent()) return;
+        
+        try {
+        	clientes.alterar(clienteBuilder(result), result.get());
+        	btnInserir.setEnabled(true);
+        	txtBuscar.setText(txtNome.getText());
+        	JOptionPane.showMessageDialog(null, "Registro do Cliente Editado com Sucesso!");
+        	btnInserir.setEnabled(true);
+        	txtBuscar.setText(txtNome.getText());
+		    limparCampos();    
+		} catch (ClienteNotFoundException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
     }
-    
     
     private void remover(){
-        int confirma = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir?", "Atenção", JOptionPane.YES_NO_OPTION);
+    	Optional<Long> result = validarId();
+        if(!result.isPresent()) return;
+    	int confirma = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir?", "Atenção", JOptionPane.YES_NO_OPTION);
         if (confirma == JOptionPane.YES_OPTION) {
-            Optional<Integer> result = validarId();
             btnInserir.setEnabled(true);
-            if(result.isPresent() && clienteDAO.deletar(result.get())){
-                JOptionPane.showMessageDialog(null, "Registro Apagado com Sucesso!");
+            try {
+				clientes.deletar(result.get());
+				JOptionPane.showMessageDialog(null, "Registro Apagado com Sucesso!");
                 limparCampos();
-            }
-        }
-        
+			} catch (ClienteNotFoundException e) {
+				JOptionPane.showMessageDialog(null, e.getMessage());
+			}
+        }	
     }
-    
 
 }

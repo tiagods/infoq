@@ -5,33 +5,48 @@
  */
 package br.com.infoq.view;
 
-import br.com.infoq.dao.ClienteDAO;
-import br.com.infoq.dao.OsDAO;
-import java.util.*;
-import br.com.infoq.fabrica.Factory;
-import br.com.infoq.model.Os;
-import br.com.infoq.utils.DateUtil;
-import br.com.infoq.utils.Relatorio;
-import br.com.infoq.utils.SwingUtils;
-import br.com.infoq.utils.Validator;
-import java.io.File;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
 import javax.swing.JOptionPane;
-import javax.swing.table.TableModel;
+import javax.swing.table.DefaultTableModel;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import br.com.infoq.exception.ClienteNotFoundException;
+import br.com.infoq.exception.OsNotFoundException;
+import br.com.infoq.model.Cliente;
+import br.com.infoq.model.Os;
+import br.com.infoq.service.ClienteService;
+import br.com.infoq.service.OsService;
+import br.com.infoq.utils.DateUtil;
+import br.com.infoq.utils.SwingUtils;
+import br.com.infoq.utils.Validator;
 
 /**
  *
  * @author hugov
  */
+@Component
 public class TelaOs extends javax.swing.JInternalFrame {
-    private Relatorio rel = new Relatorio();
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@Autowired
+    private Relatorio rel;
+	@Autowired
+	private OsService osService;
+	@Autowired
+	private ClienteService clientes;
+	
     private String Tipo;
-    
-    private OsDAO osDAO = new OsDAO();
-    private ClienteDAO clienteDAO = new ClienteDAO();
 
     /**
      * Creates new form TelaOs
@@ -40,7 +55,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
         initComponents();
     }
     
-    private Os osBuilder(Optional<Integer> result){
+    private Os osBuilder(Optional<Long> result){
         return new Os(
                 result.isPresent() ? result.get() : -1,   
                 new Date(),
@@ -50,7 +65,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
                 txtServico.getText().toUpperCase().trim(),
                 new BigDecimal(txtValor.getText().replace(",", ".")),
                 new BigDecimal(txtEntrada.getText().replace(",", ".")),
-                Integer.parseInt(txtClienteCodigo.getText().trim()),
+                new Cliente(Long.parseLong(txtClienteCodigo.getText().trim())),
                 txtObs.getText().toUpperCase(),
                 txtTecnico.getText().toUpperCase().trim(),
                 cbSituacao.getSelectedItem().toString(),
@@ -66,10 +81,13 @@ public class TelaOs extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Campo Id Cliente deve ser numerico!");
             return false;
         }
-        if(!clienteDAO.buscarPorId(Integer.parseInt(txtClienteCodigo.getText())).isPresent()){
-            JOptionPane.showMessageDialog(null, "Campo Id Cliente - Nao existe cliente com o id informado!");
-            return false;
-        }
+        
+        try {
+			clientes.buscarPorId(Long.parseLong(txtClienteCodigo.getText()));
+		} catch (ClienteNotFoundException e) {
+			JOptionPane.showMessageDialog(null, "Campo Id Cliente - Nao existe cliente com o id informado!");
+	        return false;
+		}
         if(txtValor.getText().trim().equals("")) txtValor.setText("0");
         if(!Validator.validarNumero(txtValor.getText().replace(",", ""))){
             JOptionPane.showMessageDialog(null, "Campo valor deve ser do tipo 0,00!");
@@ -82,9 +100,9 @@ public class TelaOs extends javax.swing.JInternalFrame {
         }
         return true;
     }
-    private Optional<Integer> validarId(String value){
+    private Optional<Long> validarId(String value){
         try{
-            Integer id = Integer.parseInt(value.trim());
+        	Long id = Long.parseLong(value.trim());
             return Optional.of(id);
         } catch(Exception e){
             JOptionPane.showMessageDialog(null, "Campo id incorreto ou nao informado");
@@ -275,10 +293,6 @@ public class TelaOs extends javax.swing.JInternalFrame {
 
         tblClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
             },
             new String [] {
                 "ID", "NOME", "TELEFONE", "CELULAR"
@@ -695,35 +709,25 @@ public class TelaOs extends javax.swing.JInternalFrame {
     // End of variables declaration//GEN-END:variables
 
     private void pesquisar_cliente() {
-        TableModel model = clienteDAO.pesquisarClienteOsTable(txtClienteNome.getText());
-        if(model!=null) tblClientes.setModel(model);
+    	((DefaultTableModel)tblClientes.getModel()).setRowCount(0);
+    	
+        List<Cliente> lista = clientes.buscarClientePorNome(txtClienteNome.getText());
+        for(int i=0;i<lista.size();i++) {
+        	Cliente cli = lista.get(i);
+        	tblClientes.getModel().setValueAt(cli.getId(), i, 0);
+        	tblClientes.getModel().setValueAt(cli.getNome(), i, 1);
+        	tblClientes.getModel().setValueAt(cli.getFone(), i, 2);
+        	tblClientes.getModel().setValueAt(cli.getCel(), i, 3);
+        }
     }
-
-//    private void consultarOS() {
-//        Optional<Os> result = osDAO.consultar();
-//        
-//        String sql = "select * from tbos order by os desc";
-//        try {
-//            pst = conexao.prepareStatement(sql);
-//            rs = pst.executeQuery();
-//            if (rs.next()) {
-//                txtOs.setText(rs.getString(1));
-//            } else {
-//                JOptionPane.showMessageDialog(null, "Nao encontrada");
-//            }
-//        } catch (Exception e) {
-//            JOptionPane.showMessageDialog(null, e);
-//        }
-//    }
-
     private void pesquisar_os() {
         String num_os = JOptionPane.showInputDialog("Numero da OS");
-        Optional<Integer> result = validarId(num_os);
+        Optional<Long> result = validarId(num_os);
         if(!result.isPresent()) return;
-        Optional<Os> osOpt = osDAO.buscarPorId(result.get());
-        if(osOpt.isPresent()){
-            Os os = osOpt.get();
-            txtCodOs.setText(""+os.getId());
+        try {
+        	Optional<Os> opt = osService.buscarPorId(result.get());
+            Os os = opt.get();
+        	txtCodOs.setText(""+os.getId());
             txtData.setText(DateUtil.formatarData(os.getData()));
             String rbTipo = os.getTipo();
             if (rbTipo.equals("OS")) {
@@ -741,51 +745,59 @@ public class TelaOs extends javax.swing.JInternalFrame {
             txtTecnico.setText(os.getTecnico());
             txtValor.setText(os.getValor().toString().replace(".", ","));
             txtEntrada.setText(os.getEntrada().toString().replace(".",","));
-            txtClienteCodigo.setText(os.getCli_id()+"");
+            txtClienteCodigo.setText(os.getCliente().getId()+"");
             txtObs.setText(os.getObs());
             txtGarantia.setText(os.getGarantia());
             btnInserir.setEnabled(false);
-            txtClienteNome.setEnabled(false);
-        }
-        else {
-            JOptionPane.showMessageDialog(null, "OS não cadastrada!");
+            txtClienteNome.setEnabled(false);	
+		} catch (OsNotFoundException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
             limparCampos();
-        }
+		}
     }
 
     private void alterar() {
         if(!validar()) return;
-        Optional<Integer> id = validarId(txtCodOs.getText().trim());
+        Optional<Long> id = validarId(txtCodOs.getText().trim());
         if(!id.isPresent()) return;
         else{
             btnInserir.setEnabled(true);
             txtClienteNome.setEnabled(true);
             tblClientes.setVisible(true);  
-            boolean result = osDAO.alterar(osBuilder(id));
-            if(result){
-                JOptionPane.showMessageDialog(null, "OS Editada com Sucesso!!");
-                imprimir();
-                limparCampos();
-                pesquisar_cliente();
-            }
+            try {
+				osService.alterar(osBuilder(id), id.get());
+				JOptionPane.showMessageDialog(null, "OS Editada com Sucesso!!");
+	            imprimir();
+	            limparCampos();
+	            pesquisar_cliente();
+			} catch (OsNotFoundException e) {
+				JOptionPane.showMessageDialog(null, e.getMessage());
+			}
         }
     }
 
     private void excluir() {
+    	Optional<Long> result = validarId(txtCodOs.getText());
+    	if(!result.isPresent()) return;
+    	
         int confirma = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir?", "Atenção", JOptionPane.YES_NO_OPTION);
         if (confirma == JOptionPane.YES_OPTION) {
-            Optional<Integer> result = validarId(txtCodOs.getText());
+            
             btnInserir.setEnabled(true);
             txtClienteNome.setEnabled(true);
             tblClientes.setVisible(true);
-            if(result.isPresent() && osDAO.deletar(result.get())){
-                JOptionPane.showMessageDialog(null, "Registro Apagado com Sucesso!");
-                limparCampos();
-            }
+            try {
+				osService.deletar(result.get());
+	            JOptionPane.showMessageDialog(null, "Registro Apagado com Sucesso!");
+	            limparCampos();
+	        } catch (OsNotFoundException e) {
+	            JOptionPane.showMessageDialog(null, e.getMessage());
+		    }
         }
     }
 
-    private void imprimir() {
+    @SuppressWarnings("unchecked")
+	private void imprimir() {
         if (txtCodOs.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Pesquise uma OS para Impressao!!");
             return;
@@ -797,13 +809,11 @@ public class TelaOs extends javax.swing.JInternalFrame {
 
     private void emitir_os() {
         if(!validar()) return;
-        Optional<Integer> result = osDAO.inserir(osBuilder(Optional.empty()));
-        if(result.isPresent()){
-            JOptionPane.showMessageDialog(null, "OS Salva com Sucesso!!");
-            txtCodOs.setText(result.get()+"");
-            imprimir();
-            limparCampos();
-            pesquisar_cliente();
-        }
+        Os os = osService.adicionar(osBuilder(Optional.empty()));
+        JOptionPane.showMessageDialog(null, "OS Salva com Sucesso!!");
+        txtCodOs.setText(os.getId()+"");
+        imprimir();
+        limparCampos();
+        pesquisar_cliente();
     }
 }
