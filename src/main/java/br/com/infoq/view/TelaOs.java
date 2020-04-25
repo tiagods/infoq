@@ -27,6 +27,7 @@ import br.com.infoq.service.OsService;
 import br.com.infoq.utils.DateUtil;
 import br.com.infoq.utils.SwingUtils;
 import br.com.infoq.utils.Validator;
+import java.math.RoundingMode;
 
 /**
  *
@@ -35,17 +36,17 @@ import br.com.infoq.utils.Validator;
 @Component
 public class TelaOs extends javax.swing.JInternalFrame {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	@Autowired
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    @Autowired
     private Relatorio rel;
-	@Autowired
-	private OsService osService;
-	@Autowired
-	private ClienteService clientes;
-	
+    @Autowired
+    private OsService osService;
+    @Autowired
+    private ClienteService clientes;
+
     private String Tipo;
 
     /**
@@ -53,11 +54,12 @@ public class TelaOs extends javax.swing.JInternalFrame {
      */
     public TelaOs() {
         initComponents();
+        ((javax.swing.plaf.basic.BasicInternalFrameUI)this.getUI()).setNorthPane(null);
     }
-    
-    private Os osBuilder(Optional<Long> result){
+
+    private Os osBuilder(Optional<Long> result) {
         return new Os(
-                result.isPresent() ? result.get() : -1,   
+                result.isPresent() ? result.get() : -1L,
                 new Date(),
                 Tipo,
                 txtAparelho.getText().toUpperCase().trim(),
@@ -72,43 +74,50 @@ public class TelaOs extends javax.swing.JInternalFrame {
                 txtGarantia.getText()
         );
     }
-    private boolean validar(){
+
+    private boolean validar() {
         if (txtClienteCodigo.getText().isEmpty() || txtAparelho.getText().isEmpty() || txtDefeito.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Preencha todos os campos!");
             return false;
         }
-        if(!Validator.validarNumero(txtClienteCodigo.getText())){
+        if (!Validator.validarNumero(txtClienteCodigo.getText())) {
             JOptionPane.showMessageDialog(null, "Campo Id Cliente deve ser numerico!");
             return false;
         }
-        
+
         try {
-			clientes.buscarPorId(Long.parseLong(txtClienteCodigo.getText()));
-		} catch (ClienteNotFoundException e) {
-			JOptionPane.showMessageDialog(null, "Campo Id Cliente - Nao existe cliente com o id informado!");
-	        return false;
-		}
-        if(txtValor.getText().trim().equals("")) txtValor.setText("0");
-        if(!Validator.validarNumero(txtValor.getText().replace(",", ""))){
+            clientes.buscarPorId(Long.parseLong(txtClienteCodigo.getText()));
+        } catch (ClienteNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "Campo Id Cliente - Nao existe cliente com o id informado!");
+            return false;
+        }
+        if (txtValor.getText().trim().equals("")) {
+            txtValor.setText("0");
+        }
+        if (!Validator.validarNumero(txtValor.getText().replace(",", ""))) {
             JOptionPane.showMessageDialog(null, "Campo valor deve ser do tipo 0,00!");
             return false;
         }
-        if(txtEntrada.getText().trim().equals("")) txtEntrada.setText("0");
-        if(!Validator.validarNumero(txtEntrada.getText().replace(",", ""))){
+        if (txtEntrada.getText().trim().equals("")) {
+            txtEntrada.setText("0");
+        }
+        if (!Validator.validarNumero(txtEntrada.getText().replace(",", ""))) {
             JOptionPane.showMessageDialog(null, "Campo entrada deve ser do tipo 0,00!");
             return false;
         }
         return true;
     }
-    private Optional<Long> validarId(String value){
-        try{
-        	Long id = Long.parseLong(value.trim());
+
+    private Optional<Long> validarId(String value) {
+        try {
+            Long id = Long.parseLong(value.trim());
             return Optional.of(id);
-        } catch(Exception e){
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Campo id incorreto ou nao informado");
         }
         return Optional.empty();
     }
+
     private void setar_campos() {
         int setar = tblClientes.getSelectedRow();
         txtClienteCodigo.setText(tblClientes.getModel().getValueAt(setar, 0).toString());
@@ -118,7 +127,9 @@ public class TelaOs extends javax.swing.JInternalFrame {
         SwingUtils.limparCampos(getContentPane());
         txtValor.setText("0");
         txtEntrada.setText("0");
+        txtTotal.setText("R$ 0,00");
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -132,7 +143,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
         rbos = new javax.swing.JRadioButton();
         rbgarantia = new javax.swing.JRadioButton();
         jLabel3 = new javax.swing.JLabel();
-        cbSituacao = new javax.swing.JComboBox<>();
+        cbSituacao = new javax.swing.JComboBox<String>();
         jPanel2 = new javax.swing.JPanel();
         txtClienteNome = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
@@ -162,6 +173,8 @@ public class TelaOs extends javax.swing.JInternalFrame {
         txtEntrada = new javax.swing.JFormattedTextField();
         jLabel13 = new javax.swing.JLabel();
         txtValor = new javax.swing.JFormattedTextField();
+        jLabel14 = new javax.swing.JLabel();
+        txtTotal = new javax.swing.JTextField();
 
         setClosable(true);
         setTitle("ORÇAMENTO"); // NOI18N
@@ -257,7 +270,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
 
         jLabel3.setText("SITUAÇÃO:");
 
-        cbSituacao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "NA BANCADA", "ENTREGA FEIRA", "ORÇAMENTO REPROVADO", "AGUARDANDO APROVAÇÃO", "AGUARDANDO PEÇA", "ABANDOANDO PELO CLIENTE", "RETORNOU", "ESTÁ PRONTO, AVISAR CLIENTE", "SEM CONSERTO", " ", " " }));
+        cbSituacao.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "NA BANCADA", "ENTREGA FEIRA", "ORÇAMENTO REPROVADO", "AGUARDANDO APROVAÇÃO", "AGUARDANDO PEÇA", "ABANDOANDO PELO CLIENTE", "RETORNOU", "ESTÁ PRONTO, AVISAR CLIENTE", "SEM CONSERTO", " ", " " }));
         cbSituacao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbSituacaoActionPerformed(evt);
@@ -293,6 +306,10 @@ public class TelaOs extends javax.swing.JInternalFrame {
 
         tblClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
                 "ID", "NOME", "TELEFONE", "CELULAR"
@@ -323,7 +340,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
                         .addComponent(txtClienteNome, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                         .addComponent(jLabel5)
                         .addGap(39, 39, 39)
                         .addComponent(txtClienteCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -339,7 +356,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
                     .addComponent(jLabel4)
                     .addComponent(txtClienteNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -457,6 +474,10 @@ public class TelaOs extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel14.setText("Total");
+
+        txtTotal.setEditable(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -523,9 +544,15 @@ public class TelaOs extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 491, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel12)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtGarantia, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel12)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtGarantia, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel14)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -562,17 +589,23 @@ public class TelaOs extends javax.swing.JInternalFrame {
                         .addComponent(txtValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel11))
-                        .addGap(18, 18, 18))
+                            .addComponent(jLabel11)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(49, 49, 49)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel12)
                             .addComponent(txtGarantia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(31, 31, 31)
+                                .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(28, 28, 28)
+                                .addComponent(txtTotal)))))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnInserir)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -679,6 +712,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -705,29 +739,33 @@ public class TelaOs extends javax.swing.JInternalFrame {
     private javax.swing.JTextPane txtObs;
     private javax.swing.JTextField txtServico;
     private javax.swing.JTextField txtTecnico;
+    private javax.swing.JTextField txtTotal;
     private javax.swing.JFormattedTextField txtValor;
     // End of variables declaration//GEN-END:variables
 
     private void pesquisar_cliente() {
-    	((DefaultTableModel)tblClientes.getModel()).setRowCount(0);
-    	
+        ((DefaultTableModel) tblClientes.getModel()).setRowCount(0);
+
         List<Cliente> lista = clientes.buscarClientePorNome(txtClienteNome.getText());
-        for(int i=0;i<lista.size();i++) {
-        	Cliente cli = lista.get(i);
-        	tblClientes.getModel().setValueAt(cli.getId(), i, 0);
-        	tblClientes.getModel().setValueAt(cli.getNome(), i, 1);
-        	tblClientes.getModel().setValueAt(cli.getFone(), i, 2);
-        	tblClientes.getModel().setValueAt(cli.getCel(), i, 3);
+        for (int i = 0; i < lista.size(); i++) {
+            Cliente cli = lista.get(i);
+            tblClientes.getModel().setValueAt(cli.getId(), i, 0);
+            tblClientes.getModel().setValueAt(cli.getNome(), i, 1);
+            tblClientes.getModel().setValueAt(cli.getFone(), i, 2);
+            tblClientes.getModel().setValueAt(cli.getCel(), i, 3);
         }
     }
+
     private void pesquisar_os() {
         String num_os = JOptionPane.showInputDialog("Numero da OS");
         Optional<Long> result = validarId(num_os);
-        if(!result.isPresent()) return;
+        if (!result.isPresent()) {
+            return;
+        }
         try {
-        	Optional<Os> opt = osService.buscarPorId(result.get());
+            Optional<Os> opt = osService.buscarPorId(result.get());
             Os os = opt.get();
-        	txtCodOs.setText(""+os.getId());
+            txtCodOs.setText("" + os.getId());
             txtData.setText(DateUtil.formatarData(os.getData()));
             String rbTipo = os.getTipo();
             if (rbTipo.equals("OS")) {
@@ -738,66 +776,77 @@ public class TelaOs extends javax.swing.JInternalFrame {
                 rbgarantia.setSelected(true);
                 Tipo = "Garantia";
             }
+            BigDecimal valor = os.getValor();
+            BigDecimal entrada = os.getEntrada();
+
             cbSituacao.setSelectedItem(os.getSituacao());
             txtAparelho.setText(os.getAparelho());
             txtDefeito.setText(os.getDefeito());
             txtServico.setText(os.getServico());
             txtTecnico.setText(os.getTecnico());
-            txtValor.setText(os.getValor().toString().replace(".", ","));
-            txtEntrada.setText(os.getEntrada().toString().replace(".",","));
-            txtClienteCodigo.setText(os.getCliente().getId()+"");
+            txtValor.setText(valor.toString().replace(".", ","));
+            txtEntrada.setText(entrada.toString().replace(".", ","));
+            txtClienteCodigo.setText(os.getCliente().getId() + "");
             txtObs.setText(os.getObs());
             txtGarantia.setText(os.getGarantia());
             btnInserir.setEnabled(false);
-            txtClienteNome.setEnabled(false);	
-		} catch (OsNotFoundException e) {
+            txtClienteNome.setEnabled(false);
+
+            BigDecimal total = valor.subtract(entrada).setScale(2, RoundingMode.UP);
+            txtTotal.setText("RS " + total.toString().replace(".", ","));
+        } catch (OsNotFoundException e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
             limparCampos();
-		}
-    }
-
-    private void alterar() {
-        if(!validar()) return;
-        Optional<Long> id = validarId(txtCodOs.getText().trim());
-        if(!id.isPresent()) return;
-        else{
-            btnInserir.setEnabled(true);
-            txtClienteNome.setEnabled(true);
-            tblClientes.setVisible(true);  
-            try {
-				osService.alterar(osBuilder(id), id.get());
-				JOptionPane.showMessageDialog(null, "OS Editada com Sucesso!!");
-	            imprimir();
-	            limparCampos();
-	            pesquisar_cliente();
-			} catch (OsNotFoundException e) {
-				JOptionPane.showMessageDialog(null, e.getMessage());
-			}
         }
     }
 
-    private void excluir() {
-    	Optional<Long> result = validarId(txtCodOs.getText());
-    	if(!result.isPresent()) return;
-    	
-        int confirma = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir?", "Atenção", JOptionPane.YES_NO_OPTION);
-        if (confirma == JOptionPane.YES_OPTION) {
-            
+    private void alterar() {
+        if (!validar()) {
+            return;
+        }
+        Optional<Long> id = validarId(txtCodOs.getText().trim());
+        if (!id.isPresent()) {
+            return;
+        } else {
             btnInserir.setEnabled(true);
             txtClienteNome.setEnabled(true);
             tblClientes.setVisible(true);
             try {
-				osService.deletar(result.get());
-	            JOptionPane.showMessageDialog(null, "Registro Apagado com Sucesso!");
-	            limparCampos();
-	        } catch (OsNotFoundException e) {
-	            JOptionPane.showMessageDialog(null, e.getMessage());
-		    }
+                osService.alterar(osBuilder(id), id.get());
+                JOptionPane.showMessageDialog(null, "OS Editada com Sucesso!!");
+                imprimir();
+                limparCampos();
+                pesquisar_cliente();
+            } catch (OsNotFoundException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage());
+            }
+        }
+    }
+
+    private void excluir() {
+        Optional<Long> result = validarId(txtCodOs.getText());
+        if (!result.isPresent()) {
+            return;
+        }
+
+        int confirma = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir?", "Atenção", JOptionPane.YES_NO_OPTION);
+        if (confirma == JOptionPane.YES_OPTION) {
+
+            btnInserir.setEnabled(true);
+            txtClienteNome.setEnabled(true);
+            tblClientes.setVisible(true);
+            try {
+                osService.deletar(result.get());
+                JOptionPane.showMessageDialog(null, "Registro Apagado com Sucesso!");
+                limparCampos();
+            } catch (OsNotFoundException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage());
+            }
         }
     }
 
     @SuppressWarnings("unchecked")
-	private void imprimir() {
+    private void imprimir() {
         if (txtCodOs.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Pesquise uma OS para Impressao!!");
             return;
@@ -808,10 +857,12 @@ public class TelaOs extends javax.swing.JInternalFrame {
     }
 
     private void emitir_os() {
-        if(!validar()) return;
+        if (!validar()) {
+            return;
+        }
         Os os = osService.adicionar(osBuilder(Optional.empty()));
         JOptionPane.showMessageDialog(null, "OS Salva com Sucesso!!");
-        txtCodOs.setText(os.getId()+"");
+        txtCodOs.setText(os.getId() + "");
         imprimir();
         limparCampos();
         pesquisar_cliente();

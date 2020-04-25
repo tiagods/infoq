@@ -34,10 +34,10 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports -->
         <dependency>
             <groupId>net.sf.jasperreports</groupId>
@@ -55,12 +55,12 @@
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
         </dependency>
-		<dependency>
-	        <groupId>org.projectlombok</groupId>
-	        <artifactId>lombok</artifactId>
-	        <version>1.18.10</version>
-	        <scope>provided</scope>
-	    </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.10</version>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>me.soliveirajr</groupId>
             <artifactId>menta-bean</artifactId>

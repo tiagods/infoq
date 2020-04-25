@@ -47,7 +47,7 @@ public class TelaMenu extends javax.swing.JInternalFrame {
 
         setBackground(new java.awt.Color(255, 255, 255));
         setTitle("Menu do Sistema");
-        setPreferredSize(new java.awt.Dimension(948, 688));
+        setPreferredSize(new java.awt.Dimension(976, 695));
         getContentPane().setLayout(null);
 
         btn_os.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/btn_os_2.png"))); // NOI18N
@@ -60,7 +60,7 @@ public class TelaMenu extends javax.swing.JInternalFrame {
             }
         });
         getContentPane().add(btn_os);
-        btn_os.setBounds(10, 20, 220, 80);
+        btn_os.setBounds(10, 20, 220, 78);
 
         btn_sair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/btn_sair.png"))); // NOI18N
         btn_sair.setText("SAIR");
@@ -72,7 +72,7 @@ public class TelaMenu extends javax.swing.JInternalFrame {
             }
         });
         getContentPane().add(btn_sair);
-        btn_sair.setBounds(780, 20, 130, 80);
+        btn_sair.setBounds(780, 20, 130, 78);
 
         btn_usuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/btn_users.png"))); // NOI18N
         btn_usuarios.setText("USUÁRIOS");
@@ -85,7 +85,7 @@ public class TelaMenu extends javax.swing.JInternalFrame {
             }
         });
         getContentPane().add(btn_usuarios);
-        btn_usuarios.setBounds(410, 20, 160, 80);
+        btn_usuarios.setBounds(410, 20, 160, 78);
 
         btn_clientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/btn_clientes.png"))); // NOI18N
         btn_clientes.setText("CLIENTES");
@@ -97,7 +97,7 @@ public class TelaMenu extends javax.swing.JInternalFrame {
             }
         });
         getContentPane().add(btn_clientes);
-        btn_clientes.setBounds(240, 20, 160, 80);
+        btn_clientes.setBounds(240, 20, 160, 78);
 
         btn_buscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/btn_buscar.png"))); // NOI18N
         btn_buscar.setText("PESQUISA");
@@ -109,7 +109,7 @@ public class TelaMenu extends javax.swing.JInternalFrame {
             }
         });
         getContentPane().add(btn_buscar);
-        btn_buscar.setBounds(590, 20, 170, 80);
+        btn_buscar.setBounds(590, 20, 170, 78);
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/imagem de fundo.jpeg"))); // NOI18N
         getContentPane().add(jLabel2);

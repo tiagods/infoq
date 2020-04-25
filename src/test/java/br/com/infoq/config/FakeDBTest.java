@@ -6,8 +6,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import br.com.infoq.StartApp;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = {StartApp.class, H2ConfigTest.class})
+//@RunWith(SpringRunner.class)
+//@SpringBootTest(classes = {StartApp.class, H2ConfigTest.class})
 public class FakeDBTest {
 
 }

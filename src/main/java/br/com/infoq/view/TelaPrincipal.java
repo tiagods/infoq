@@ -21,10 +21,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class TelaPrincipal extends javax.swing.JFrame {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	@Autowired
+    * 
+    */
+    private static final long serialVersionUID = 1L;
+    @Autowired
     private TelaSobre sobre;
     @Autowired
     private TelaUsuario usuario;
@@ -213,7 +213,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addComponent(desktop, javax.swing.GroupLayout.PREFERRED_SIZE, 941, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(10, 10, 10)
@@ -228,7 +228,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel2)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(lblHora, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE))
+                                        .addComponent(lblHora, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel1)
                                         .addGap(46, 46, 46)
@@ -269,7 +269,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel5)
                 .addGap(29, 29, 29))
-            .addComponent(desktop, javax.swing.GroupLayout.DEFAULT_SIZE, 688, Short.MAX_VALUE)
+            .addComponent(desktop, javax.swing.GroupLayout.DEFAULT_SIZE, 679, Short.MAX_VALUE)
         );
 
         setSize(new java.awt.Dimension(1163, 732));

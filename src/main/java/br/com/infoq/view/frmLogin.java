@@ -24,30 +24,30 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class frmLogin extends javax.swing.JFrame {
-    
+
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	@Autowired
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    @Autowired
     private UsuarioService usuarios;
     @Autowired
     private TelaPrincipal principal;
     @Autowired
     private TelaMenu menu;
-           
+
     public frmLogin() {
         initComponents();
         ImageIcon icone = new ImageIcon(getClass().getResource("/icons/user.png"));
         setIconImage(icone.getImage());
         String imagem = "dbok.png";
-        lblstatus.setIcon(new ImageIcon(getClass().getResource("/icons/"+imagem)));
-        
+        lblstatus.setIcon(new ImageIcon(getClass().getResource("/icons/" + imagem)));
+
     }
 
     private void initComponents() {
 
-    	txt_usuario = new javax.swing.JTextField();
+        txt_usuario = new javax.swing.JTextField();
         txt_senha = new javax.swing.JPasswordField();
         btn_login = new javax.swing.JButton();
         lblstatus = new javax.swing.JLabel();
@@ -99,7 +99,7 @@ public class frmLogin extends javax.swing.JFrame {
 
         setSize(new java.awt.Dimension(535, 338));
         setLocationRelativeTo(null);
-    }// </editor-fold>//GEN-END:initComponents
+    }// </editor-fold>                        
 
     private void btn_loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_loginActionPerformed
         logar();
@@ -109,38 +109,38 @@ public class frmLogin extends javax.swing.JFrame {
         logar();
     }//GEN-LAST:event_txt_senhaActionPerformed
 
-    private void txt_usuarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_usuarioKeyPressed
-    	int key = evt.getKeyCode();
+    private void txt_usuarioKeyPressed(java.awt.event.KeyEvent evt) {
+        int key = evt.getKeyCode();
         Arrays.asList(KeyEvent.VK_ENTER, KeyEvent.VK_TAB)
-        	.stream()
-        	.filter(c-> c == key)
-	        .findFirst()
-	        .ifPresent(c->txt_senha.requestFocus());;
+                .stream()
+                .filter(c -> c == key)
+                .findFirst()
+                .ifPresent(c -> txt_senha.requestFocus());;
     }
-    
+
     private javax.swing.JButton btn_login;
     private javax.swing.JLabel lb_fundo;
     private javax.swing.JLabel lblstatus;
     private javax.swing.JPasswordField txt_senha;
     private javax.swing.JTextField txt_usuario;
-    
+
     public void logar() {
         try {
-        	Usuario usuario = usuarios.validarLoginESenha(txt_usuario.getText().trim(), new String(txt_senha.getPassword()));
-        	Optional<String> optPerfil = Optional.ofNullable(usuario.getPerfil());
+            Usuario usuario = usuarios.validarLoginESenha(txt_usuario.getText().trim(), new String(txt_senha.getPassword()));
+            Optional<String> optPerfil = Optional.ofNullable(usuario.getPerfil());
             principal.setVisible(true);
             principal.lblUsuario.setText(usuario.getUsuario());
             desktop.add(menu);
             menu.setVisible(true);
-            if(optPerfil.isPresent() && optPerfil.get().toUpperCase().equals("ADMIN")){
+            if (optPerfil.isPresent() && optPerfil.get().toUpperCase().equals("ADMIN")) {
                 principal.menuCadUsu.setEnabled(true);
                 menu.btn_usuarios.setEnabled(true);
                 principal.lblUsuario.setForeground(Color.blue);
             }
             this.dispose();
         } catch (UsuarioInvalidCredentialsException e) {
-        	txt_senha.setText("");
-        	JOptionPane.showMessageDialog(null, e.getMessage());
+            txt_senha.setText("");
+            JOptionPane.showMessageDialog(null, e.getMessage());
         }
-   }
+    }
 }

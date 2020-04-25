@@ -32,7 +32,7 @@ import lombok.NoArgsConstructor;
 public class Os {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    private Long id;
     @Temporal(TemporalType.TIMESTAMP)
     private Date data;
     private String tipo;
