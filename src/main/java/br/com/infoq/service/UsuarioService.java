@@ -24,13 +24,13 @@ public class UsuarioService  {
     private UsuarioRepository repository;
     
     public Usuario validarLoginESenha(String login, String senha) throws UsuarioInvalidCredentialsException{
-        Optional<Usuario> user = repository.findByLoginAndSenha(login, senha);
+        Optional<Usuario> user = repository.findByLoginIgnoreCaseAndSenhaIgnoreCase(login, senha);
         if(user.isPresent()) return user.get();
         else throw new UsuarioInvalidCredentialsException("Dados de acesso invalidos");
     }
 
     public Optional<Usuario> buscarLogin(String login) {
-        return repository.findByLogin(login);
+        return repository.findByLoginIgnoreCase(login);
     }
 
     public Usuario adicionar(Usuario usuario) {

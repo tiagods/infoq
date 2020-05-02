@@ -1,0 +1,55 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <style> body { font-family: Verdana; font-size: 10.0pt; } table { border-collapse: collapse; border-spacing: 0; table-layout: auto;}
+        </style>
+        <title>Relatório de Serviços</title>
+    </head>
+    <body>
+        <div class="container">
+            <h4 class="text-center">Relatório de Serviços</h4>
+            <p class="text-right" th:text="${#dates.format(#dates.createNow(),'dd/MM/yyyy HH:mm')}"></p>    
+            <br />
+            <table class="table table-sm table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Data</th>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Situação</th>
+                        <th scope="col">Aparelho</th>
+                        <th scope="col">Cliente</th>
+                        <th scope="col">Defeito</th>
+                        <th scope="col">Serviço</th>
+                        <th scope="col">Observação</th>
+                        <th scope="col">Valor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <th:block th:each="os : ${lista}">
+                        <tr>
+                            <th th:text="${os.id}" scope="row"></th>
+                            <td th:text="${#dates.format(os.data.getTime(),'dd/MM/yyyy HH:mm')}"></td>
+                            <td th:text="${os.tipo}"></td>
+                            <td th:text="${os.situacao}"></td>
+                            <td th:text="${os.aparelho}"></td>
+                            <td th:text="${os.cliente.nome}"></td>
+                            <td th:text="${os.defeito}"></td>
+                            <td th:text="${os.servico}"></td>
+                            <td th:text="${os.obs}"></td>
+                            <td th:text="${os.valor}"></td>
+                        </tr>
+                    </th:block>
+                    <th:block th:if="${lista.isEmpty()}">
+                        <tr>
+                            <th scope="row" colspan="10">Não existe dados para impressão</th>
+                        </tr>    
+                    </th:block>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>

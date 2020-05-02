@@ -14,9 +14,11 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -54,4 +56,12 @@ public class SwingUtils {
         }
 
     }
+    
+    public static void limparTabela(JTable table){
+        DefaultTableModel dm = (DefaultTableModel)table.getModel();
+        while(dm.getRowCount() > 0){
+            dm.removeRow(0);
+        }
+    }
+
 }

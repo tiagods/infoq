@@ -1,0 +1,47 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <style> body { font-family: Verdana; font-size: 10.0pt; } table { border-collapse: collapse; border-spacing: 0; table-layout: auto;}
+        </style>
+        <title>Relatório de Clientes</title>
+    </head>
+    <body>
+        <div class="container">
+            <h4 class="text-center">Relatório de Clientes</h4>
+            <p class="text-right" th:text="${#dates.format(#dates.createNow(),'dd/MM/yyyy HH:mm')}"></p>    
+            <br />
+            <table class="table table-sm table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Endereco</th>
+                        <th scope="col">Telefone</th>
+                        <th scope="col">Celular</th>
+                        <th scope="col">E-Mail</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <th:block th:each="cli : ${clientes}">
+                        <tr>
+                            <th th:text="${cli.id}" scope="row"></th>
+                            <td th:text="${cli.nome}"></td>
+                            <td th:text="${cli.endereco}"></td>
+                            <td th:text="${cli.fone}"></td>
+                            <td th:text="${cli.cel}"></td>
+                            <td th:text="${cli.email}"></td>
+                        </tr>
+                    </th:block>
+                    <th:block th:if="${clientes.isEmpty()}">
+                        <tr>
+                            <th scope="row" colspan="8">Não existe dados para impressão</th>
+                        </tr>    
+                    </th:block>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>

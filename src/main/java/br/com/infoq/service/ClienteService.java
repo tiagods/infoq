@@ -29,6 +29,10 @@ public class ClienteService  {
         return repository.save(cliente);
     }
 
+    public List<Cliente> listar(){
+        return repository.findAll();
+    }
+    
     public Optional<Cliente> buscarPorId(long id) throws ClienteNotFoundException {
         if(verificarSeExiste(id)) return repository.findById(id);
         else throw new ClienteNotFoundException("Cliente nao existe");
@@ -52,6 +56,6 @@ public class ClienteService  {
     }
 
 	public List<Cliente> buscarClientePorNome(String name) {
-		return repository.findAllByNome(name);
+		return repository.findAllByNomeIgnoreCaseStartsWith(name);
 	}
 }

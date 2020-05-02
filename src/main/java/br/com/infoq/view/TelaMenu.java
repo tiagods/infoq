@@ -5,30 +5,36 @@
  */
 package br.com.infoq.view;
 
+import static br.com.infoq.view.TelaPrincipal.desktop;
 import javax.swing.JOptionPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 /**
  *
  * @author hugov,tiagods
  */
 @Component
 public class TelaMenu extends javax.swing.JInternalFrame {
+
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	@Autowired private TelaOs os;
-    @Autowired private TelaUsuario user;
-    @Autowired private TelaCliente cliente;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    @Autowired
+    private TelaOs os;
+    @Autowired
+    private TelaUsuario user;
+    @Autowired
+    private TelaCliente cliente;
 
     /**
      * Creates new form TelaMenu
      */
     public TelaMenu() {
         initComponents();
+        ((javax.swing.plaf.basic.BasicInternalFrameUI) this.getUI()).setNorthPane(null);
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -125,25 +131,27 @@ public class TelaMenu extends javax.swing.JInternalFrame {
 
     private void btn_sairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_sairActionPerformed
         int sair = JOptionPane.showConfirmDialog(null, "Deseja Sair?", "Atenção", JOptionPane.YES_NO_OPTION);
-        if (sair == JOptionPane.YES_OPTION){
+        if (sair == JOptionPane.YES_OPTION) {
             System.exit(0);
         }
     }//GEN-LAST:event_btn_sairActionPerformed
 
     private void btn_usuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_usuariosActionPerformed
+        desktop.removeAll();
         TelaPrincipal.desktop.add(user);
         user.setVisible(true);
     }//GEN-LAST:event_btn_usuariosActionPerformed
 
     private void btn_clientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_clientesActionPerformed
+        desktop.removeAll();
         TelaPrincipal.desktop.add(cliente);
         cliente.setVisible(true);
     }//GEN-LAST:event_btn_clientesActionPerformed
 
     private void btn_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscarActionPerformed
+        desktop.removeAll();
         TelaPrincipal.desktop.add(os);
         os.setVisible(true);
-        
     }//GEN-LAST:event_btn_buscarActionPerformed
 
 

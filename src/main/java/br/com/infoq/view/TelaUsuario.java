@@ -13,26 +13,30 @@ import br.com.infoq.service.UsuarioService;
 import br.com.infoq.utils.SwingUtils;
 /**
  *
- * @author hugov,tiagods
- **/
+ * @author tiagods
+ *
+ */
 
 @Component
 public class TelaUsuario extends javax.swing.JInternalFrame {
-    
+
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	@Autowired private UsuarioService usuarios;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    
+    @Autowired
+    private UsuarioService usuarios;
 
     public TelaUsuario() {
         initComponents();
+        ((javax.swing.plaf.basic.BasicInternalFrameUI)this.getUI()).setNorthPane(null);
+
     }
-    
+
     public Usuario usuarioBuilder(Optional<Long> result) {
         Usuario usuario = new Usuario(
-                result.isPresent() ? result.get(): -1L,
+                result.isPresent() ? result.get() : -1L,
                 txtNome.getText(),
                 txtTel.getText(),
                 txtLogin.getText(),
@@ -41,23 +45,25 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
         );
         return usuario;
     }
-    public boolean validar(){
+
+    public boolean validar() {
         if ((txtNome.getText().isEmpty()) || (new String(txtSenha.getPassword()).isEmpty()) || (txtLogin.getText().isEmpty()) || (cbPerfil.getSelectedItem().equals(""))) {
             JOptionPane.showMessageDialog(null, "Preencha os Dados!!");
             return false;
-        } 
+        }
         return true;
     }
-    private Optional<Long> validarId(){
-        try{
+
+    private Optional<Long> validarId() {
+        try {
             Long id = Long.parseLong(txtId.getText().trim());
             return Optional.of(id);
-        } catch(Exception e){
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Campo id incorreto ou nao informado");
         }
         return Optional.empty();
     }
-   
+
     private void limparCampos() {
         SwingUtils.limparCampos(getContentPane());
     }
@@ -344,67 +350,75 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
     // End of variables declaration//GEN-END:variables
 
     private void consultar() {
-    	Optional<Long> result = validarId();
-        if(!result.isPresent()) return;
-    	try {
-        	Optional<Usuario> opt = usuarios.buscarPorId(result.get());
-        	Usuario us = opt.get();
-        	preencherForm(us);
-		} catch (UsuarioNotFoundException e) {
-			JOptionPane.showMessageDialog(null, "Usuário não Cadastrado");
-		    limparCampos();
-		}
-    }
-    
-    private void preencherForm(Usuario us) {
-    	txtId.setText(us.getId()+"");
-    	txtNome.setText(us.getUsuario());
-    	txtTel.setText(us.getFone());
-    	txtLogin.setText(us.getLogin());
-    	txtSenha.setText(us.getSenha());
-    	cbPerfil.setSelectedItem(us.getPerfil());
-	}
-
-	private void adicionar() {
-        if(!validar()) return;
-            Optional<Usuario> buscarLogin = usuarios.buscarLogin(txtLogin.getText());
-            if(buscarLogin.isPresent()) {
-                JOptionPane.showMessageDialog(null, "Login ja existe, tente informar outro!");
-                return;
-            }
-            Optional<Usuario> opt = Optional.ofNullable(usuarios.adicionar(usuarioBuilder(Optional.empty())));
-            if(opt.isPresent()){
-            	preencherForm(opt.get());
-                JOptionPane.showMessageDialog(null, "Registro salvo com Sucesso!");
-            };
-    }
-    
-    private void alterar() {
-        if(!validar()) return;
         Optional<Long> result = validarId();
-        if(result.isPresent()){
-        	try {
-				usuarios.alterar(usuarioBuilder(result), result.get());
-				limparCampos();
-	            JOptionPane.showMessageDialog(null, "Registro Editado com Sucesso!");
-			} catch (UsuarioNotFoundException e) {
-				JOptionPane.showMessageDialog(null, e.getMessage());
-			}
+        if (!result.isPresent()) {
+            return;
+        }
+        try {
+            Optional<Usuario> opt = usuarios.buscarPorId(result.get());
+            Usuario us = opt.get();
+            preencherForm(us);
+        } catch (UsuarioNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "Usuário não Cadastrado");
+            limparCampos();
+        }
+    }
+
+    private void preencherForm(Usuario us) {
+        txtId.setText(us.getId() + "");
+        txtNome.setText(us.getUsuario());
+        txtTel.setText(us.getFone());
+        txtLogin.setText(us.getLogin());
+        txtSenha.setText(us.getSenha());
+        cbPerfil.setSelectedItem(us.getPerfil());
+    }
+
+    private void adicionar() {
+        if (!validar()) {
+            return;
+        }
+        Optional<Usuario> buscarLogin = usuarios.buscarLogin(txtLogin.getText());
+        if (buscarLogin.isPresent()) {
+            JOptionPane.showMessageDialog(null, "Login ja existe, tente informar outro!");
+            return;
+        }
+        Optional<Usuario> opt = Optional.ofNullable(usuarios.adicionar(usuarioBuilder(Optional.empty())));
+        if (opt.isPresent()) {
+            preencherForm(opt.get());
+            JOptionPane.showMessageDialog(null, "Registro salvo com Sucesso!");
+        };
+    }
+
+    private void alterar() {
+        if (!validar()) {
+            return;
+        }
+        Optional<Long> result = validarId();
+        if (result.isPresent()) {
+            try {
+                usuarios.alterar(usuarioBuilder(result), result.get());
+                limparCampos();
+                JOptionPane.showMessageDialog(null, "Registro Editado com Sucesso!");
+            } catch (UsuarioNotFoundException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage());
+            }
         }
     }
 
     private void remover() {
         Optional<Long> result = validarId();
-        if(!result.isPresent()) return;
-		int confirma = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir?", "Atenção", JOptionPane.YES_NO_OPTION);
+        if (!result.isPresent()) {
+            return;
+        }
+        int confirma = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir?", "Atenção", JOptionPane.YES_NO_OPTION);
         if (confirma == JOptionPane.YES_OPTION) {
             try {
-            	usuarios.deletar(result.get());
-				JOptionPane.showMessageDialog(null, "Registro Apagado com Sucesso!");
-	            limparCampos();
-			} catch (UsuarioNotFoundException e) {
-				JOptionPane.showMessageDialog(null, e.getMessage());
-			}   
+                usuarios.deletar(result.get());
+                JOptionPane.showMessageDialog(null, "Registro Apagado com Sucesso!");
+                limparCampos();
+            } catch (UsuarioNotFoundException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage());
+            }
         }
     }
 

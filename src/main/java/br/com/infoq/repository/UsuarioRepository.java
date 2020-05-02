@@ -14,7 +14,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author tiagods
  */
 public interface UsuarioRepository extends JpaRepository<Usuario,Long> {
-    Optional<Usuario> findByLoginAndSenha(String login, String senha);
-
-    public Optional<Usuario> findByLogin(String text);
+    Optional<Usuario> findByLoginIgnoreCaseAndSenhaIgnoreCase(String login, String senha);
+    public Optional<Usuario> findByLoginIgnoreCase(String text);
 }

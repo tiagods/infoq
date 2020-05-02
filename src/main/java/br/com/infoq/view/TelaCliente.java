@@ -9,14 +9,11 @@ import br.com.infoq.exception.ClienteNotFoundException;
 import br.com.infoq.model.Cliente;
 import br.com.infoq.service.ClienteService;
 import br.com.infoq.utils.SwingUtils;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-
 import javax.swing.text.MaskFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -38,27 +35,28 @@ public class TelaCliente extends javax.swing.JInternalFrame {
     @Autowired
     private ClienteService clientes;
 
-    MaskFormatter formatoCpf, formatoCnpj;
+    MaskFormatter formatoCpf, formatoCnpj, formatoCelular, formatoTelefone;
     
     private TelaCliente() {
-
         initComponents();
         tblClientes.putClientProperty("terminateEditOnFocusLost", Boolean.FALSE);
+        ((javax.swing.plaf.basic.BasicInternalFrameUI)this.getUI()).setNorthPane(null);
+
     }
 
     private Optional<Long> validarId() {
         try {
             Long id = Long.parseLong(txtId.getText().trim());
             return Optional.of(id);
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "Campo id incorreto ou nao informado");
         }
         return Optional.empty();
     }
 
     public boolean validar() {
-        if ((txtNome.getText().isEmpty()) || (txtTel.getText().isEmpty())) {
-            JOptionPane.showMessageDialog(null, "Preencha os Dados Corretamenre!!");
+        if ((txtNome.getText().isEmpty())) {
+            JOptionPane.showMessageDialog(null, "Preencha os Dados Corretamenre!\n Campo Nome é obrigatório");
             return false;
         }
         return true;
@@ -83,19 +81,37 @@ public class TelaCliente extends javax.swing.JInternalFrame {
 
     public void setar_campos() {
         int setar = tblClientes.getSelectedRow();
+        
         txtId.setText(tblClientes.getModel().getValueAt(setar, 0).toString());
-        txtNome.setText(tblClientes.getModel().getValueAt(setar, 1).toString());
-        txtEnd.setText(tblClientes.getModel().getValueAt(setar, 2).toString());
-        txtNum.setText(tblClientes.getModel().getValueAt(setar, 3).toString());
-        txtCom.setText(tblClientes.getModel().getValueAt(setar, 4).toString());
-        txtEmail.setText(tblClientes.getModel().getValueAt(setar, 5).toString());
-        txtCpf.setValue(tblClientes.getModel().getValueAt(setar, 6).toString());
-        txtCnpj.setValue(tblClientes.getModel().getValueAt(setar, 7).toString());
-        txtRg.setText(tblClientes.getModel().getValueAt(setar, 8).toString());
-        txtTel.setValue(tblClientes.getModel().getValueAt(setar, 9).toString());
-        txtCel.setValue(tblClientes.getModel().getValueAt(setar, 10).toString());
-        txtBairro.setText(tblClientes.getModel().getValueAt(setar, 11).toString());
-        btnInserir.setEnabled(false);
+        Optional<Long> id = validarId();
+        if(id.isPresent()){
+            try {
+                clientes.buscarPorId(id.get()).ifPresent(c->{
+                    txtNome.setText(c.getNome());
+                    txtEnd.setText(c.getEndereco());
+                    txtNum.setText(c.getNum());
+                    txtCom.setText(c.getComp());
+                    txtEmail.setText(c.getEmail());
+                    txtCpf.setText(onlyNumber(c.getCpf()));
+                    txtCnpj.setText(onlyNumber(c.getCnpj()));
+                    txtRg.setText(c.getRg());
+                    txtTel.setText(onlyNumber(c.getFone()));
+                    txtCel.setText(onlyNumber(c.getCel()));
+                    txtBairro.setText(c.getBairro());
+                    btnInserir.setEnabled(false);
+                });
+            } catch (ClienteNotFoundException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
+            }
+            
+        }
+    }
+    private String onlyNumber(String value){
+        return value.replace("(", "")
+                .replace(")", "")
+                .replace("-", "")
+                .replace(".", "")
+                .replace("/", "").trim();
     }
 
     private void limparCampos() {
@@ -136,8 +152,18 @@ public class TelaCliente extends javax.swing.JInternalFrame {
         jLabel10 = new javax.swing.JLabel();
         txtNum = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
-        txtTel = new javax.swing.JFormattedTextField();
-        txtCel = new javax.swing.JFormattedTextField();
+        try {
+            formatoTelefone = new MaskFormatter("(##)####-####");
+        }catch(Exception erro){
+            JOptionPane.showMessageDialog(null ,"Não foi possivel receber o valor do telefone: " +erro);
+        }
+        txtTel = new JFormattedTextField(formatoTelefone);
+        try {
+            formatoCelular = new MaskFormatter("(##)#####-####");
+        }catch(Exception erro){
+            JOptionPane.showMessageDialog(null ,"Não foi possivel receber o valor do celular: " +erro);
+        }
+        txtCel = new JFormattedTextField(formatoCelular);
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         txtRg = new javax.swing.JFormattedTextField();
@@ -253,17 +279,7 @@ public class TelaCliente extends javax.swing.JInternalFrame {
         tblClientes.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         tblClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "ID", "NOME", "ENDEREÇO", "TELEFONE", "E-MAIL"
@@ -278,7 +294,6 @@ public class TelaCliente extends javax.swing.JInternalFrame {
         if (tblClientes.getColumnModel().getColumnCount() > 0) {
             tblClientes.getColumnModel().getColumn(0).setMinWidth(0);
             tblClientes.getColumnModel().getColumn(0).setPreferredWidth(0);
-            tblClientes.getColumnModel().getColumn(4).setHeaderValue("E-MAIL");
         }
 
         txtId.setEnabled(false);
@@ -304,9 +319,10 @@ public class TelaCliente extends javax.swing.JInternalFrame {
         jLabel11.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel11.setText("CPF:");
 
+        txtTel.setFocusLostBehavior(javax.swing.JFormattedTextField.PERSIST);
         txtTel.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
 
-        txtCel.setFocusLostBehavior(javax.swing.JFormattedTextField.COMMIT);
+        txtCel.setFocusLostBehavior(javax.swing.JFormattedTextField.PERSIST);
         txtCel.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
 
         jLabel12.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
@@ -316,8 +332,10 @@ public class TelaCliente extends javax.swing.JInternalFrame {
 
         txtRg.setFont(new java.awt.Font("Ubuntu", 0, 15)); // NOI18N
 
+        txtCnpj.setFocusLostBehavior(javax.swing.JFormattedTextField.COMMIT);
         txtCnpj.setFont(new java.awt.Font("Ubuntu", 0, 15)); // NOI18N
 
+        txtCpf.setFocusLostBehavior(javax.swing.JFormattedTextField.COMMIT);
         txtCpf.setFont(new java.awt.Font("Ubuntu", 0, 15)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -552,19 +570,12 @@ public class TelaCliente extends javax.swing.JInternalFrame {
     private javax.swing.JFormattedTextField txtTel;
     // End of variables declaration//GEN-END:variables
 
-    private void consultar() {
-        ((DefaultTableModel) tblClientes.getModel()).setRowCount(0);
-        List<Cliente> lista = clientes.buscarClientePorNome(txtBuscar.getText());
-        for (int i = 0; i < lista.size(); i++) {
-            Cliente cli = lista.get(i);
-            tblClientes.getModel().setValueAt(cli.getId(), i, 0);
-            tblClientes.getModel().setValueAt(cli.getNome(), i, 1);
-            tblClientes.getModel().setValueAt(cli.getEndereco(), i, 2);
-            tblClientes.getModel().setValueAt(cli.getFone(), i, 3);
-            tblClientes.getModel().setValueAt(cli.getEmail(), i, 4);
-        }
+    public void consultar() {
+        SwingUtils.limparTabela(tblClientes);
+        List<Cliente> lista = txtBuscar.getText().trim().equals("")? clientes.listar() : clientes.buscarClientePorNome(txtBuscar.getText());
+        DefaultTableModel dm = (DefaultTableModel)tblClientes.getModel();
+        lista.forEach(c->dm.addRow(new Object[]{c.getId(),c.getNome(),c.getEndereco(),c.getFone(), c.getEmail()}));
     }
-
     private void adicionar() {
         if (!validar()) {
             return;
@@ -572,6 +583,7 @@ public class TelaCliente extends javax.swing.JInternalFrame {
         clientes.adicionar(clienteBuilder(Optional.empty()));
         JOptionPane.showMessageDialog(null, "Registro salvo com Sucesso!");
         limparCampos();
+        consultar();
 
     }
 

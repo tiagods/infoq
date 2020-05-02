@@ -5,6 +5,7 @@
  */
 package br.com.infoq.view;
 
+import br.com.infoq.utils.Relatorio;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -307,23 +308,26 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void menuSobreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSobreActionPerformed
-        sobre.setVisible(true);
+       sobre.setVisible(true);
     }//GEN-LAST:event_menuSobreActionPerformed
 
     private void menuCadUsuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadUsuActionPerformed
+       desktop.removeAll();
        desktop.add(usuario);
        usuario.setVisible(true);
     }//GEN-LAST:event_menuCadUsuActionPerformed
 
     private void menuCadCliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadCliActionPerformed
+       desktop.removeAll();
        desktop.add(cliente);
        cliente.setVisible(true);
+       cliente.consultar();
     }//GEN-LAST:event_menuCadCliActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        desktop.add(os);
-        os.setVisible(true);
-        
+       desktop.removeAll();
+       desktop.add(os);
+       os.setVisible(true); 
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
