@@ -48,9 +48,10 @@ public class FileUtils {
         FileOutputStream fos = null;
         FileInputStream fis = null;
         try {
-            String sourceFile = appDir+"/data/db.mv.db";
-            File backupFolder = new File(appDir+"/backup");
+            String sourceFile = "data/db.mv.db";
             
+            
+            File backupFolder = new File("backup");
             if(!Files.exists(backupFolder.toPath())) Files.createDirectory(backupFolder.toPath());
             
             fos = new FileOutputStream(arquivoTemporario(backupFolder.getAbsolutePath(), "db", "zip"));
@@ -90,5 +91,9 @@ public class FileUtils {
                 Files.deleteIfExists(file.toPath());
             }    
         }
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(appDir);
     }
 }

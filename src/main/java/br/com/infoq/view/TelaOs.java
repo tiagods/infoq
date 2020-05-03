@@ -738,7 +738,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
     private javax.swing.JFormattedTextField txtValor;
     // End of variables declaration//GEN-END:variables
 
-    private void pesquisar_cliente() {
+    public void pesquisar_cliente() {
         SwingUtils.limparTabela(tblClientes);
         List<Cliente> lista = txtClienteNome.getText().trim().equals("") ? clientes.listar() : clientes.buscarClientePorNome(txtClienteNome.getText());
         DefaultTableModel dm = (DefaultTableModel)tblClientes.getModel();

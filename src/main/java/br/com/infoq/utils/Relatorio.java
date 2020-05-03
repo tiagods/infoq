@@ -5,39 +5,32 @@
  */
 package br.com.infoq.utils;
 
-import br.com.infoq.model.Cliente;
-import br.com.infoq.model.Os;
-import br.com.infoq.service.ClienteService;
-import br.com.infoq.service.OsService;
-import br.com.infoq.service.UsuarioService;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.List;
+
+import javax.swing.JOptionPane;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
+
 import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
-import java.awt.Desktop;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.sql.Connection;
-import java.util.List;
-import java.util.Map;
-import javax.swing.JOptionPane;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.view.JasperViewer;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.Pair;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
+
+import br.com.infoq.model.Cliente;
+import br.com.infoq.model.Os;
+import br.com.infoq.service.ClienteService;
+import br.com.infoq.service.OsService;
+import br.com.infoq.service.UsuarioService;
 
 /**
  *

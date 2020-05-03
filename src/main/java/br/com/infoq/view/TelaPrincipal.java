@@ -328,6 +328,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
        desktop.removeAll();
        desktop.add(os);
        os.setVisible(true); 
+       os.pesquisar_cliente();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
