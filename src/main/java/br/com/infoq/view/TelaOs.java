@@ -838,10 +838,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Pesquise uma OS para Impressao!!");
             return;
         }
-        Map p = new HashMap();
-        p.put("codigo_os", txtCodOs.getText());
-        
-        rel.imprimirOs(rel.pegarResultadoImpressao(), os, Relatorio.Relatorios.CLIENTES);
+        rel.imprimirOs(rel.pegarResultadoImpressao(), os, Relatorio.Relatorios.OS);
     }
 
     private void emitir_os() {

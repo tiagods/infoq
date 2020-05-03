@@ -73,7 +73,7 @@ public class Relatorio {
         else{
             List<Os> list = os.listar();
             list.forEach(c->{
-                c.setAPagar(c.getValor().subtract(c.getEntrada()));
+                c.setPagar(c.getValor().subtract(c.getEntrada()));
             });
             context.setVariable(relEnum.getValor(), list);
         }
@@ -82,7 +82,7 @@ public class Relatorio {
 
     
     public enum Relatorios {
-        CLIENTES("clientes"), SERVICOS("servicos");
+        CLIENTES("clientes"), OS("os"),SERVICOS("servicos");
 
         private String valor;
 

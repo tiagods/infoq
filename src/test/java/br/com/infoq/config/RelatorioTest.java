@@ -194,7 +194,7 @@ public class RelatorioTest {
                 "3 MESES",
                 BigDecimal.ZERO
         );
-        os.setAPagar(os.getValor().subtract(os.getEntrada()));
+        os.setPagar(os.getValor().subtract(os.getEntrada()));
         
         st.append(cli.getNum().trim().length()>0? " "+cli.getNum()+" "+cli.getComp(): "");
         st.append(cli.getBairro().trim().length()>0 ? " - "+cli.getBairro() : "");

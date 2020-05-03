@@ -52,5 +52,5 @@ public class Os {
     private String situacao;
     private String garantia = "";
     @Transient
-    private BigDecimal aPagar= BigDecimal.ZERO;
+    private BigDecimal pagar= BigDecimal.ZERO;
 }
