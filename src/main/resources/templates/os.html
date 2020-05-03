@@ -1,0 +1,80 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <title>Ordem de Serviço</title>
+    </head>
+    <body>
+        <div class="container">
+            <form>
+                <div class="form-row">
+                    <div class="col-6">
+                        <h4 class="text-left">Ordem de Serviço</h4>
+                    </div>
+                    <div class="col-6">
+                        <p class="text-right" th:text="${#dates.format(#dates.createNow(),'dd/MM/yyyy HH:mm')}"></p>    
+                    </div>
+                </div>
+                <br />
+                <div class="form-row">
+                    <div class="col-4">
+                        <label for="osId" class="col-2 col-form-label">Nº Os:</label>
+                        <span th:text="${os.id}"></span>
+                    </div>
+                    <div class="col-6">
+                        <label class="col-2 col-form-label">Cliente:</label>
+                        <span th:text="${os.cliente.nome}"></span>
+                    </div>
+                </div>  
+                <br />
+                <div class="form-row">
+                    <div class="col-4">
+                        <label class="col-2 col-form-label">Tipo: </label>
+                        <span th:text="${os.tipo}"></span>
+                    </div>
+                    <div class="col-4">
+                        <label class="col-2 col-form-label">Data:</label>
+                        <span th:text="${#dates.format(os.data.getTime(),'dd/MM/yyyy HH:mm')}"></span>
+                    </div>
+                </div>  
+                <br />
+                <div class="form-row">
+                    <label th:text="'Aparelho: ' + ${os.aparelho}"></label>
+                    <label th:text="'Defeito: ' + ${os.defeito}"></label>
+                    <label th:text="'Situação: ' + ${os.situacao}"></label>
+
+                    <div class="col-4">
+                        <label class="col-2 col-form-label">Aparelho: </label>
+                        <span th:text="${os.aparelho}"></span>
+                    </div>
+                    <div class="col-4">
+                        <label class="col-2 col-form-label">Defeito:</label>
+                        <span th:text="${os.defeito}"></span>
+                    </div>
+                    <div class="col-4">
+                        <label class="col-2 col-form-label">Data:</label>
+                        <span th:text="${os.situacao}"></span>
+                    </div>
+
+                </div>  
+                <br />
+                <div class="form-row">
+                    <label th:text="'Servico: ' + ${os.servico}"></label>
+                    <label th:text="'Tecnico: ' + ${os.tecnico}"></label>
+                </div> 
+                <br />
+                <div class="form-row">
+                    <label th:text="'Valor: ' + ${os.valor}"></label>
+                    <label th:text="'Entrada: ' + ${os.entrada}"></label>
+                    <label th:text="'Valor a Pagar: ' + ${os.apagar}"></label>
+                </div> 
+                <br />
+                <div class="form-group">
+                    <label>Responsavel: __________________________________</label>
+                </div>
+            </form>  
+        </div>
+    </body>
+</html>

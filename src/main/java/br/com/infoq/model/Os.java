@@ -18,6 +18,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -50,4 +51,6 @@ public class Os {
     private String tecnico;
     private String situacao;
     private String garantia = "";
+    @Transient
+    private BigDecimal aPagar= BigDecimal.ZERO;
 }

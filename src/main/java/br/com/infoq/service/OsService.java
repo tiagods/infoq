@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import br.com.infoq.exception.OsNotFoundException;
 import br.com.infoq.model.Os;
 import br.com.infoq.repository.OsRepository;
+import java.util.List;
 
 /**
  *
@@ -33,10 +34,10 @@ public class OsService  {
         else throw new OsNotFoundException("Os nao existe");
     }
 
-    public void alterar(Os os, Long id) throws OsNotFoundException {
+    public Os alterar(Os os, Long id) throws OsNotFoundException {
         if(verificarSeExiste(id)){
         	os.setId(id);
-            repository.save(os);
+            return repository.save(os);
         } 
         else throw new OsNotFoundException("Os nao existe"); 
     }
@@ -48,5 +49,9 @@ public class OsService  {
     }
     private boolean verificarSeExiste(Long id){
         return repository.existsById(id);
+    }
+
+    public List<Os> listar() {
+        return repository.findAll();
     }
 }

@@ -270,7 +270,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel5)
                 .addGap(29, 29, 29))
-            .addComponent(desktop, javax.swing.GroupLayout.DEFAULT_SIZE, 679, Short.MAX_VALUE)
+            .addComponent(desktop, javax.swing.GroupLayout.DEFAULT_SIZE, 681, Short.MAX_VALUE)
         );
 
         setSize(new java.awt.Dimension(1163, 732));
@@ -337,11 +337,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        relatorio.imprimirRelatorio(relatorio.pegarResultadoImpressao(), Relatorio.Relatorios.CLIENTES);
+        relatorio.imprimirRelatorio(relatorio.pegarResultadoImpressao(), Relatorio.Relatorios.CLIENTES,false);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        relatorio.imprimirRelatorio(relatorio.pegarResultadoImpressao(), Relatorio.Relatorios.SERVICOS);
+        relatorio.imprimirRelatorio(relatorio.pegarResultadoImpressao(), Relatorio.Relatorios.SERVICOS,true);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

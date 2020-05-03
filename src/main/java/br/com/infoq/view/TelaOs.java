@@ -23,6 +23,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,7 +72,8 @@ public class TelaOs extends javax.swing.JInternalFrame {
                 txtObs.getText().toUpperCase(),
                 txtTecnico.getText().toUpperCase().trim(),
                 cbSituacao.getSelectedItem().toString(),
-                txtGarantia.getText()
+                txtGarantia.getText(),
+                BigDecimal.ZERO
         );
     }
 
@@ -619,12 +622,20 @@ public class TelaOs extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnDeletarActionPerformed
 
     private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirActionPerformed
-        imprimir();
-        limparCampos();
-        btnInserir.setEnabled(true);
-        txtClienteNome.setEnabled(true);
-        tblClientes.setVisible(true);
-        pesquisar_cliente();
+        Optional<Long> result = validarId(txtCodOs.getText());
+        if(result.isPresent()){
+            try {
+                Optional<Os> os = osService.buscarPorId(result.get());
+                imprimir(os.get());
+                limparCampos();
+                btnInserir.setEnabled(true);
+                txtClienteNome.setEnabled(true);
+                tblClientes.setVisible(true);
+                pesquisar_cliente();
+            } catch (OsNotFoundException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
+            }
+        }
     }//GEN-LAST:event_btnImprimirActionPerformed
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
@@ -788,9 +799,9 @@ public class TelaOs extends javax.swing.JInternalFrame {
             txtClienteNome.setEnabled(true);
             tblClientes.setVisible(true);
             try {
-                osService.alterar(osBuilder(id), id.get());
+                Os os = osService.alterar(osBuilder(id), id.get());
                 JOptionPane.showMessageDialog(null, "OS Editada com Sucesso!!");
-                imprimir();
+                imprimir(os);
                 limparCampos();
                 pesquisar_cliente();
             } catch (OsNotFoundException e) {
@@ -822,14 +833,15 @@ public class TelaOs extends javax.swing.JInternalFrame {
     }
 
     @SuppressWarnings("unchecked")
-    private void imprimir() {
+    private void imprimir(Os os) {
         if (txtCodOs.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Pesquise uma OS para Impressao!!");
             return;
         }
         Map p = new HashMap();
         p.put("codigo_os", txtCodOs.getText());
-        rel.imprimir(rel.pegarResultadoImpressao(), p, Relatorio.Relatorios.OS);
+        
+        rel.imprimirOs(rel.pegarResultadoImpressao(), os, Relatorio.Relatorios.CLIENTES);
     }
 
     private void emitir_os() {
@@ -839,7 +851,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
         Os os = osService.adicionar(osBuilder(Optional.empty()));
         JOptionPane.showMessageDialog(null, "OS Salva com Sucesso!!");
         txtCodOs.setText(os.getId() + "");
-        imprimir();
+        imprimir(os);
         limparCampos();
         pesquisar_cliente();
     }

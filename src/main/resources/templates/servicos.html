@@ -8,7 +8,7 @@
         </style>
         <title>Relatório de Serviços</title>
     </head>
-    <body>
+    <body>at br.com.infoq.config.RelatorioTest.main(RelatorioTest.java:213)
         <div class="container">
             <h4 class="text-center">Relatório de Serviços</h4>
             <p class="text-right" th:text="${#dates.format(#dates.createNow(),'dd/MM/yyyy HH:mm')}"></p>    
@@ -29,7 +29,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <th:block th:each="os : ${lista}">
+                    <th:block th:each="os : ${servicos}">
                         <tr>
                             <th th:text="${os.id}" scope="row"></th>
                             <td th:text="${#dates.format(os.data.getTime(),'dd/MM/yyyy HH:mm')}"></td>
@@ -43,9 +43,9 @@
                             <td th:text="${os.valor}"></td>
                         </tr>
                     </th:block>
-                    <th:block th:if="${lista.isEmpty()}">
+                    <th:block th:if="${servicos.isEmpty()}">
                         <tr>
-                            <th scope="row" colspan="10">Não existe dados para impressão</th>
+                            <th class="text-center" scope="row" colspan="10">Não existe dados para impressão</th>
                         </tr>    
                     </th:block>
                 </tbody>

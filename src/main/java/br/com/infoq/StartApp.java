@@ -5,6 +5,7 @@
  */
 package br.com.infoq;
 
+import br.com.infoq.utils.FileUtils;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -21,6 +22,7 @@ import br.com.infoq.view.frmLogin;
 public class StartApp  {
     
     public static void main(String[] args) {
+        FileUtils.backupDatabase();
         ApplicationContext context = new SpringApplicationBuilder(StartApp.class)
                 .web(WebApplicationType.NONE).headless(false).run(args);
         frmLogin login = context.getBean(frmLogin.class);
