@@ -74,12 +74,19 @@
               <Component id="btnDeletar" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace max="32767" attributes="0"/>
+              <Component id="jButton1" min="-2" pref="40" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="135" max="-2" attributes="0"/>
+          </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jLabel7" alignment="0" min="-2" pref="109" max="-2" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
@@ -109,7 +116,7 @@
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace pref="158" max="32767" attributes="0"/>
+              <EmptySpace pref="136" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnInserir" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnBuscar" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -267,7 +274,7 @@
         <Property name="text" type="java.lang.String" value="ADICIONAR"/>
         <Property name="toolTipText" type="java.lang.String" value="Adicionar"/>
         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-          <Color id="Cursor Padr&#xe3;o"/>
+          <Color id="Default Cursor"/>
         </Property>
       </Properties>
       <Events>
@@ -282,7 +289,7 @@
         <Property name="text" type="java.lang.String" value="PESQUISAR"/>
         <Property name="toolTipText" type="java.lang.String" value="Pesquisar"/>
         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-          <Color id="Cursor Padr&#xe3;o"/>
+          <Color id="Default Cursor"/>
         </Property>
       </Properties>
       <Events>
@@ -297,7 +304,7 @@
         <Property name="text" type="java.lang.String" value="EXCLUIR"/>
         <Property name="toolTipText" type="java.lang.String" value="Remover"/>
         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-          <Color id="Cursor Padr&#xe3;o"/>
+          <Color id="Default Cursor"/>
         </Property>
       </Properties>
       <Events>
@@ -312,7 +319,7 @@
         <Property name="text" type="java.lang.String" value="EDITAR"/>
         <Property name="toolTipText" type="java.lang.String" value="Editar"/>
         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-          <Color id="Cursor Padr&#xe3;o"/>
+          <Color id="Default Cursor"/>
         </Property>
       </Properties>
       <Events>
@@ -338,6 +345,16 @@
           <Dimension value="[0, 0]"/>
         </Property>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="jButton1">
+      <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/icons/btn_sair_25_25.png"/>
+        </Property>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

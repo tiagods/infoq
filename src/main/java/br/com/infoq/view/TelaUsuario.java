@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import br.com.infoq.exception.UsuarioNotFoundException;
 import br.com.infoq.model.Usuario;
+import br.com.infoq.service.SwingOptions;
 import br.com.infoq.service.UsuarioService;
 import br.com.infoq.utils.SwingUtils;
 /**
@@ -20,14 +21,12 @@ import br.com.infoq.utils.SwingUtils;
 @Component
 public class TelaUsuario extends javax.swing.JInternalFrame {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = 1L;
     
-    @Autowired
-    private UsuarioService usuarios;
-
+    @Autowired private UsuarioService usuarios;
+    @Autowired private SwingOptions swing;
+    @Autowired private TelaMenu menu;
+    
     public TelaUsuario() {
         initComponents();
         ((javax.swing.plaf.basic.BasicInternalFrameUI)this.getUI()).setNorthPane(null);
@@ -85,7 +84,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
         txtNome = new javax.swing.JTextField();
         txtLogin = new javax.swing.JTextField();
         txtSenha = new javax.swing.JPasswordField();
-        cbPerfil = new javax.swing.JComboBox<>();
+        cbPerfil = new javax.swing.JComboBox<String>();
         jLabel6 = new javax.swing.JLabel();
         btnInserir = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
@@ -93,6 +92,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
         btnEditar = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         txtTel = new javax.swing.JFormattedTextField();
+        jButton1 = new javax.swing.JButton();
 
         setClosable(true);
         setTitle("Usuários");
@@ -149,7 +149,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
         });
 
         cbPerfil.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        cbPerfil.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "user", "admin" }));
+        cbPerfil.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "user", "admin" }));
         cbPerfil.setToolTipText("");
         cbPerfil.setMaximumSize(new java.awt.Dimension(0, 0));
         cbPerfil.addActionListener(new java.awt.event.ActionListener() {
@@ -212,6 +212,13 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
         txtTel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtTel.setMaximumSize(new java.awt.Dimension(0, 0));
 
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/btn_sair_25_25.png"))); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -252,11 +259,17 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
                 .addGap(27, 27, 27)
                 .addComponent(btnDeletar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(135, 135, 135))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(43, 43, 43)
+                .addContainerGap()
+                .addComponent(jButton1)
+                .addGap(4, 4, 4)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
@@ -280,7 +293,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
                             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(cbPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtTel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 158, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 136, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnInserir)
                     .addComponent(btnBuscar)
@@ -328,6 +341,10 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtSenhaActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        swing.abrirTela(menu);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
@@ -335,6 +352,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnInserir;
     private javax.swing.JComboBox<String> cbPerfil;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
