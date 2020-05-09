@@ -67,7 +67,7 @@ public class FileUtils {
                     zipOut.write(bytes, 0, length);
                 }
             }
-            
+          
             apagarAntigos(backupFolder);
         } catch (FileNotFoundException ex) {
             JOptionPane.showMessageDialog(null, "Falha ao gerar backup : "+ex.getMessage());
@@ -92,9 +92,5 @@ public class FileUtils {
                 Files.deleteIfExists(file.toPath());
             }    
         }
-    }
-    
-    public static void main(String[] args) {
-        System.out.println(appDir);
     }
 }

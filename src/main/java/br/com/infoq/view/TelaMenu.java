@@ -5,6 +5,7 @@
  */
 package br.com.infoq.view;
 
+import br.com.infoq.service.SwingOptions;
 import static br.com.infoq.view.TelaPrincipal.desktop;
 import javax.swing.JOptionPane;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,16 +18,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class TelaMenu extends javax.swing.JInternalFrame {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = 1L;
-    @Autowired
-    private TelaOs os;
-    @Autowired
-    private TelaUsuario user;
-    @Autowired
-    private TelaCliente cliente;
+    @Autowired private TelaOs os;
+    @Autowired private TelaUsuario user;
+    @Autowired private TelaCliente cliente;
+    @Autowired private SwingOptions swing;
 
     /**
      * Creates new form TelaMenu
@@ -125,8 +121,7 @@ public class TelaMenu extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_osActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_osActionPerformed
-        TelaPrincipal.desktop.add(os);
-        os.setVisible(true);
+        swing.abrirTela(os);
     }//GEN-LAST:event_btn_osActionPerformed
 
     private void btn_sairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_sairActionPerformed
@@ -137,23 +132,16 @@ public class TelaMenu extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btn_sairActionPerformed
 
     private void btn_usuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_usuariosActionPerformed
-        desktop.removeAll();
-        TelaPrincipal.desktop.add(user);
-        user.setVisible(true);
+        swing.abrirTela(user);
     }//GEN-LAST:event_btn_usuariosActionPerformed
 
     private void btn_clientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_clientesActionPerformed
-        desktop.removeAll();
-        TelaPrincipal.desktop.add(cliente);
-        cliente.setVisible(true);
+        swing.abrirTela(cliente);
     }//GEN-LAST:event_btn_clientesActionPerformed
 
     private void btn_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscarActionPerformed
-        desktop.removeAll();
-        TelaPrincipal.desktop.add(os);
-        os.setVisible(true);
+        swing.abrirTela(os);
     }//GEN-LAST:event_btn_buscarActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_buscar;

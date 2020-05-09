@@ -20,8 +20,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UsuarioService  {
     
-    @Autowired
-    private UsuarioRepository repository;
+    @Autowired private UsuarioRepository repository;
     
     public Usuario validarLoginESenha(String login, String senha) throws UsuarioInvalidCredentialsException{
         Optional<Usuario> user = repository.findByLoginIgnoreCaseAndSenhaIgnoreCase(login, senha);

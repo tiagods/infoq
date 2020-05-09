@@ -18,16 +18,12 @@ import br.com.infoq.utils.Validator;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 /**
@@ -747,7 +743,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
 
     public void pesquisar_cliente() {
         SwingUtils.limparTabela(tblClientes);
-        List<Cliente> lista = txtClienteNome.getText().trim().equals("") ? clientes.listar() : clientes.buscarClientePorNome(txtClienteNome.getText());
+        List<Cliente> lista = txtClienteNome.getText().trim().equals("") ? clientes.listar(Sort.Direction.DESC, "id"): clientes.buscarClientePorNome(txtClienteNome.getText());
         DefaultTableModel dm = (DefaultTableModel)tblClientes.getModel();
         lista.forEach(c->dm.addRow(new Object[]{c.getId(),c.getNome(),c.getEndereco(),c.getFone(), c.getEmail()}));
     }
@@ -774,7 +770,6 @@ public class TelaOs extends javax.swing.JInternalFrame {
             }
             BigDecimal valor = os.getValor();
             BigDecimal entrada = os.getEntrada();
-
             cbSituacao.setSelectedItem(os.getSituacao());
             txtAparelho.setText(os.getAparelho());
             txtDefeito.setText(os.getDefeito());
@@ -787,7 +782,6 @@ public class TelaOs extends javax.swing.JInternalFrame {
             txtGarantia.setText(os.getGarantia());
             btnInserir.setEnabled(false);
             txtClienteNome.setEnabled(false);
-
             BigDecimal total = valor.subtract(entrada).setScale(2, RoundingMode.UP);
             txtTotal.setText("RS " + total.toString().replace(".", ","));
         } catch (OsNotFoundException e) {

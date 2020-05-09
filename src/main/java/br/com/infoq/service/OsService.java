@@ -11,9 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.infoq.exception.OsNotFoundException;
+import br.com.infoq.model.Cliente;
 import br.com.infoq.model.Os;
 import br.com.infoq.repository.OsRepository;
 import java.util.List;
+import org.springframework.data.domain.Sort;
 
 /**
  *
@@ -22,8 +24,7 @@ import java.util.List;
 @Service
 public class OsService  {
     
-    @Autowired
-    private OsRepository repository;
+    @Autowired private OsRepository repository;
 
     public Os adicionar(Os os) {
         return repository.save(os);
@@ -51,7 +52,12 @@ public class OsService  {
         return repository.existsById(id);
     }
 
-    public List<Os> listar() {
+    private List<Os> listar() {
         return repository.findAll();
     }
+    
+    public List<Os> listar(Sort.Direction direction, String properties){
+        return repository.findAll(Sort.by(direction, properties));
+    }
+
 }

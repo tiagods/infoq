@@ -14,48 +14,60 @@ import org.springframework.stereotype.Service;
 import br.com.infoq.exception.ClienteNotFoundException;
 import br.com.infoq.model.Cliente;
 import br.com.infoq.repository.ClienteRepository;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 
 /**
  *
  * @author tiagods
  */
 @Service
-public class ClienteService  {
-    
-    @Autowired
-    private ClienteRepository repository;
+public class ClienteService {
+
+    @Autowired private ClienteRepository repository;
 
     public Cliente adicionar(Cliente cliente) {
         return repository.save(cliente);
     }
 
-    public List<Cliente> listar(){
+    private List<Cliente> listar() {
         return repository.findAll();
     }
     
+    public List<Cliente> listar(Sort.Direction direction, String properties){
+        return repository.findAll(Sort.by(direction, properties));
+    }
+
     public Optional<Cliente> buscarPorId(long id) throws ClienteNotFoundException {
-        if(verificarSeExiste(id)) return repository.findById(id);
-        else throw new ClienteNotFoundException("Cliente nao existe");
+        if (verificarSeExiste(id)) {
+            return repository.findById(id);
+        } else {
+            throw new ClienteNotFoundException("Cliente nao existe");
+        }
     }
 
     public void alterar(Cliente cliente, Long id) throws ClienteNotFoundException {
-        if(verificarSeExiste(id)){
-        	cliente.setId(id);
+        if (verificarSeExiste(id)) {
+            cliente.setId(id);
             repository.save(cliente);
-        } 
-        else throw new ClienteNotFoundException("Cliente nao existe"); 
+        } else {
+            throw new ClienteNotFoundException("Cliente nao existe");
+        }
     }
 
     public void deletar(Long id) throws ClienteNotFoundException {
-        if(verificarSeExiste(id)) 
+        if (verificarSeExiste(id)) {
             repository.deleteById(id);
-        else throw new ClienteNotFoundException("Cliente nao existe"); 
+        } else {
+            throw new ClienteNotFoundException("Cliente nao existe");
+        }
     }
-    private boolean verificarSeExiste(Long id){
+
+    private boolean verificarSeExiste(Long id) {
         return repository.existsById(id);
     }
 
-	public List<Cliente> buscarClientePorNome(String name) {
-		return repository.findAllByNomeIgnoreCaseStartsWith(name);
-	}
+    public List<Cliente> buscarClientePorNome(String name) {
+        return repository.findAllByNomeIgnoreCaseStartsWith(name);
+    }
 }

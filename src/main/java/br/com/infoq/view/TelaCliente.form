@@ -134,7 +134,7 @@
                       <Component id="jScrollPane1" min="-2" pref="887" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace pref="31" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -279,7 +279,7 @@
         <Property name="text" type="java.lang.String" value="ADICIONAR"/>
         <Property name="toolTipText" type="java.lang.String" value="Adicionar"/>
         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-          <Color id="Cursor Padr&#xe3;o"/>
+          <Color id="Default Cursor"/>
         </Property>
       </Properties>
       <Events>
@@ -297,7 +297,7 @@
         <Property name="text" type="java.lang.String" value="EXCLUIR"/>
         <Property name="toolTipText" type="java.lang.String" value="Remover"/>
         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-          <Color id="Cursor Padr&#xe3;o"/>
+          <Color id="Default Cursor"/>
         </Property>
       </Properties>
       <Events>
@@ -315,7 +315,7 @@
         <Property name="text" type="java.lang.String" value="EDITAR"/>
         <Property name="toolTipText" type="java.lang.String" value="Alterar"/>
         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-          <Color id="Cursor Padr&#xe3;o"/>
+          <Color id="Default Cursor"/>
         </Property>
       </Properties>
       <Events>
@@ -365,7 +365,7 @@
           <Image iconType="3" name="/icons/buscar pequeno.png"/>
         </Property>
         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-          <Color id="Cursor Padr&#xe3;o"/>
+          <Color id="Default Cursor"/>
         </Property>
       </Properties>
       <Events>

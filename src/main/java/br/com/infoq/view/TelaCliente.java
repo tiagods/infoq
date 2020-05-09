@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 /**
@@ -572,7 +573,7 @@ public class TelaCliente extends javax.swing.JInternalFrame {
 
     public void consultar() {
         SwingUtils.limparTabela(tblClientes);
-        List<Cliente> lista = txtBuscar.getText().trim().equals("")? clientes.listar() : clientes.buscarClientePorNome(txtBuscar.getText());
+        List<Cliente> lista = txtBuscar.getText().trim().equals("")? clientes.listar(Sort.Direction.DESC, "id") : clientes.buscarClientePorNome(txtBuscar.getText());
         DefaultTableModel dm = (DefaultTableModel)tblClientes.getModel();
         lista.forEach(c->dm.addRow(new Object[]{c.getId(),c.getNome(),c.getEndereco(),c.getFone(), c.getEmail()}));
     }

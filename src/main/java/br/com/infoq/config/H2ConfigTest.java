@@ -21,10 +21,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableJpaRepositories(basePackages = "br.com.infoq.repository")
 @EnableTransactionManagement
 @Profile("dev")
-public
-class H2ConfigTest{
-    @Autowired
-    private Environment env;
+public class H2ConfigTest{
+    
+    @Autowired private Environment env;
 
     @Bean
     public DataSource dataSource() {

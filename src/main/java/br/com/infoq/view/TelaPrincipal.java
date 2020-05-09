@@ -5,6 +5,8 @@
  */
 package br.com.infoq.view;
 
+import br.com.infoq.service.SwingOptions;
+import br.com.infoq.utils.DateUtil;
 import br.com.infoq.utils.Relatorio;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -12,6 +14,7 @@ import java.util.Date;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,21 +23,18 @@ import org.springframework.stereotype.Component;
  * @author hugov, tiagods
  */
 @Component
+@Slf4j
 public class TelaPrincipal extends javax.swing.JFrame {
     /**
     * 
     */
     private static final long serialVersionUID = 1L;
-    @Autowired
-    private TelaSobre sobre;
-    @Autowired
-    private TelaUsuario usuario;
-    @Autowired
-    private TelaCliente cliente;
-    @Autowired
-    private TelaOs os;
-    @Autowired    
-    Relatorio relatorio;
+    @Autowired private TelaSobre sobre;
+    @Autowired private TelaUsuario usuario;
+    @Autowired private TelaCliente cliente;
+    @Autowired private TelaOs os;
+    @Autowired private Relatorio relatorio;
+    @Autowired private SwingOptions swing;
     
     public TelaPrincipal() {
         initComponents();
@@ -254,7 +254,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(59, 59, 59)
                         .addComponent(lblUsuario)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel2)
@@ -270,7 +270,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel5)
                 .addGap(29, 29, 29))
-            .addComponent(desktop, javax.swing.GroupLayout.DEFAULT_SIZE, 681, Short.MAX_VALUE)
+            .addComponent(desktop, javax.swing.GroupLayout.DEFAULT_SIZE, 677, Short.MAX_VALUE)
         );
 
         setSize(new java.awt.Dimension(1163, 732));
@@ -278,22 +278,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-        DateFormat formatador = DateFormat.getDateInstance(DateFormat.ERA_FIELD);
-        SimpleDateFormat sdh = new SimpleDateFormat("HH:mm:ss");
-        
-        Runnable run = () ->{
-           while(true){
-               Date date = new Date();
-               lblData.setText(formatador.format(date));   
-               lblHora.setText(sdh.format(date));
-               try {    
-                   Thread.sleep(1000);
-               } catch (InterruptedException ex) {
-                   ex.printStackTrace();
-               }
-           }
-        };
-        new Thread(run).start();
+        swing.timeForever(lblData, lblHora);
     }//GEN-LAST:event_formWindowActivated
 
     private void menuSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSairActionPerformed
@@ -312,29 +297,21 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_menuSobreActionPerformed
 
     private void menuCadUsuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadUsuActionPerformed
-       desktop.removeAll();
-       desktop.add(usuario);
-       usuario.setVisible(true);
+       swing.abrirTela(usuario);
     }//GEN-LAST:event_menuCadUsuActionPerformed
 
     private void menuCadCliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadCliActionPerformed
-       desktop.removeAll();
-       desktop.add(cliente);
-       cliente.setVisible(true);
+       swing.abrirTela(cliente);
        cliente.consultar();
     }//GEN-LAST:event_menuCadCliActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-       desktop.removeAll();
-       desktop.add(os);
-       os.setVisible(true); 
+       swing.abrirTela(os);
        os.pesquisar_cliente();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-       // TelaMenu menu = new TelaMenu();
-        //desktop.add(menu);
-       // menu.setVisible(true);
+
     }//GEN-LAST:event_formWindowOpened
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed

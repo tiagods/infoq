@@ -35,7 +35,7 @@ public class SwingUtils {
         });
 
     }
-
+    
     public static void limpar(Component c) {
         if (c instanceof JTextField) {
             ((JTextField) c).setText(clean);

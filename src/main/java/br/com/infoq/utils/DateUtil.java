@@ -5,6 +5,7 @@
  */
 package br.com.infoq.utils;
 
+import java.text.DateFormat;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
@@ -13,12 +14,26 @@ import java.text.SimpleDateFormat;
  * @author tiagods
  */
 public class DateUtil {
+    
+    public enum Pattern {
+        DDMMYYY("dd/MM/yyyy"), 
+        DDMMYYHHSS("dd/MM/yyyy HH:mm:ss");
+        private String pattern;
+        Pattern(String pattern){
+            this.pattern = pattern;
+        }
+        public String getPattern() {
+            return this.pattern;
+        }
+    }
     public static String formatarData(Date data, String pattern){
-        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-        return sdf.format(data);
+        return new SimpleDateFormat(pattern).format(data);
     }
     public static String formatarData(Date data){
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        return sdf.format(data);
+        return formatarData(data, "dd/MM/yyyy");
+    }
+    
+    public static String formatarData(Date date, int field){
+        return DateFormat.getDateInstance(field).format(date);
     }
 }

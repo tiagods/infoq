@@ -17,16 +17,13 @@ import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import java.awt.Desktop;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.nio.file.Files;
 import java.util.List;
-import java.util.function.Function;
 import static java.util.stream.Collectors.toList;
 import javax.swing.JOptionPane;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -36,24 +33,18 @@ import org.thymeleaf.context.Context;
  * @author tiagods
  */
 @Component
+@Slf4j
 public class Relatorio {
     
-    @Autowired
-    private TemplateEngine templateEngine;
-    
-    @Autowired
-    private ClienteService clientes;
-    
-    @Autowired
-    private OsService os;
-    
-    @Autowired
-    private UsuarioService usuarios;
+    @Autowired private TemplateEngine templateEngine;
+    @Autowired private ClienteService clientes;
+    @Autowired private OsService os;
+    @Autowired private UsuarioService usuarios;
 
     private Context getContext(Relatorios relEnum) {
         Context context = new Context();
         if(relEnum.equals(Relatorios.CLIENTES)){
-            List<Cliente> list = clientes.listar()
+            List<Cliente> list = clientes.listar(Direction.ASC, "id")
                     .stream()
                     .map(cli->{
                         StringBuilder st = new StringBuilder();
@@ -66,7 +57,7 @@ public class Relatorio {
             context.setVariable(relEnum.getValor(), list);
         }
         else{
-            List<Os> list = os.listar()
+            List<Os> list = os.listar(Direction.DESC, "id")
                     .stream()
                     .map(c-> {c.setPagar(c.getValor().subtract(c.getEntrada())); return c;})
                     .collect(toList());
@@ -84,13 +75,19 @@ public class Relatorio {
 
     public void imprimirRelatorio(int result, Relatorios relEnum, boolean rotate) {
         if (result == JOptionPane.YES_OPTION) {
-            try {
-                Context context = getContext(relEnum);
-                File pdf = htmlToPdf(context, relEnum.getValor(), relEnum.getValor(), rotate);
-                Desktop.getDesktop().open(pdf);
-            } catch (IOException ex) {
-                   JOptionPane.showMessageDialog(null, ex.getMessage());
-            }     
+            Runnable run = ()->{
+                try {
+                    Context context = getContext(relEnum);
+                    File pdf = htmlToPdf(context, relEnum.getValor(), relEnum.getValor(), rotate);
+                    Thread.sleep(3000);
+                    Desktop.getDesktop().open(pdf);
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage());
+                } catch (InterruptedException ex) {
+                    log.error(ex.getMessage());
+                }    
+            };
+            new Thread(run).start();
         }
     }
     

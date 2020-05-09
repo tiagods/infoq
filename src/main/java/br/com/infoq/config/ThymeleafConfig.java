@@ -6,6 +6,7 @@
 package br.com.infoq.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
@@ -15,6 +16,7 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
  *
  * @author tiago
  */
+@Configuration
 public class ThymeleafConfig {
     
     @Bean

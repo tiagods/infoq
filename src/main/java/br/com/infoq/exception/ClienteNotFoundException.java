@@ -9,7 +9,7 @@ package br.com.infoq.exception;
  *
  * @author tiagods
  */
-public class ClienteNotFoundException extends Exception{
+public class ClienteNotFoundException extends Exception {
     public ClienteNotFoundException(String message){
         super(message);
     }

@@ -9,7 +9,7 @@ package br.com.infoq.exception;
  *
  * @author tiagods
  */
-public class OsNotFoundException extends Exception{
+public class OsNotFoundException extends Exception {
     public OsNotFoundException(String message){
         super(message);
     }

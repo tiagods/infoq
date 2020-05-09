@@ -9,7 +9,7 @@ package br.com.infoq.exception;
  *
  * @author tiagods
  */
-public class UsuarioNotFoundException extends Exception{
+public class UsuarioNotFoundException extends Exception {
     public UsuarioNotFoundException(String message){
         super(message);
     }

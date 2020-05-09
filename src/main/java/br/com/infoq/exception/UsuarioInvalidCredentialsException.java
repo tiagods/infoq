@@ -9,7 +9,7 @@ package br.com.infoq.exception;
  *
  * @author tiagods
  */
-public class UsuarioInvalidCredentialsException extends Exception{
+public class UsuarioInvalidCredentialsException extends Exception {
     public UsuarioInvalidCredentialsException(String message){
         super(message);
     }
