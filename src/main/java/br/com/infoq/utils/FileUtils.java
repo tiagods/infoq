@@ -12,6 +12,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -49,23 +50,23 @@ public class FileUtils {
         FileInputStream fis = null;
         try {
             String sourceFile = "data/db.mv.db";
-            
-            
+            if(!Files.exists(Paths.get(sourceFile))) return;
             File backupFolder = new File("backup");
             if(!Files.exists(backupFolder.toPath())) Files.createDirectory(backupFolder.toPath());
-            
             fos = new FileOutputStream(arquivoTemporario(backupFolder.getAbsolutePath(), "db", "zip"));
             
-            ZipOutputStream zipOut = new ZipOutputStream(fos);
-            File fileToZip = new File(sourceFile);
-            fis = new FileInputStream(fileToZip);
-            ZipEntry zipEntry = new ZipEntry(fileToZip.getName());
-            zipOut.putNextEntry(zipEntry);
-            byte[] bytes = new byte[1024];
-            int length;
-            while((length = fis.read(bytes)) >= 0) {
-                zipOut.write(bytes, 0, length);
-            }   zipOut.close();
+            try (ZipOutputStream zipOut = new ZipOutputStream(fos)) {
+                File fileToZip = new File(sourceFile);
+                fis = new FileInputStream(fileToZip);
+                ZipEntry zipEntry = new ZipEntry(fileToZip.getName());
+                zipOut.putNextEntry(zipEntry);
+                byte[] bytes = new byte[1024];
+                int length;
+                
+                while((length = fis.read(bytes)) >= 0) {
+                    zipOut.write(bytes, 0, length);
+                }
+            }
             
             apagarAntigos(backupFolder);
         } catch (FileNotFoundException ex) {
