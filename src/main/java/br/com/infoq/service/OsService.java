@@ -14,6 +14,7 @@ import br.com.infoq.exception.OsNotFoundException;
 import br.com.infoq.model.Cliente;
 import br.com.infoq.model.Os;
 import br.com.infoq.repository.OsRepository;
+import java.util.Collection;
 import java.util.List;
 import org.springframework.data.domain.Sort;
 
@@ -59,5 +60,19 @@ public class OsService  {
     public List<Os> listar(Sort.Direction direction, String properties){
         return repository.findAll(Sort.by(direction, properties));
     }
+
+    public List<Os> buscarPorAparelho(String aparelho) {
+        return repository.findAllByAparelhoIgnoreCaseContaining(aparelho);
+    }
+
+    public List<Os> buscarPorIdComecaPor(Long id) {
+        return repository.findAllByIdContaining(id);
+    }
+
+    public List<Os> buscarPorClienteNome(String cliNome) {
+        return repository.findAllByClienteNomeIgnoreCaseContaining(cliNome);
+    }
+    
+    
 
 }

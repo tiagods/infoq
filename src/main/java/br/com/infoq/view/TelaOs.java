@@ -18,6 +18,7 @@ import br.com.infoq.utils.SwingUtils;
 import br.com.infoq.utils.Validator;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
@@ -129,7 +130,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         jLabel3 = new javax.swing.JLabel();
-        cbSituacao = new javax.swing.JComboBox<String>();
+        cbSituacao = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
         txtClienteNome = new javax.swing.JTextField();
         txtClienteCodigo = new javax.swing.JTextField();
@@ -169,10 +170,10 @@ public class TelaOs extends javax.swing.JInternalFrame {
         rbgarantia = new javax.swing.JRadioButton();
         jPanel3 = new javax.swing.JPanel();
         txPesquisarOs = new javax.swing.JTextField();
-        jLabel15 = new javax.swing.JLabel();
+        lblPesquisarOs = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tbOs = new javax.swing.JTable();
-        cbBuscarTipo = new javax.swing.JComboBox<String>();
+        cbBuscarTipo = new javax.swing.JComboBox<>();
         jLabel16 = new javax.swing.JLabel();
 
         setClosable(true);
@@ -198,7 +199,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
         jLabel3.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel3.setText("SITUAÇÃO:");
 
-        cbSituacao.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "NA BANCADA", "ENTREGA FEIRA", "ORÇAMENTO REPROVADO", "AGUARDANDO APROVAÇÃO", "AGUARDANDO PEÇA", "ABANDOANDO PELO CLIENTE", "RETORNOU", "ESTÁ PRONTO, AVISAR CLIENTE", "SEM CONSERTO", " ", " " }));
+        cbSituacao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "NA BANCADA", "ENTREGA FEIRA", "ORÇAMENTO REPROVADO", "AGUARDANDO APROVAÇÃO", "AGUARDANDO PEÇA", "ABANDOANDO PELO CLIENTE", "RETORNOU", "ESTÁ PRONTO, AVISAR CLIENTE", "SEM CONSERTO", " ", " " }));
         cbSituacao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbSituacaoActionPerformed(evt);
@@ -237,11 +238,11 @@ public class TelaOs extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "NOME", "TELEFONE", "CELULAR"
+                "ID", "NOME", "TELEFONE", "CELULAR"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -287,7 +288,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
                     .addComponent(jLabel4)
                     .addComponent(txtClienteNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -455,12 +456,12 @@ public class TelaOs extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/busca 25x25.png"))); // NOI18N
-        jLabel15.setToolTipText("Buscar OS");
-        jLabel15.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jLabel15.addMouseListener(new java.awt.event.MouseAdapter() {
+        lblPesquisarOs.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/busca 25x25.png"))); // NOI18N
+        lblPesquisarOs.setToolTipText("Buscar OS");
+        lblPesquisarOs.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        lblPesquisarOs.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel15MouseClicked(evt);
+                lblPesquisarOsMouseClicked(evt);
             }
         });
 
@@ -491,7 +492,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
             tbOs.getColumnModel().getColumn(0).setPreferredWidth(2);
         }
 
-        cbBuscarTipo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "CODIGO OS", "NOME CLIENTE", "APARELHO" }));
+        cbBuscarTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CODIGO OS", "NOME CLIENTE", "APARELHO" }));
         cbBuscarTipo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbBuscarTipoActionPerformed(evt);
@@ -510,20 +511,20 @@ public class TelaOs extends javax.swing.JInternalFrame {
                         .addComponent(txPesquisarOs, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cbBuscarTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
-                        .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                        .addComponent(lblPesquisarOs, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel15)
+                    .addComponent(lblPesquisarOs)
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txPesquisarOs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(cbBuscarTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -544,7 +545,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 453, Short.MAX_VALUE)))
+                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 473, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(90, 90, 90)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -770,9 +771,9 @@ public class TelaOs extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txPesquisarOsKeyReleased
 
-    private void jLabel15MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel15MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel15MouseClicked
+    private void lblPesquisarOsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblPesquisarOsMouseClicked
+         pesquisarOs();
+    }//GEN-LAST:event_lblPesquisarOsMouseClicked
 
     private void tbOsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbOsMouseClicked
         setarCampos();
@@ -802,7 +803,6 @@ public class TelaOs extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -817,6 +817,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel lblPesquisarOs;
     private javax.swing.JRadioButton rbgarantia;
     private javax.swing.JRadioButton rbos;
     private javax.swing.JTable tbOs;
@@ -841,25 +842,43 @@ public class TelaOs extends javax.swing.JInternalFrame {
         SwingUtils.limparTabela(tblClientes);
         List<Cliente> lista = txtClienteNome.getText().trim().equals("") ? clientes.listar(Sort.Direction.DESC, "id"): clientes.buscarClientePorNome(txtClienteNome.getText());
         DefaultTableModel dm = (DefaultTableModel)tblClientes.getModel();
-        lista.forEach(c->dm.addRow(new Object[]{c.getNome(),c.getEndereco(),c.getFone(), c.getEmail()}));
+        lista.forEach(c->dm.addRow(new Object[]{c.getId(), c.getNome(), c.getEndereco(), c.getFone(), c.getEmail()}));
     }
     
     public void pesquisarOs(){
         
+        List<Os> lista = new ArrayList<>();
+        switch(cbBuscarTipo.getSelectedItem().toString()){
+            case "APARELHO":
+                lista.addAll(osService.buscarPorAparelho(txPesquisarOs.getText()));
+                break;
+            case "NOME CLIENTE":
+                lista.addAll(osService.buscarPorClienteNome(txPesquisarOs.getText()));
+                break;
+            default:
+                Optional<Long> value = validarId(txPesquisarOs.getText().trim());
+                if(value.isPresent()){
+                    lista.addAll(osService.buscarPorIdComecaPor(value.get()));
+                }
+                break;
+        }
+        DefaultTableModel dm = (DefaultTableModel)tblClientes.getModel();
+        lista.forEach(c->dm.addRow(new Object[]{c.getId(), c.getAparelho(), c.getSituacao(), c.getCliente().getNome()}));
     }
 
     private void setarCamposCliente() {
         int setar = tblClientes.getSelectedRow();
-        txtClienteCodigo.setText(tblClientes.getModel().getValueAt(setar, 0).toString());
+        txtClienteCodigo.setText(setar == -1? "": tblClientes.getModel().getValueAt(setar, 0).toString());
     }
     
     private void setarCampos() {
-        String num_os = JOptionPane.showInputDialog("Numero da OS");
-        Optional<Long> result = validarId(num_os);
+        int setar = tbOs.getSelectedRow();
+        if(setar>=-1) return;
+        
+        Optional<Long> result = validarId(tbOs.getModel().getValueAt(setar, 0).toString());
         if (!result.isPresent()) {
             return;
         }
-
         try {
             Optional<Os> opt = osService.buscarPorId(result.get());
             Os os = opt.get();
