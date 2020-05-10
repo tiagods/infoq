@@ -9,6 +9,7 @@ import br.com.infoq.exception.UsuarioInvalidCredentialsException;
 import br.com.infoq.exception.UsuarioNotFoundException;
 import br.com.infoq.model.Usuario;
 import br.com.infoq.repository.UsuarioRepository;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,10 +42,10 @@ public class UsuarioService  {
         else throw new UsuarioNotFoundException("Usuario nao existe");
     }
 
-    public void alterar(Usuario usuario, Long id) throws UsuarioNotFoundException {
+    public Usuario alterar(Usuario usuario, Long id) throws UsuarioNotFoundException {
         if(verificarSeExiste(id)){
             usuario.setId(id);
-            repository.save(usuario);
+            return repository.save(usuario);
         } 
         else throw new UsuarioNotFoundException("Usuario nao existe"); 
     }
@@ -56,5 +57,13 @@ public class UsuarioService  {
     }
     private boolean verificarSeExiste(Long id){
         return repository.existsById(id);
+    }
+
+    public List<Usuario> listar() {
+        return repository.findAll();
+    }
+
+    public List<Usuario> buscarPorNome(String nome) {
+        return repository.findAllByUsuarioIgnoreCaseContaining(nome);
     }
 }

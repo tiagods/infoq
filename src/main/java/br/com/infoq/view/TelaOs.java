@@ -1,11 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.infoq.view;
 
 import br.com.infoq.exception.ClienteNotFoundException;
+import br.com.infoq.exception.IdIncorretoException;
 import br.com.infoq.exception.OsNotFoundException;
 import br.com.infoq.model.Cliente;
 import br.com.infoq.model.Os;
@@ -22,10 +18,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 /**
@@ -35,21 +32,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class TelaOs extends javax.swing.JInternalFrame {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = 1L;
     @Autowired private Relatorio rel;
     @Autowired private OsService osService;
     @Autowired private ClienteService clientes;
     @Autowired private SwingOptions swing;
-    @Autowired private TelaMenu menu;
     
     private String Tipo;
 
-    /**
-     * Creates new form TelaOs
-     */
     public TelaOs() {
         initComponents();
         ((javax.swing.plaf.basic.BasicInternalFrameUI)this.getUI()).setNorthPane(null);
@@ -107,14 +97,14 @@ public class TelaOs extends javax.swing.JInternalFrame {
         return true;
     }
 
-    private Optional<Long> validarId(String value) {
+    private Optional<Long> validarId(String value) throws IdIncorretoException {
+        if(value.trim().length()==0) return Optional.empty();
         try {
             Long id = Long.parseLong(value.trim());
             return Optional.of(id);
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Campo id incorreto ou nao informado");
+            throw new IdIncorretoException("Campo id incorreto");
         }
-        return Optional.empty();
     }
 
     private void limparCampos() {
@@ -147,8 +137,8 @@ public class TelaOs extends javax.swing.JInternalFrame {
         txtServico = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        btnInserir = new javax.swing.JButton();
-        btnEditar = new javax.swing.JButton();
+        btnNovo = new javax.swing.JButton();
+        btnSalvar = new javax.swing.JButton();
         btnDeletar = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
         btnImprimir = new javax.swing.JButton();
@@ -288,7 +278,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
                     .addComponent(jLabel4)
                     .addComponent(txtClienteNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -317,23 +307,23 @@ public class TelaOs extends javax.swing.JInternalFrame {
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel9.setText("TÉCNICO:");
 
-        btnInserir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/inserir.png"))); // NOI18N
-        btnInserir.setText("ADICIONAR");
-        btnInserir.setToolTipText("Adicionar");
-        btnInserir.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        btnInserir.addActionListener(new java.awt.event.ActionListener() {
+        btnNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/inserir.png"))); // NOI18N
+        btnNovo.setText("Novo");
+        btnNovo.setToolTipText("Novo");
+        btnNovo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnNovo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnInserirActionPerformed(evt);
+                btnNovoActionPerformed(evt);
             }
         });
 
-        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/editar.png"))); // NOI18N
-        btnEditar.setText("EDITAR");
-        btnEditar.setToolTipText("Editar");
-        btnEditar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+        btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/salvar.png"))); // NOI18N
+        btnSalvar.setText("SALVAR");
+        btnSalvar.setToolTipText("Salvar");
+        btnSalvar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditarActionPerformed(evt);
+                btnSalvarActionPerformed(evt);
             }
         });
 
@@ -524,7 +514,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
                         .addComponent(txPesquisarOs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(cbBuscarTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -595,26 +585,26 @@ public class TelaOs extends javax.swing.JInternalFrame {
                                                 .addComponent(txtTecnico, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
                                                 .addComponent(txtData, javax.swing.GroupLayout.Alignment.TRAILING))))))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnInserir)
-                                .addGap(30, 30, 30)
-                                .addComponent(btnEditar)
-                                .addGap(26, 26, 26)
+                                .addComponent(btnNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(33, 33, 33)
+                                .addComponent(btnSalvar)
+                                .addGap(36, 36, 36)
                                 .addComponent(btnDeletar)
-                                .addGap(30, 30, 30)
+                                .addGap(38, 38, 38)
                                 .addComponent(btnImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 12, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE))
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -666,14 +656,14 @@ public class TelaOs extends javax.swing.JInternalFrame {
                         .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel11)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 90, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnDeletar)
                         .addComponent(btnImprimir))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnEditar)
-                        .addComponent(btnInserir)))
+                        .addComponent(btnSalvar)
+                        .addComponent(btnNovo)))
                 .addGap(27, 27, 27))
         );
 
@@ -683,33 +673,33 @@ public class TelaOs extends javax.swing.JInternalFrame {
         setBounds(0, 0, 939, 685);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
-        emitirOs();
-    }//GEN-LAST:event_btnInserirActionPerformed
+    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+        limparCampos();
+    }//GEN-LAST:event_btnNovoActionPerformed
 
-    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        alterar();
-    }//GEN-LAST:event_btnEditarActionPerformed
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        salvar();
+    }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnDeletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeletarActionPerformed
         excluir();
     }//GEN-LAST:event_btnDeletarActionPerformed
 
     private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirActionPerformed
-        Optional<Long> result = validarId(txtCodOs.getText());
-        if(result.isPresent()){
-            try {
-                Optional<Os> os = osService.buscarPorId(result.get());
-                imprimir(os.get());
-                limparCampos();
-                btnInserir.setEnabled(true);
-                txtClienteNome.setEnabled(true);
-                tblClientes.setVisible(true);
-                pesquisarCliente();
-            } catch (OsNotFoundException ex) {
-                JOptionPane.showMessageDialog(null, ex.getMessage());
+        try {
+            Optional<Long> result = validarId(txtCodOs.getText());
+            if(result.isPresent()){
+                try {
+                    Optional<Os> os = osService.buscarPorId(result.get());
+                    imprimir(os.get());
+                } catch (OsNotFoundException ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage());
+                }
             }
+        } catch (IdIncorretoException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
         }
+        
     }//GEN-LAST:event_btnImprimirActionPerformed
 
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
@@ -764,19 +754,19 @@ public class TelaOs extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtValorActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        swing.abrirTela(menu);
+        swing.abrirTelaMenu();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void txPesquisarOsKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txPesquisarOsKeyReleased
-        // TODO add your handling code here:
+        pesquisarOs();
     }//GEN-LAST:event_txPesquisarOsKeyReleased
 
     private void lblPesquisarOsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblPesquisarOsMouseClicked
-         pesquisarOs();
+        pesquisarOs();
     }//GEN-LAST:event_lblPesquisarOsMouseClicked
 
     private void tbOsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbOsMouseClicked
-        setarCampos();
+        setarCamposOs();
     }//GEN-LAST:event_tbOsMouseClicked
 
     private void txPesquisarOsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txPesquisarOsActionPerformed
@@ -790,9 +780,9 @@ public class TelaOs extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDeletar;
-    private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnImprimir;
-    private javax.swing.JButton btnInserir;
+    private javax.swing.JButton btnNovo;
+    private javax.swing.JButton btnSalvar;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox<String> cbBuscarTipo;
     private javax.swing.JComboBox<String> cbSituacao;
@@ -840,49 +830,67 @@ public class TelaOs extends javax.swing.JInternalFrame {
 
     public void pesquisarCliente() {
         SwingUtils.limparTabela(tblClientes);
-        List<Cliente> lista = txtClienteNome.getText().trim().equals("") ? clientes.listar(Sort.Direction.DESC, "id"): clientes.buscarClientePorNome(txtClienteNome.getText());
+        List<Cliente> lista = txtClienteNome.getText().trim().equals("") ? clientes.listarTop100() : clientes.buscarClientePorNome(txtClienteNome.getText());
         DefaultTableModel dm = (DefaultTableModel)tblClientes.getModel();
         lista.forEach(c->dm.addRow(new Object[]{c.getId(), c.getNome(), c.getEndereco(), c.getFone(), c.getEmail()}));
     }
     
     public void pesquisarOs(){
-        
+        SwingUtils.limparTabela(tbOs);
         List<Os> lista = new ArrayList<>();
-        switch(cbBuscarTipo.getSelectedItem().toString()){
-            case "APARELHO":
-                lista.addAll(osService.buscarPorAparelho(txPesquisarOs.getText()));
-                break;
-            case "NOME CLIENTE":
-                lista.addAll(osService.buscarPorClienteNome(txPesquisarOs.getText()));
-                break;
-            default:
-                Optional<Long> value = validarId(txPesquisarOs.getText().trim());
-                if(value.isPresent()){
-                    lista.addAll(osService.buscarPorIdComecaPor(value.get()));
-                }
-                break;
+        if(txPesquisarOs.getText().trim().length()>0){
+            switch(cbBuscarTipo.getSelectedItem().toString()){
+                case "APARELHO":
+                    lista.addAll(osService.buscarPorAparelho(txPesquisarOs.getText()));
+                    break;
+                case "CODIGO OS":
+                    try {
+                        Optional<Long> value = validarId(txPesquisarOs.getText().trim());
+                        if(value.isPresent()){
+                            lista.addAll(osService.buscarPorIdComecaPor(value.get()));
+                        }
+                    } catch (IdIncorretoException ex) {
+                        JOptionPane.showMessageDialog(null, ex.getMessage());
+                    }
+                    break;
+                case "NOME CLIENTE":
+                    lista.addAll(osService.buscarPorClienteNome(txPesquisarOs.getText()));
+                    break;
+                default:
+                    lista.addAll(osService.listarTop100Os());
+                    break;
+            }
         }
-        DefaultTableModel dm = (DefaultTableModel)tblClientes.getModel();
+        else {
+            lista.addAll(osService.listarTop100Os());
+        }
+        DefaultTableModel dm = (DefaultTableModel)tbOs.getModel();
         lista.forEach(c->dm.addRow(new Object[]{c.getId(), c.getAparelho(), c.getSituacao(), c.getCliente().getNome()}));
     }
 
+    
     private void setarCamposCliente() {
         int setar = tblClientes.getSelectedRow();
         txtClienteCodigo.setText(setar == -1? "": tblClientes.getModel().getValueAt(setar, 0).toString());
     }
     
-    private void setarCampos() {
+    private void setarCamposOs() {
         int setar = tbOs.getSelectedRow();
-        if(setar>=-1) return;
-        
-        Optional<Long> result = validarId(tbOs.getModel().getValueAt(setar, 0).toString());
-        if (!result.isPresent()) {
-            return;
-        }
+        if(setar==-1) return;
         try {
+            Optional<Long> result = validarId(tbOs.getModel().getValueAt(setar, 0).toString());
+            if (!result.isPresent()) { return; }
             Optional<Os> opt = osService.buscarPorId(result.get());
             Os os = opt.get();
-            txtCodOs.setText("" + os.getId());
+            preencherCampos(os);
+        } catch (OsNotFoundException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        } catch (IdIncorretoException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+    }
+    private void preencherCampos(Os os){
+        txtCodOs.setText("" + os.getId());
             txtData.setText(DateUtil.formatarData(os.getData().getTime()));
             String rbTipo = os.getTipo();
             if (rbTipo.equals("OS")) {
@@ -905,66 +913,8 @@ public class TelaOs extends javax.swing.JInternalFrame {
             txtClienteCodigo.setText(os.getCliente().getId() + "");
             txtObs.setText(os.getObs());
             txtGarantia.setText(os.getGarantia());
-            btnInserir.setEnabled(false);
-            txtClienteNome.setEnabled(false);
             BigDecimal total = valor.subtract(entrada).setScale(2, RoundingMode.UP);
             txtTotal.setText("RS " + total.toString().replace(".", ","));
-        } catch (OsNotFoundException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
-            limparCampos();
-        }
-    }
-
-    private void alterar() {
-        if (!validar()) {
-            return;
-        }
-        Optional<Long> id = validarId(txtCodOs.getText().trim());
-        if (id.isPresent()) {
-            btnInserir.setEnabled(true);
-            txtClienteNome.setEnabled(true);
-            tblClientes.setVisible(true);
-            try {
-                Os os = osService.alterar(osBuilder(id), id.get());
-                JOptionPane.showMessageDialog(null, "OS Editada com Sucesso!!");
-                imprimir(os);
-                limparCampos();
-                pesquisarCliente();
-            } catch (OsNotFoundException e) {
-                JOptionPane.showMessageDialog(null, e.getMessage());
-            }
-        }
-    }
-
-    private void excluir() {
-        Optional<Long> result = validarId(txtCodOs.getText());
-        if (!result.isPresent()) {
-            return;
-        }
-
-        int confirma = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir?", "Atenção", JOptionPane.YES_NO_OPTION);
-        if (confirma == JOptionPane.YES_OPTION) {
-
-            btnInserir.setEnabled(true);
-            txtClienteNome.setEnabled(true);
-            tblClientes.setVisible(true);
-            try {
-                osService.deletar(result.get());
-                JOptionPane.showMessageDialog(null, "Registro Apagado com Sucesso!");
-                limparCampos();
-            } catch (OsNotFoundException e) {
-                JOptionPane.showMessageDialog(null, e.getMessage());
-            }
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    private void imprimir(Os os) {
-        if (txtCodOs.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Pesquise uma OS para Impressao!!");
-            return;
-        }
-        rel.imprimirOs(rel.pegarResultadoImpressao(), os, Relatorio.Relatorios.OS);
     }
 
     private void emitirOs() {
@@ -977,5 +927,56 @@ public class TelaOs extends javax.swing.JInternalFrame {
         imprimir(os);
         limparCampos();
         pesquisarCliente();
+    }
+    
+    private void salvar() {
+        if (!validar()) {
+            return;
+        }
+        try {
+            Optional<Long> result = validarId(txtCodOs.getText().trim());
+            Os os = null; 
+            if(result.isPresent()) {
+                os = osService.alterar(osBuilder(result), result.get());
+            }   
+            else {
+                os = osService.adicionar(osBuilder(Optional.empty()));
+            }
+            JOptionPane.showMessageDialog(null, "OS Salva com Sucesso!!");
+            pesquisarOs();
+            preencherCampos(os);
+            if(!result.isPresent()) imprimir(os);
+        } catch (IdIncorretoException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        } catch (OsNotFoundException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }
+
+    private void excluir() {
+        int confirma = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir?", "Atenção", JOptionPane.YES_NO_OPTION);
+        if (confirma == JOptionPane.YES_OPTION) {
+            try {
+                Optional<Long> result = validarId(txtCodOs.getText());
+                if (!result.isPresent()) { return; }
+                osService.deletar(result.get());
+                JOptionPane.showMessageDialog(null, "Registro Apagado com Sucesso!");
+                limparCampos();
+            } catch (OsNotFoundException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage());
+            } catch (IdIncorretoException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
+            }
+            pesquisarOs();
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void imprimir(Os os) {
+        if (txtCodOs.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Pesquise uma OS para Impressao!!");
+            return;
+        }
+        rel.imprimirOs(rel.pegarResultadoImpressao(), os, Relatorio.Relatorios.OS);
     }
 }

@@ -37,6 +37,10 @@ public class ClienteService {
     public List<Cliente> listar(Sort.Direction direction, String properties){
         return repository.findAll(Sort.by(direction, properties));
     }
+    
+    public List<Cliente> listarTop100(){
+        return repository.findTop100ByOrderByIdDesc();
+    }
 
     public Optional<Cliente> buscarPorId(long id) throws ClienteNotFoundException {
         if (verificarSeExiste(id)) {
@@ -68,6 +72,6 @@ public class ClienteService {
     }
 
     public List<Cliente> buscarClientePorNome(String name) {
-        return repository.findAllByNomeIgnoreCaseStartsWith(name);
+        return repository.findAllByNomeIgnoreCaseContaining(name);
     }
 }

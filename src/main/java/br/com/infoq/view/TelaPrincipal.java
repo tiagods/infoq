@@ -6,11 +6,7 @@
 package br.com.infoq.view;
 
 import br.com.infoq.service.SwingOptions;
-import br.com.infoq.utils.DateUtil;
 import br.com.infoq.utils.Relatorio;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -29,10 +25,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
     * 
     */
     private static final long serialVersionUID = 1L;
-    @Autowired private TelaSobre sobre;
-    @Autowired private TelaUsuario usuario;
-    @Autowired private TelaCliente cliente;
-    @Autowired private TelaOs os;
     @Autowired private Relatorio relatorio;
     @Autowired private SwingOptions swing;
     
@@ -70,11 +62,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         setTitle("Sistema Clientes");
         setPreferredSize(new java.awt.Dimension(1180, 710));
         addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowActivated(java.awt.event.WindowEvent evt) {
-                formWindowActivated(evt);
-            }
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
+            }
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
             }
         });
 
@@ -270,7 +262,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel5)
                 .addGap(29, 29, 29))
-            .addComponent(desktop, javax.swing.GroupLayout.DEFAULT_SIZE, 677, Short.MAX_VALUE)
+            .addComponent(desktop, javax.swing.GroupLayout.DEFAULT_SIZE, 688, Short.MAX_VALUE)
         );
 
         setSize(new java.awt.Dimension(1163, 732));
@@ -293,21 +285,19 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void menuSobreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSobreActionPerformed
-       sobre.setVisible(true);
+       swing.abrirTelaSobre();
     }//GEN-LAST:event_menuSobreActionPerformed
 
     private void menuCadUsuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadUsuActionPerformed
-       swing.abrirTela(usuario);
+       swing.abrirTelaUsuario();
     }//GEN-LAST:event_menuCadUsuActionPerformed
 
     private void menuCadCliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadCliActionPerformed
-       swing.abrirTela(cliente);
-       cliente.consultar();
+       swing.abrirTelaCliente();
     }//GEN-LAST:event_menuCadCliActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-       swing.abrirTela(os);
-       os.pesquisarCliente();
+       swing.abrirTelaOs();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened

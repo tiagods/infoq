@@ -5,18 +5,15 @@
  */
 package br.com.infoq.service;
 
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import br.com.infoq.exception.OsNotFoundException;
-import br.com.infoq.model.Cliente;
 import br.com.infoq.model.Os;
 import br.com.infoq.repository.OsRepository;
-import java.util.Collection;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 
 /**
  *
@@ -66,13 +63,15 @@ public class OsService  {
     }
 
     public List<Os> buscarPorIdComecaPor(Long id) {
-        return repository.findAllByIdContaining(id);
+        return repository.findAllById(Arrays.asList(id));
     }
 
     public List<Os> buscarPorClienteNome(String cliNome) {
         return repository.findAllByClienteNomeIgnoreCaseContaining(cliNome);
     }
     
-    
+    public List<Os> listarTop100Os(){
+        return repository.findTop100ByOrderByIdDesc();
+    }
 
 }
