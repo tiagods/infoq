@@ -504,11 +504,6 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, ex.getMessage());
             return;
         }
-        
-        if (!result.isPresent()) {
-            
-        }
-        
         Optional<Usuario> buscarLogin = usuarios.buscarLogin(txtLogin.getText());
         if (buscarLogin.isPresent() && 
                 (result.isPresent() ? buscarLogin.get().getId() != result.get() : true)
