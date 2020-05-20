@@ -99,6 +99,94 @@
             </table>
             <br />
             <label>Responsavel: __________________________________</label>
+            
+            <br />
+            <br />
+            <br />
+            <br />
+            
+            <h4 class="text-center">Ordem de Serviço</h4>
+            <p class="text-right" th:text="${#dates.format(#dates.createNow(),'dd/MM/yyyy HH:mm')}"></p>    
+            <br />
+            <table class="table table-sm table-hover table-bordered">
+                <thead>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <span class="font-weight-bold">Nº Os:</span>
+                            <span class="font-weight-normal" th:text="${os.id}"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <span class="font-weight-bold">Cliente:</span>
+                            <span class="font-weight-normal" th:text="${os.cliente.nome}"></span>
+                        </td>
+                        <td>
+                            <span class="font-weight-bold">Data:</span>
+                            <span class="font-weight-normal" th:text="${#dates.format(os.data.getTime(),'dd/MM/yyyy HH:mm')}"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="font-weight-bold">Tipo:</span>
+                            <span class="font-weight-normal" th:text="${os.tipo}"></span>
+                        </td>
+                        <td>
+                            <span class="font-weight-bold">Garantia:</span>
+                            <span class="font-weight-normal" th:text="${os.garantia}"></span>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="font-weight-bold">Aparelho:</span>
+                            <span class="font-weight-normal" th:text="${os.aparelho}"></span>
+                        </td>
+                        <td>
+                            <span class="font-weight-bold">Defeito:</span>
+                            <span class="font-weight-normal" th:text="${os.defeito}"></span>
+                        </td>
+                        <td>
+                            <span class="font-weight-bold">Situação:</span>
+                            <span class="font-weight-normal" th:text="${os.situacao}"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="font-weight-bold">Tecnico:</span>
+                            <span class="font-weight-normal" th:text="${os.tecnico}"></span>
+                        </td>
+                        <td>
+                            <span class="font-weight-bold">Servico:</span>
+                            <span class="font-weight-normal" th:text="${os.servico}"></span>
+                        </td>
+                        <td>
+                            <span class="font-weight-bold">Observacao:</span>
+                            <span class="font-weight-normal" th:text="${os.obs}"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="font-weight-bold">Valor:</span>
+                            <span class="font-weight-normal" th:text="${os.valor}"></span>
+                        </td>
+                        <td>
+                            <span class="font-weight-bold">Entrada:</span>
+                            <span class="font-weight-normal" th:text="${os.entrada}"></span>
+                        </td>
+                        <td>
+                            <span class="font-weight-bold">A pagar:</span>
+                            <span class="font-weight-normal" th:text="${os.pagar}"></span>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <br />
+            <label>Responsavel: __________________________________</label>
         </div>
     </body>
 </html>
