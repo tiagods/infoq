@@ -2,6 +2,8 @@ package br.com.infoq.config;
 
 import br.com.infoq.model.Cliente;
 import br.com.infoq.model.Os;
+import br.com.infoq.utils.FileUtils;
+
 import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
 import com.itextpdf.html2pdf.css.CssConstants;
@@ -202,15 +204,14 @@ public class RelatorioTest {
         
         context.setVariable("os", os);
         
-        //String htmlText = templateEngine.process("clientes", context);
+        String htmlText = templateEngine.process("os", context);
         
-        File fileHtml = new File(System.getProperty("java.io.tmpdir")+"/os123.html");
         File pdf = new File(System.getProperty("java.io.tmpdir")+"/message.pdf");
-
-        FileWriter writer = new FileWriter(fileHtml);
-        templateEngine.process("os", context, writer); 
         ConverterProperties properties = new ConverterProperties();
-        HtmlConverter.convertToPdf(fileHtml, pdf, properties);
+        PdfDocument pdfDocument = new PdfDocument(new PdfWriter(pdf));
+
+        HtmlConverter.convertToPdf(htmlText, pdfDocument, properties);
+        
         Desktop.getDesktop().open(pdf);
     }
 }

@@ -5,28 +5,36 @@
  */
 package br.com.infoq.utils;
 
-import br.com.infoq.model.Cliente;
-import br.com.infoq.model.Os;
-import br.com.infoq.service.ClienteService;
-import br.com.infoq.service.OsService;
-import br.com.infoq.service.UsuarioService;
-import com.itextpdf.html2pdf.ConverterProperties;
-import com.itextpdf.html2pdf.HtmlConverter;
-import com.itextpdf.kernel.geom.PageSize;
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfWriter;
+import static java.util.stream.Collectors.toList;
+
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import static java.util.stream.Collectors.toList;
+import java.util.Optional;
+
 import javax.swing.JOptionPane;
-import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
+
+import com.itextpdf.html2pdf.ConverterProperties;
+import com.itextpdf.html2pdf.HtmlConverter;
+import com.itextpdf.kernel.geom.PageSize;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+
+import br.com.infoq.exception.EmpresaNotFoundException;
+import br.com.infoq.model.Cliente;
+import br.com.infoq.model.Empresa;
+import br.com.infoq.model.Os;
+import br.com.infoq.service.ClienteService;
+import br.com.infoq.service.EmpresaService;
+import br.com.infoq.service.OsService;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  *
@@ -39,10 +47,17 @@ public class Relatorio {
     @Autowired private TemplateEngine templateEngine;
     @Autowired private ClienteService clientes;
     @Autowired private OsService os;
-    @Autowired private UsuarioService usuarios;
+    @Autowired private EmpresaService empresas;
+    
 
     private Context getContext(Relatorios relEnum) {
         Context context = new Context();
+        try {
+			Optional<Empresa> result = empresas.buscarPorId(1L);
+			if(result.isPresent()) context.setVariable("empresa", result.get());
+		} catch (EmpresaNotFoundException e) {
+			context.setVariable("empresa", new Empresa());;
+		}
         if(relEnum.equals(Relatorios.CLIENTES)){
             List<Cliente> list = clientes.listar(Direction.ASC, "id")
                     .stream()
