@@ -27,7 +27,7 @@ public class TelaMenu extends javax.swing.JInternalFrame {
         btn_sair = new javax.swing.JButton();
         btn_usuarios = new javax.swing.JButton();
         btn_clientes = new javax.swing.JButton();
-        btn_buscar = new javax.swing.JButton();
+        btn_empresas = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
@@ -84,17 +84,17 @@ public class TelaMenu extends javax.swing.JInternalFrame {
         getContentPane().add(btn_clientes);
         btn_clientes.setBounds(240, 20, 160, 78);
 
-        btn_buscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/btn_buscar.png"))); // NOI18N
-        btn_buscar.setText("PESQUISA");
-        btn_buscar.setToolTipText("Pesquisar");
-        btn_buscar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        btn_buscar.addActionListener(new java.awt.event.ActionListener() {
+        btn_empresas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/btn_empresas.png"))); // NOI18N
+        btn_empresas.setText("EMPRESA");
+        btn_empresas.setToolTipText("Empresa");
+        btn_empresas.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btn_empresas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_buscarActionPerformed(evt);
             }
         });
-        getContentPane().add(btn_buscar);
-        btn_buscar.setBounds(590, 20, 170, 78);
+        getContentPane().add(btn_empresas);
+        btn_empresas.setBounds(590, 20, 170, 78);
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/imagem de fundo.jpeg"))); // NOI18N
         getContentPane().add(jLabel2);
@@ -123,11 +123,11 @@ public class TelaMenu extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btn_clientesActionPerformed
 
     private void btn_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscarActionPerformed
-        swing.abrirTelaOs();
+        swing.abrirTelaEmpresa();
     }//GEN-LAST:event_btn_buscarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn_buscar;
+    private javax.swing.JButton btn_empresas;
     private javax.swing.JButton btn_clientes;
     private javax.swing.JButton btn_os;
     private javax.swing.JButton btn_sair;

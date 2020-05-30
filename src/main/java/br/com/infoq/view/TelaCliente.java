@@ -17,6 +17,7 @@ import javax.swing.text.MaskFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
+import java.awt.Font;
 
 /**
  *
@@ -158,6 +159,7 @@ public class TelaCliente extends javax.swing.JInternalFrame {
         txtCel = new JFormattedTextField(formatoCelular);
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
+        jLabel13.setFont(new Font("Tahoma", Font.PLAIN, 14));
         txtRg = new javax.swing.JFormattedTextField();
         try {
             formatoCnpj= new MaskFormatter("##.###.###/####-##");
@@ -191,7 +193,7 @@ public class TelaCliente extends javax.swing.JInternalFrame {
         jLabel2.setText("NOME:");
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel3.setText("E-MAIL");
+        jLabel3.setText("E-MAIL:");
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel4.setText("TELEFONE:");

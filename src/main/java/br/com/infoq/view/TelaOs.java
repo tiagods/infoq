@@ -123,8 +123,11 @@ public class TelaOs extends javax.swing.JInternalFrame {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         jLabel3 = new javax.swing.JLabel();
+        jLabel3.setBounds(250, 309, 62, 16);
         cbSituacao = new javax.swing.JComboBox<String>();
+        cbSituacao.setBounds(330, 308, 203, 20);
         jPanel2 = new javax.swing.JPanel();
+        jPanel2.setBounds(460, 52, 475, 240);
         txtClienteNome = new javax.swing.JTextField();
         txtClienteCodigo = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
@@ -132,42 +135,73 @@ public class TelaOs extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblClientes = new javax.swing.JTable();
         jLabel6 = new javax.swing.JLabel();
+        jLabel6.setBounds(28, 339, 64, 15);
         txtAparelho = new javax.swing.JTextField();
+        txtAparelho.setBounds(155, 339, 378, 25);
         txtTecnico = new javax.swing.JTextField();
+        txtTecnico.setBounds(705, 370, 168, 25);
         jLabel7 = new javax.swing.JLabel();
+        jLabel7.setBounds(28, 376, 53, 15);
         txtDefeito = new javax.swing.JTextField();
+        txtDefeito.setBounds(155, 370, 378, 25);
         txtGarantia = new javax.swing.JTextField();
+        txtGarantia.setBounds(705, 403, 168, 25);
         txtServico = new javax.swing.JTextField();
+        txtServico.setBounds(155, 401, 378, 25);
         jLabel8 = new javax.swing.JLabel();
+        jLabel8.setBounds(28, 407, 53, 15);
         jLabel9 = new javax.swing.JLabel();
+        jLabel9.setBounds(592, 376, 54, 15);
         btnNovo = new javax.swing.JButton();
+        btnNovo.setBounds(100, 565, 149, 73);
         btnSalvar = new javax.swing.JButton();
+        btnSalvar.setBounds(282, 565, 139, 73);
         btnDeletar = new javax.swing.JButton();
+        btnDeletar.setBounds(457, 565, 143, 73);
         jLabel10 = new javax.swing.JLabel();
+        jLabel10.setBounds(592, 473, 76, 15);
         btnImprimir = new javax.swing.JButton();
+        btnImprimir.setBounds(638, 565, 163, 73);
         jLabel11 = new javax.swing.JLabel();
+        jLabel11.setBounds(28, 460, 81, 15);
         jScrollPane2 = new javax.swing.JScrollPane();
+        jScrollPane2.setBounds(155, 434, 378, 113);
         txtObs = new javax.swing.JTextPane();
         jLabel12 = new javax.swing.JLabel();
+        jLabel12.setBounds(592, 406, 61, 16);
         jLabel13 = new javax.swing.JLabel();
+        jLabel13.setBounds(592, 441, 87, 15);
         txtValor = new javax.swing.JFormattedTextField();
+        txtValor.setBounds(705, 434, 168, 26);
         txtEntrada = new javax.swing.JFormattedTextField();
+        txtEntrada.setBounds(705, 466, 168, 26);
         jLabel14 = new javax.swing.JLabel();
+        jLabel14.setBounds(592, 500, 99, 24);
         txtTotal = new javax.swing.JTextField();
+        txtTotal.setBounds(705, 499, 168, 26);
         jButton1 = new javax.swing.JButton();
+        jButton1.setBounds(874, 0, 40, 40);
         txtCodOs = new javax.swing.JTextField();
+        txtCodOs.setBounds(155, 306, 60, 22);
         jLabel1 = new javax.swing.JLabel();
+        jLabel1.setBounds(28, 315, 47, 14);
         txtData = new javax.swing.JTextField();
+        txtData.setBounds(705, 339, 168, 22);
         jLabel2 = new javax.swing.JLabel();
+        jLabel2.setBounds(592, 344, 30, 16);
         rbos = new javax.swing.JRadioButton();
+        rbos.setBounds(782, 307, 125, 23);
         rbgarantia = new javax.swing.JRadioButton();
+        rbgarantia.setBounds(705, 307, 77, 23);
         jPanel3 = new javax.swing.JPanel();
+        jPanel3.setBounds(10, 11, 440, 286);
         txPesquisarOs = new javax.swing.JTextField();
         lblPesquisarOs = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tbOs = new javax.swing.JTable();
         cbBuscarTipo = new javax.swing.JComboBox<String>();
         jLabel16 = new javax.swing.JLabel();
+        jLabel16.setBounds(592, 315, 30, 16);
 
         setClosable(true);
         setTitle("ORÇAMENTO"); // NOI18N
@@ -523,154 +557,41 @@ public class TelaOs extends javax.swing.JInternalFrame {
 
         jLabel16.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel16.setText("TIPO:");
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        layout.setHorizontalGroup(
-        	layout.createParallelGroup(Alignment.TRAILING)
-        		.addGroup(layout.createSequentialGroup()
-        			.addContainerGap()
-        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
-        				.addGroup(layout.createSequentialGroup()
-        					.addComponent(jPanel3, GroupLayout.PREFERRED_SIZE, 440, GroupLayout.PREFERRED_SIZE)
-        					.addGroup(layout.createParallelGroup(Alignment.TRAILING)
-        						.addGroup(layout.createSequentialGroup()
-        							.addPreferredGap(ComponentPlacement.UNRELATED)
-        							.addComponent(jPanel2, GroupLayout.PREFERRED_SIZE, 475, GroupLayout.PREFERRED_SIZE)
-        							.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        						.addGroup(layout.createSequentialGroup()
-        							.addPreferredGap(ComponentPlacement.RELATED, 438, Short.MAX_VALUE)
-        							.addComponent(jButton1, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
-        							.addGap(39))))
-        				.addGroup(layout.createSequentialGroup()
-        					.addGap(18)
-        					.addGroup(layout.createParallelGroup(Alignment.LEADING)
-        						.addComponent(jLabel7)
-        						.addComponent(jLabel6)
-        						.addComponent(jLabel8)
-        						.addComponent(jLabel11)
-        						.addComponent(jLabel1, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE))
-        					.addPreferredGap(ComponentPlacement.RELATED, 78, Short.MAX_VALUE)
-        					.addGroup(layout.createParallelGroup(Alignment.TRAILING)
-        						.addComponent(jScrollPane2, GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
-        						.addGroup(layout.createParallelGroup(Alignment.TRAILING, false)
-        							.addComponent(txtDefeito)
-        							.addComponent(txtAparelho)
-        							.addComponent(txtServico)
-        							.addGroup(layout.createSequentialGroup()
-        								.addComponent(txtCodOs, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
-        								.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        								.addComponent(jLabel3)
-        								.addPreferredGap(ComponentPlacement.RELATED)
-        								.addComponent(cbSituacao, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE))))
-        					.addGap(26)
-        					.addGroup(layout.createParallelGroup(Alignment.LEADING)
-        						.addComponent(jLabel9)
-        						.addGroup(layout.createSequentialGroup()
-        							.addGroup(layout.createParallelGroup(Alignment.LEADING)
-        								.addComponent(jLabel10)
-        								.addComponent(jLabel13, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE)
-        								.addComponent(jLabel14)
-        								.addComponent(jLabel12)
-        								.addComponent(jLabel2)
-        								.addComponent(jLabel16))
-        							.addPreferredGap(ComponentPlacement.RELATED)
-        							.addGroup(layout.createParallelGroup(Alignment.LEADING)
-        								.addGroup(layout.createSequentialGroup()
-        									.addComponent(rbgarantia)
-        									.addPreferredGap(ComponentPlacement.RELATED)
-        									.addComponent(rbos))
-        								.addGroup(layout.createParallelGroup(Alignment.LEADING, false)
-        									.addComponent(txtGarantia)
-        									.addComponent(txtValor)
-        									.addComponent(txtEntrada)
-        									.addComponent(txtTotal)
-        									.addComponent(txtTecnico)
-        									.addComponent(txtData, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)))))
-        					.addGap(44))))
-        		.addGroup(Alignment.LEADING, layout.createSequentialGroup()
-        			.addGap(77)
-        			.addComponent(btnNovo, GroupLayout.PREFERRED_SIZE, 149, GroupLayout.PREFERRED_SIZE)
-        			.addGap(33)
-        			.addGroup(layout.createSequentialGroup()
-        				.addComponent(btnSalvar)
-        				.addGap(36)
-        				.addComponent(btnDeletar)
-        				.addGap(38)
-        				.addComponent(btnImprimir, GroupLayout.PREFERRED_SIZE, 163, GroupLayout.PREFERRED_SIZE))
-        			.addContainerGap(129, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-        	layout.createParallelGroup(Alignment.LEADING)
-        		.addGroup(layout.createSequentialGroup()
-        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
-        				.addGroup(layout.createSequentialGroup()
-        					.addContainerGap()
-        					.addComponent(jPanel3, GroupLayout.PREFERRED_SIZE, 286, GroupLayout.PREFERRED_SIZE))
-        				.addGroup(layout.createSequentialGroup()
-        					.addComponent(jButton1, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
-        					.addGap(12)
-        					.addComponent(jPanel2, GroupLayout.PREFERRED_SIZE, 240, GroupLayout.PREFERRED_SIZE)))
-        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
-        				.addGroup(layout.createSequentialGroup()
-        					.addPreferredGap(ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
-        					.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-        						.addComponent(cbSituacao, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        						.addComponent(jLabel3)
-        						.addComponent(txtCodOs, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        						.addComponent(rbos)
-        						.addComponent(rbgarantia)
-        						.addComponent(jLabel16))
-        					.addPreferredGap(ComponentPlacement.UNRELATED))
-        				.addGroup(layout.createSequentialGroup()
-        					.addGap(18)
-        					.addComponent(jLabel1)
-        					.addPreferredGap(ComponentPlacement.RELATED)))
-        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-        				.addComponent(txtAparelho, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        				.addComponent(jLabel6)
-        				.addComponent(txtData, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        				.addComponent(jLabel2))
-        			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-        				.addComponent(txtDefeito, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        				.addComponent(txtTecnico, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        				.addComponent(jLabel9)
-        				.addComponent(jLabel7))
-        			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-        				.addComponent(txtGarantia, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
-        				.addComponent(jLabel12)
-        				.addComponent(txtServico, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        				.addComponent(jLabel8))
-        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
-        				.addGroup(layout.createSequentialGroup()
-        					.addPreferredGap(ComponentPlacement.RELATED)
-        					.addGroup(layout.createParallelGroup(Alignment.TRAILING, false)
-        						.addComponent(jScrollPane2, Alignment.LEADING)
-        						.addGroup(Alignment.LEADING, layout.createSequentialGroup()
-        							.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-        								.addComponent(jLabel13)
-        								.addComponent(txtValor, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-        							.addPreferredGap(ComponentPlacement.RELATED)
-        							.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-        								.addComponent(jLabel10)
-        								.addComponent(txtEntrada, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-        							.addPreferredGap(ComponentPlacement.RELATED)
-        							.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-        								.addComponent(txtTotal, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        								.addComponent(jLabel14, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)))))
-        				.addGroup(layout.createSequentialGroup()
-        					.addGap(32)
-        					.addComponent(jLabel11)))
-        			.addGap(33)
-        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
-        				.addComponent(btnDeletar)
-        				.addComponent(btnImprimir)
-        				.addComponent(btnSalvar)
-        				.addComponent(btnNovo))
-        			.addGap(27))
-        );
-        getContentPane().setLayout(layout);
+        getContentPane().setLayout(null);
+        getContentPane().add(jPanel3);
+        getContentPane().add(jPanel2);
+        getContentPane().add(jButton1);
+        getContentPane().add(jLabel7);
+        getContentPane().add(jLabel6);
+        getContentPane().add(jLabel8);
+        getContentPane().add(jLabel11);
+        getContentPane().add(jLabel1);
+        getContentPane().add(jScrollPane2);
+        getContentPane().add(txtServico);
+        getContentPane().add(txtCodOs);
+        getContentPane().add(jLabel3);
+        getContentPane().add(cbSituacao);
+        getContentPane().add(txtDefeito);
+        getContentPane().add(txtAparelho);
+        getContentPane().add(jLabel12);
+        getContentPane().add(jLabel9);
+        getContentPane().add(jLabel13);
+        getContentPane().add(jLabel10);
+        getContentPane().add(jLabel14);
+        getContentPane().add(jLabel2);
+        getContentPane().add(jLabel16);
+        getContentPane().add(rbgarantia);
+        getContentPane().add(rbos);
+        getContentPane().add(txtTotal);
+        getContentPane().add(txtGarantia);
+        getContentPane().add(txtTecnico);
+        getContentPane().add(txtValor);
+        getContentPane().add(txtEntrada);
+        getContentPane().add(txtData);
+        getContentPane().add(btnNovo);
+        getContentPane().add(btnSalvar);
+        getContentPane().add(btnDeletar);
+        getContentPane().add(btnImprimir);
 
         jPanel2.getAccessibleContext().setAccessibleName("CLIENTES");
         jPanel3.getAccessibleContext().setAccessibleName("Pesquisar Os");

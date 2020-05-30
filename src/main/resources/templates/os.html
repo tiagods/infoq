@@ -28,7 +28,7 @@
                 }
             }
             body {
-                font: 10pt "Tahoma";
+                font: 9pt "Tahoma";
             }
         </style>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -56,10 +56,9 @@
                                 <span class="font-weight-bold">Endereço:</span>
                                 <span class="font-weight-normal">Avenida Comendador Feiz Zarzur, Nº. 1154</span>
                                 <br />
-                                <span class="font-weight-normal">Jardim Cidade Pirituba</span>
-                                <br />
                                 <span class="font-weight-bold">CEP:</span>
-                                <span class="font-weight-normal">02942-000 - São Paulo - SP</span>
+                                <span class="font-weight-normal">02942-000</span>
+                                <span class="font-weight-normal">Jardim Cidade Pirituba - São Paulo/SP</span>
                                 <br />
                                 <span class="font-weight-bold">Fone:</span>
                                 <span class="font-weight-normal">(11) 2532-9857 / (11) 96088-8741</span>
@@ -73,7 +72,8 @@
                         </tr>
                     </tbody>
                 </table>
-
+                <br />
+                <br />
                 <h4 class="text-center">Ordem de Serviço</h4>
                 <p class="text-right" th:text="${#dates.format(#dates.createNow(),'dd/MM/yyyy HH:mm')}"></p>    
                 <br />
@@ -88,9 +88,13 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2">
+                            <td>
                                 <span class="font-weight-bold">Cliente:</span>
                                 <span class="font-weight-normal" th:text="${os.cliente.nome}"></span>
+                            </td>
+                            <td>
+                                <span class="font-weight-bold">Contato:</span>
+                                <span class="font-weight-normal" th:text="${os.cliente.cel +' '+ os.cliente.fone}"></span>
                             </td>
                             <td>
                                 <span class="font-weight-bold">Data:</span>
@@ -135,12 +139,6 @@
                            
                         </tr>
                         <tr>
-                            <td colspan="3">
-                                <span class="font-weight-bold">Observacao:</span>
-                                <span class="font-weight-normal text-break" th:text="${os.obs}"></span>
-                            </td>
-                        </tr>
-                        <tr>
                             <td>
                                 <span class="font-weight-bold">Valor:</span>
                                 <span class="font-weight-normal" th:text="${os.valor}"></span>
@@ -154,11 +152,17 @@
                                 <span class="font-weight-normal" th:text="${os.pagar}"></span>
                             </td>
                         </tr>
+                        <tr>
+                            <td colspan="3">
+                                <span class="font-weight-bold">Observacao:</span>
+                                <span class="font-weight-normal text-break" th:text="${os.obs}"></span>
+                            </td>
+                        </tr>
 
                     </tbody>
                 </table>
 
-                <table class="table table-sm table-hover table-bordered">
+                <table class="table table-sm table-hover table-borderless">
                     <thead>
                     </thead>
                     <tbody>
@@ -176,10 +180,10 @@
                 </div>
             
                 <br />
-            
+                <br />
+
                 <h4 class="text-center">Ordem de Serviço</h4>
                 <p class="text-right" th:text="${#dates.format(#dates.createNow(),'dd/MM/yyyy HH:mm')}"></p>    
-                <br />
                 <table class="table table-sm table-hover table-bordered">
                     <thead></page>
                     </thead>
@@ -191,9 +195,13 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2">
+                            <td>
                                 <span class="font-weight-bold">Cliente:</span>
                                 <span class="font-weight-normal" th:text="${os.cliente.nome}"></span>
+                            </td>
+                            <td>
+                                <span class="font-weight-bold">Contato:</span>
+                                <span class="font-weight-normal" th:text="${os.cliente.cel +' '+ os.cliente.fone}"></span>
                             </td>
                             <td>
                                 <span class="font-weight-bold">Data:</span>
@@ -238,12 +246,6 @@
                            
                         </tr>
                         <tr>
-                            <td colspan="3">
-                                <span class="font-weight-bold">Observacao:</span>
-                                <span class="font-weight-normal text-break" th:text="${os.obs}"></span>
-                            </td>
-                        </tr>
-                        <tr>
                             <td>
                                 <span class="font-weight-bold">Valor:</span>
                                 <span class="font-weight-normal" th:text="${os.valor}"></span>
@@ -257,36 +259,74 @@
                                 <span class="font-weight-normal" th:text="${os.pagar}"></span>
                             </td>
                         </tr>
+                        <tr>
+                            <td colspan="3">
+                                <span class="font-weight-bold">Observacao:</span>
+                                <span class="font-weight-normal text-break" th:text="${os.obs}"></span>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
                 <br />
-
-                <div class="col-8 d-inline-block">
-                    <label>Responsavel: __________________________________</label>
-                </div>
-                <div class="col- d-inline-block">
-                    <label>Senha: ___________________</label>
-                    <table class="table table-hover table-bordered">
-                        <thead>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="text-center font-weight-bold">.</td>
-                                <td class="text-center font-weight-bold">.</td>
-                                <td class="text-center font-weight-bold">.</td>
-                            </tr>
-                            <tr>
-                                <td class="text-center font-weight-bold">.</td>
-                                <td class="text-center font-weight-bold">.</td>
-                                <td class="text-center font-weight-bold">.</td>
-                            </tr>
-                            <tr>
-                                <td class="text-center font-weight-bold">.</td>
-                                <td class="text-center font-weight-bold">.</td>
-                                <td class="text-center font-weight-bold">.</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="row">
+                    <div class="col-7">
+                        <table class="table table-sm table-hover table-borderless">
+                            <thead>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-left font-weight-bold">
+                                        <span class="font-weight-bold">Aparelho Ligando:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                        <label><input type="checkbox" value=""> Sim </label>
+                                        <label><input type="checkbox" value=""> Não </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left font-weight-bold">
+                                        <span class="font-weight-bold">Aparelho Carregando:&nbsp;</span>
+                                        <label><input type="checkbox" value=""> Sim </label>
+                                        <label><input type="checkbox" value=""> Não </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left font-weight-bold">
+                                        <span class="font-weight-bold">Outro:</span>
+                                        <span class="font-weight-normal">______________________________________________</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left font-weight-bold">
+                                        <br />
+                                        <label>Responsavel: __________________________________</label>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-3 ">
+                        <label>Senha: ___________________</label>
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center font-weight-bold">.</td>
+                                    <td class="text-center font-weight-bold">.</td>
+                                    <td class="text-center font-weight-bold">.</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center font-weight-bold">.</td>
+                                    <td class="text-center font-weight-bold">.</td>
+                                    <td class="text-center font-weight-bold">.</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center font-weight-bold">.</td>
+                                    <td class="text-center font-weight-bold">.</td>
+                                    <td class="text-center font-weight-bold">.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </page>

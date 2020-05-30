@@ -14,6 +14,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import javax.swing.JMenuItem;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 /**
  *
  * @author hugov, tiagods
@@ -120,6 +123,15 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 menuCadCliActionPerformed(evt);
             }
         });
+        
+        mntmPerfil = new JMenuItem();
+        mntmPerfil.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		menuCadEmpresaActionPerformed(e);
+        	}
+        });
+        mntmPerfil.setText("PERFIL");
+        menuCad.add(mntmPerfil);
         menuCad.add(menuCadCli);
 
         menuCadUsu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_MASK));
@@ -295,7 +307,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void menuCadCliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadCliActionPerformed
        swing.abrirTelaCliente();
     }//GEN-LAST:event_menuCadCliActionPerformed
-
+    
+    private void menuCadEmpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadCliActionPerformed
+        swing.abrirTelaEmpresa();
+     }//GEN-LAST:event_menuCadCliActionPerformed
+    
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
        swing.abrirTelaOs();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
@@ -334,5 +350,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
     public static javax.swing.JMenuItem menuCadUsu;
     private javax.swing.JMenu menuSair;
     private javax.swing.JMenuItem menuSobre;
+    private JMenuItem mntmPerfil;
     // End of variables declaration//GEN-END:variables
 }

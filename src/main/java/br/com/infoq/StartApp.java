@@ -2,16 +2,12 @@ package br.com.infoq;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
 import br.com.infoq.exception.EmpresaNotFoundException;
 import br.com.infoq.model.Empresa;
 import br.com.infoq.service.EmpresaService;

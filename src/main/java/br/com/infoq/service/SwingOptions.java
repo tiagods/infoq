@@ -8,6 +8,7 @@ package br.com.infoq.service;
 
 import br.com.infoq.utils.DateUtil;
 import br.com.infoq.view.TelaCliente;
+import br.com.infoq.view.TelaEmpresa;
 import br.com.infoq.view.TelaMenu;
 import br.com.infoq.view.TelaOs;
 import static br.com.infoq.view.TelaPrincipal.desktop;
@@ -34,7 +35,8 @@ public class SwingOptions {
     @Autowired private TelaCliente cliente;
     @Autowired private TelaOs os;
     @Autowired private TelaMenu menu;
-
+    @Autowired private TelaEmpresa empresa;
+    
     private void abrirTela(JInternalFrame frame){
         desktop.removeAll();
         desktop.add(frame);
@@ -43,6 +45,11 @@ public class SwingOptions {
     
     public void abrirTelaCliente(){
         abrirTela(cliente);
+        cliente.pesquisar();
+    }
+
+    public void abrirTelaEmpresa(){
+        abrirTela(empresa);
         cliente.pesquisar();
     }
 
