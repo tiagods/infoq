@@ -11,6 +11,6 @@ create table empresa (
 	telefone varchar(50),
 	email varchar(100),
 	site varchar(100),
-	messagem text
+	mensagem text,
 	primary key(id)
 )

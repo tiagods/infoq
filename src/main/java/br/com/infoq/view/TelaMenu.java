@@ -85,8 +85,8 @@ public class TelaMenu extends javax.swing.JInternalFrame {
         btn_clientes.setBounds(240, 20, 160, 78);
 
         btn_empresas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/btn_empresas.png"))); // NOI18N
-        btn_empresas.setText("EMPRESA");
-        btn_empresas.setToolTipText("Empresa");
+        btn_empresas.setText("PERFIL");
+        btn_empresas.setToolTipText("Perfil");
         btn_empresas.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btn_empresas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

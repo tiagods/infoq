@@ -5,18 +5,23 @@
  */
 package br.com.infoq.view;
 
-import br.com.infoq.exception.UsuarioInvalidCredentialsException;
-import br.com.infoq.model.Usuario;
-import br.com.infoq.service.UsuarioService;
 import static br.com.infoq.view.TelaPrincipal.desktop;
+
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
 import java.util.Optional;
+
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import br.com.infoq.exception.UsuarioInvalidCredentialsException;
+import br.com.infoq.model.Usuario;
+import br.com.infoq.service.UsuarioService;
+import br.com.infoq.service.UsuarioSessao;
 
 /**
  *
@@ -29,12 +34,10 @@ public class frmLogin extends javax.swing.JFrame {
      *
      */
     private static final long serialVersionUID = 1L;
-    @Autowired
-    private UsuarioService usuarios;
-    @Autowired
-    private TelaPrincipal principal;
-    @Autowired
-    private TelaMenu menu;
+    @Autowired private UsuarioService usuarios;
+    @Autowired private TelaPrincipal principal;
+    @Autowired private TelaMenu menu;
+    @Autowired private UsuarioSessao sessao;
 
     public frmLogin() {
         initComponents();
@@ -131,6 +134,7 @@ public class frmLogin extends javax.swing.JFrame {
             principal.setVisible(true);
             principal.lblUsuario.setText(usuario.getUsuario());
             desktop.add(menu);
+            sessao.setUsuario(usuario);
             menu.setVisible(true);
             if (optPerfil.isPresent() && optPerfil.get().toUpperCase().equals("ADMIN")) {
                 principal.menuCadUsu.setEnabled(true);

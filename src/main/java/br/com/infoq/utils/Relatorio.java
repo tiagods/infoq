@@ -51,14 +51,8 @@ public class Relatorio {
     
 
     private Context getContext(Relatorios relEnum) {
-        Context context = new Context();
-        try {
-			Optional<Empresa> result = empresas.buscarPorId(1L);
-			if(result.isPresent()) context.setVariable("empresa", result.get());
-		} catch (EmpresaNotFoundException e) {
-			context.setVariable("empresa", new Empresa());;
-		}
-        if(relEnum.equals(Relatorios.CLIENTES)){
+        Context context = incluirEmpresa();
+        if (relEnum.equals(Relatorios.CLIENTES)){
             List<Cliente> list = clientes.listar(Direction.ASC, "id")
                     .stream()
                     .map(cli->{
@@ -71,7 +65,7 @@ public class Relatorio {
                     .collect(toList());
             context.setVariable(relEnum.getValor(), list);
         }
-        else{
+        else {
             List<Os> list = os.listar(Direction.DESC, "id")
                     .stream()
                     .map(c-> {c.setPagar(c.getValor().subtract(c.getEntrada())); return c;})
@@ -86,6 +80,15 @@ public class Relatorio {
         private String valor;
         Relatorios(String valor) { this.valor = valor; }
         public String getValor() {return valor;}
+    }
+    
+    private Context incluirEmpresa() {
+    	Context context = new Context();
+    	try {
+			Optional<Empresa> result = empresas.buscarPorId(1L);
+			if(result.isPresent()) context.setVariable("empresa", result.get());
+		} catch (EmpresaNotFoundException e) {}
+    	return context;
     }
 
     public void imprimirRelatorio(int result, Relatorios relEnum, boolean rotate) {
@@ -121,7 +124,7 @@ public class Relatorio {
     public void imprimirOs(int result, Os param, Relatorios relEnum) {
         if (result == JOptionPane.YES_OPTION) {
             try {
-                Context context = new Context();
+                Context context = incluirEmpresa();
                 context.setVariable("os", param);
                 File pdf = htmlToPdf(context, relEnum.getValor(), relEnum.getValor(), false);
                 Desktop.getDesktop().open(pdf);

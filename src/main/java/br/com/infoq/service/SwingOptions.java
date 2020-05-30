@@ -50,13 +50,14 @@ public class SwingOptions {
 
     public void abrirTelaEmpresa(){
         abrirTela(empresa);
-        cliente.pesquisar();
+        empresa.buscarEmpresa();
     }
 
     public void abrirTelaOs(){
         abrirTela(os);
         os.pesquisarOs();
         os.pesquisarCliente();
+        os.limparCampos();
     }
 
     public void abrirTelaUsuario(){

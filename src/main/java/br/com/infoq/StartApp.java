@@ -45,7 +45,7 @@ public class StartApp {
 			Empresa empresa = new Empresa();
 			empresa.setId(1L);
 			empresa.setLogo(picInBytes);
-			empresas.adicionar(empresa);
+			//empresas.adicionar(empresa);
 			return;
 		}
 	}

@@ -1,5 +1,18 @@
 package br.com.infoq.view;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Optional;
+
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import br.com.infoq.exception.ClienteNotFoundException;
 import br.com.infoq.exception.IdIncorretoException;
 import br.com.infoq.exception.OsNotFoundException;
@@ -8,25 +21,11 @@ import br.com.infoq.model.Os;
 import br.com.infoq.service.ClienteService;
 import br.com.infoq.service.OsService;
 import br.com.infoq.service.SwingOptions;
+import br.com.infoq.service.UsuarioSessao;
 import br.com.infoq.utils.DateUtil;
 import br.com.infoq.utils.Relatorio;
 import br.com.infoq.utils.SwingUtils;
 import br.com.infoq.utils.Validator;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.GroupLayout;
-import javax.swing.LayoutStyle.ComponentPlacement;
 
 /**
  *
@@ -40,6 +39,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
     @Autowired private OsService osService;
     @Autowired private ClienteService clientes;
     @Autowired private SwingOptions swing;
+    @Autowired private UsuarioSessao sessao;
     
     private String Tipo;
 
@@ -110,11 +110,10 @@ public class TelaOs extends javax.swing.JInternalFrame {
         }
     }
 
-    private void limparCampos() {
+    public void limparCampos() {
         SwingUtils.limparCampos(getContentPane());
-        txtValor.setText("0");
-        txtEntrada.setText("0");
         txtTotal.setText("R$ 0,00");
+        txtTecnico.setText(sessao.getUsuario()!=null?sessao.getUsuario().getLogin():"");
     }
 
     @SuppressWarnings("unchecked")
@@ -153,15 +152,15 @@ public class TelaOs extends javax.swing.JInternalFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel9.setBounds(592, 376, 54, 15);
         btnNovo = new javax.swing.JButton();
-        btnNovo.setBounds(100, 565, 149, 73);
+        btnNovo.setBounds(63, 565, 149, 73);
         btnSalvar = new javax.swing.JButton();
-        btnSalvar.setBounds(282, 565, 139, 73);
+        btnSalvar.setBounds(250, 565, 154, 73);
         btnDeletar = new javax.swing.JButton();
-        btnDeletar.setBounds(457, 565, 143, 73);
+        btnDeletar.setBounds(451, 565, 154, 73);
         jLabel10 = new javax.swing.JLabel();
         jLabel10.setBounds(592, 473, 76, 15);
         btnImprimir = new javax.swing.JButton();
-        btnImprimir.setBounds(638, 565, 163, 73);
+        btnImprimir.setBounds(658, 565, 163, 73);
         jLabel11 = new javax.swing.JLabel();
         jLabel11.setBounds(28, 460, 81, 15);
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -180,7 +179,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
         txtTotal = new javax.swing.JTextField();
         txtTotal.setBounds(705, 499, 168, 26);
         jButton1 = new javax.swing.JButton();
-        jButton1.setBounds(874, 0, 40, 40);
+        jButton1.setBounds(873, 11, 40, 40);
         txtCodOs = new javax.swing.JTextField();
         txtCodOs.setBounds(155, 306, 60, 22);
         jLabel1 = new javax.swing.JLabel();
@@ -398,7 +397,6 @@ public class TelaOs extends javax.swing.JInternalFrame {
         jLabel13.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel13.setText("VALOR: R$");
 
-        txtValor.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,#00.00#"))));
         txtValor.setFont(new java.awt.Font("Ubuntu", 0, 15)); // NOI18N
         txtValor.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -411,7 +409,6 @@ public class TelaOs extends javax.swing.JInternalFrame {
             }
         });
 
-        txtEntrada.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,#00.00#"))));
         txtEntrada.setFont(new java.awt.Font("Ubuntu", 0, 15)); // NOI18N
         txtEntrada.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {

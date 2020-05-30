@@ -7,10 +7,14 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Empresa {
 	@Id
 	private Long id;
@@ -27,8 +31,8 @@ public class Empresa {
 	private String email;
 	private String site;
 	@Column(columnDefinition = "text")
-	private String messagem;
-	//@Lob 
+	private String mensagem;
+	// @Lob
 	@Transient
 	private byte[] logo;
 }

@@ -22,33 +22,21 @@ import br.com.infoq.repository.EmpresaRepository;
 @Service
 public class EmpresaService {
 
-   // @Autowired private EmpresaRepository repository;
+    @Autowired private EmpresaRepository repository;
 
-    public Empresa adicionar(Empresa empresa) {
-        //return repository.save(empresa);
-        return empresa;
+    public Empresa salvarOuAtualizar(Empresa empresa) {
+        return repository.save(empresa);
     }
     
     public Optional<Empresa> buscarPorId(long id) throws EmpresaNotFoundException {
         if (verificarSeExiste(id)) {
-            return Optional.empty();
-        	//return repository.findById(id);
-        } else {
-            throw new EmpresaNotFoundException("Empresa nao existe");
-        }
-    }
-
-    public void alterar(Empresa empresa, Long id) throws EmpresaNotFoundException {
-        if (verificarSeExiste(id)) {
-        	empresa.setId(id);
-            //repository.save(empresa);
+        	return repository.findById(id);
         } else {
             throw new EmpresaNotFoundException("Empresa nao existe");
         }
     }
 
     private boolean verificarSeExiste(Long id) {
-        //return repository.existsById(id);
-    	return false;
+        return repository.existsById(id);
     }
 }

@@ -4,9 +4,12 @@ package br.com.infoq.view;
 import br.com.infoq.exception.EmpresaNotFoundException;
 import br.com.infoq.exception.IdIncorretoException;
 import br.com.infoq.model.Empresa;
+import br.com.infoq.model.Estado;
 import br.com.infoq.service.EmpresaService;
 import br.com.infoq.service.SwingOptions;
 import br.com.infoq.utils.SwingUtils;
+
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -19,13 +22,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import javax.swing.GroupLayout.Alignment;
+import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
 import javax.swing.GroupLayout;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.Font;
-import javax.swing.JFormattedTextField$AbstractFormatter;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
@@ -41,8 +48,9 @@ public class TelaEmpresa extends javax.swing.JInternalFrame {
     
 	private static final long serialVersionUID = 1L;
     @Autowired private EmpresaService empresas;
+    @Autowired private SwingOptions swing;
     
-    private MaskFormatter formatoCpf;
+    private MaskFormatter formatoCep;
     MaskFormatter formatoCnpj;
     MaskFormatter formatoCelular;
     MaskFormatter formatoTelefone;
@@ -59,16 +67,6 @@ public class TelaEmpresa extends javax.swing.JInternalFrame {
 	    		+ "será cobrado um aluguel de R$x,xx (xx reais) ao dia pela guarda e seguro do aparelho.");
 	}
 
-    private Optional<Long> validarId() throws IdIncorretoException {
-        if(txtId.getText().trim().isEmpty()) return Optional.empty();
-        try {
-            Long id = Long.parseLong(txtId.getText().trim());
-            return Optional.of(id);
-        } catch (Exception e) {
-            throw new IdIncorretoException("Campo id incorreto");
-        }
-    }
-
     private boolean validar() {
         if ((txtNome.getText().isEmpty())) {
             JOptionPane.showMessageDialog(null, "Preencha os Dados Corretamenre!\n Campo Nome é obrigatório");
@@ -77,52 +75,31 @@ public class TelaEmpresa extends javax.swing.JInternalFrame {
         return true;
     }
 
-    private Empresa emrpesaBuilder(Optional<Long> result) {
+    private Empresa empresaBuilder() {
         return new Empresa(
-                result.isPresent() ? result.get() : -1L,
-                txtNome.getText().toUpperCase(),
-                txtEnd.getText().toUpperCase(),
-                txtNum.getText(),
-                txtCom.getText().toUpperCase(),
-                txtEmail.getText().toUpperCase(),
-                txtCpf.getText(),
+                1L,
+                txtNome.getText(),
                 txtCnpj.getText(),
+                txtEnd.getText(),
+                txtBairro.getText(),
+                txtCep.getText(),
                 txtCidade.getText(),
-                txtTel.getText(),
+                (Estado) cbEstado.getSelectedItem(),
                 txtCel.getText(),
-                txtBairro.getText().toUpperCase()
+                txtTel.getText(),
+                txtEmail.getText(),
+                txtSite.getText(),
+                txtMensagem.getText(),
+                null
         );
     }
 
-    private void setar_campos() {
-    	try {
-            clientes.buscarPorId(1L).ifPresent(c->{
-                txtNome.setText(c.getNome());
-                txtEnd.setText(c.getEndereco());
-                txtNum.setText(c.getNum());
-                txtCom.setText(c.getComp());
-                txtEmail.setText(c.getEmail());
-                txtCpf.setText(onlyNumber(c.getCpf()));
-                txtCnpj.setText(onlyNumber(c.getCnpj()));
-                txtRg.setText(c.getRg());
-                txtTel.setText(onlyNumber(c.getFone()));
-                txtCel.setText(onlyNumber(c.getCel()));
-                txtBairro.setText(c.getBairro());
-            });
-        } catch (EmpresaNotFoundException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
-        }
-    }
     private String onlyNumber(String value){
         return value.replace("(", "")
                 .replace(")", "")
                 .replace("-", "")
                 .replace(".", "")
                 .replace("/", "").trim();
-    }
-
-    private void limparCampos() {
-        SwingUtils.limparCampos(getContentPane());
     }
 
     @SuppressWarnings("unchecked")
@@ -159,11 +136,12 @@ public class TelaEmpresa extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null ,"Não foi possivel receber o valor do cnpj: " +erro);
         }
         try {
-            formatoCpf= new MaskFormatter("###.###.###-##");
+            formatoCep= new MaskFormatter("#####-###");
         }catch(Exception erro){
-            JOptionPane.showMessageDialog(null ,"Não foi possivel receber o valor do cpf: " +erro);
+            JOptionPane.showMessageDialog(null ,"Não foi possivel receber o valor do cep: " +erro);
         }
 
+        
         setClosable(true);
         setTitle("Empresa");
         setPreferredSize(new java.awt.Dimension(948, 688));
@@ -247,7 +225,7 @@ public class TelaEmpresa extends javax.swing.JInternalFrame {
         lblCep.setFont(new Font("Tahoma", Font.PLAIN, 14));
         getContentPane().add(lblCep);
         
-        txtCep = new JFormattedTextField((AbstractFormatter) null);
+        txtCep = new JFormattedTextField(formatoCep);
         txtCep.setBounds(109, 235, 175, 26);
         txtCep.setFont(new Font("Dialog", Font.PLAIN, 15));
         txtCep.setFocusLostBehavior(JFormattedTextField.COMMIT);
@@ -276,7 +254,7 @@ public class TelaEmpresa extends javax.swing.JInternalFrame {
                 jLabel10.setText("ESTADO:");
                 getContentPane().add(jLabel10);
         
-        JComboBox cbEstado = new JComboBox();
+        cbEstado = new JComboBox<Estado>();
         cbEstado.setBounds(388, 272, 70, 25);
         getContentPane().add(cbEstado);
         getContentPane().add(jLabel3);
@@ -301,36 +279,35 @@ public class TelaEmpresa extends javax.swing.JInternalFrame {
                 jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
                 jButton2.addActionListener(new java.awt.event.ActionListener() {
                     public void actionPerformed(java.awt.event.ActionEvent evt) {
-                        jButton2ActionPerformed(evt);
+                    	 swing.abrirTelaMenu();
                     }
                 });
                 btnSalvar = new javax.swing.JButton();
-                btnSalvar.setBounds(386, 542, 137, 73);
+                btnSalvar.setBounds(367, 541, 167, 73);
                 
-                        btnSalvar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-                        btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/salvar.png"))); // NOI18N
-                        btnSalvar.setText("Salvar");
-                        btnSalvar.setToolTipText("Alterar");
-                        btnSalvar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-                        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
-                            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                btnSalvarActionPerformed(evt);
-                            }
-                        });
+                btnSalvar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+                btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/salvar.png"))); // NOI18N
+                btnSalvar.setText("Salvar");
+                btnSalvar.setToolTipText("Alterar");
+                btnSalvar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+                btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                	btnSalvarActionPerformed(evt);
+                }
+                });
+                lblObservacao = new JLabel();
+                lblObservacao.setText("OBSERVACAO:");
+                lblObservacao.setFont(new Font("Tahoma", Font.PLAIN, 14));
+                lblObservacao.setBounds(10, 402, 98, 17);
+                getContentPane().add(lblObservacao);
                         
-                        lblObservacao = new JLabel();
-                        lblObservacao.setText("OBSERVACAO:");
-                        lblObservacao.setFont(new Font("Tahoma", Font.PLAIN, 14));
-                        lblObservacao.setBounds(10, 402, 98, 17);
-                        getContentPane().add(lblObservacao);
+                JScrollPane scrollPane = new JScrollPane();
+                scrollPane.setBounds(109, 377, 444, 73);
+                getContentPane().add(scrollPane);
                         
-                        JScrollPane scrollPane = new JScrollPane();
-                        scrollPane.setBounds(109, 377, 444, 73);
-                        getContentPane().add(scrollPane);
-                        
-                        JTextArea textArea = new JTextArea();
-                        scrollPane.setViewportView(textArea);
-                        getContentPane().add(btnSalvar);
+                txtMensagem = new JTextPane();
+                scrollPane.setViewportView(txtMensagem);
+                getContentPane().add(btnSalvar);
                 getContentPane().add(jButton2);
                 
                 JButton btnNewButton = new JButton("?");
@@ -340,7 +317,7 @@ public class TelaEmpresa extends javax.swing.JInternalFrame {
                 	}
 
                 });
-                btnNewButton.setBounds(563, 401, 38, 23);
+                btnNewButton.setBounds(563, 391, 62, 33);
                 getContentPane().add(btnNewButton);
 
         setBounds(0, 0, 940, 695);
@@ -355,16 +332,16 @@ public class TelaEmpresa extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_formKeyReleased
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
-        pesquisar();
+    	cbEstado.removeAllItems();
+        Arrays.asList(Estado.values()).forEach(item->cbEstado.addItem(item));
+        cbEstado.setSelectedItem(Estado.SP);
+        txtCidade.setText("Sao Paulo");
     }//GEN-LAST:event_formComponentShown
 
     private void txtEndActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEndActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtEndActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        swing.abrirTelaMenu();
-    }//GEN-LAST:event_jButton2ActionPerformed
     private javax.swing.JButton btnSalvar;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
@@ -387,29 +364,39 @@ public class TelaEmpresa extends javax.swing.JInternalFrame {
     private JFormattedTextField txtCep;
     private JTextField txtSite;
     private JLabel lblObservacao;
+    private JComboBox<Estado> cbEstado;
+    private JTextPane txtMensagem;
     // End of variables declaration//GEN-END:variables
 
+    public void buscarEmpresa() {
+    	try {
+            empresas.buscarPorId(1L).ifPresent(c->setarCampos(c));
+        } catch (EmpresaNotFoundException ex) {
+        }
+    }
+    
+    public void setarCampos(Empresa c) {
+    	txtNome.setText(c.getNome());
+    	txtCnpj.setText(c.getCnpj());
+        txtEnd.setText(c.getEndereco());
+        txtBairro.setText(c.getBairro());
+        txtCep.setText(c.getCep());
+        txtCidade.setText(c.getCidade());
+        cbEstado.setSelectedItem(c.getEstado());
+        txtCel.setText(c.getCelular());
+        txtTel.setText(c.getTelefone());
+        txtEmail.setText(c.getEmail());
+        txtSite.setText(c.getSite());
+        txtMensagem.setText(c.getMensagem());
+    }
+
+    
     private void salvar() {
         if (!validar()) {
             return;
         }
-        Optional<Long> id = Optional.empty();
-        try {
-            id = validarId();
-        } catch (IdIncorretoException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
-            return;
-        }
-        try {
-            if(id.isPresent())
-                empresas.alterar(empresaBuilder(id), id.get());
-            else 
-                empresas.adicionar(empresaBuilder(Optional.empty()));
-            JOptionPane.showMessageDialog(null, "Registro Salvo com Sucesso!");
-            limparCampos();
-            pesquisar();
-        } catch (EmpresaNotFoundException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
-        }
+        Empresa empresa = empresas.salvarOuAtualizar(empresaBuilder());
+        JOptionPane.showMessageDialog(null, "Registro Salvo com Sucesso!");
+        setarCampos(empresa);
     }
 }
