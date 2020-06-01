@@ -28,7 +28,7 @@ import br.com.infoq.service.UsuarioSessao;
  * @author Grazi, tiagods
  */
 @Component
-public class frmLogin extends javax.swing.JFrame {
+public class TelaLogin extends javax.swing.JFrame {
 
     /**
      *
@@ -39,12 +39,8 @@ public class frmLogin extends javax.swing.JFrame {
     @Autowired private TelaMenu menu;
     @Autowired private UsuarioSessao sessao;
 
-    public frmLogin() {
+    public TelaLogin() {
         initComponents();
-        ImageIcon icone = new ImageIcon(getClass().getResource("/icons/user.png"));
-        setIconImage(icone.getImage());
-        String imagem = "dbok.png";
-        lblstatus.setIcon(new ImageIcon(getClass().getResource("/icons/" + imagem)));
 
     }
 

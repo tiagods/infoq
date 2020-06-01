@@ -89,8 +89,7 @@ public class TelaEmpresa extends javax.swing.JInternalFrame {
                 txtTel.getText(),
                 txtEmail.getText(),
                 txtSite.getText(),
-                txtMensagem.getText(),
-                null
+                txtMensagem.getText()
         );
     }
 

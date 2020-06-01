@@ -25,9 +25,7 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
  * @author tiago
  */
 @Configuration
-//@EnableWebMvc
-@ComponentScan
-public class ThymeleafConfig implements WebMvcConfigurer {
+public class ThymeleafConfig {
     
 	public static String uploadDirectory= System.getProperty("user.dir") + "\\images";
 	
@@ -49,7 +47,7 @@ public class ThymeleafConfig implements WebMvcConfigurer {
         return templateResolver;
     }
     
-    @Override
+    //@Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
     	registry.addResourceHandler("/images/**").addResourceLocations("file:" + uploadDirectory+"\\");
     }
