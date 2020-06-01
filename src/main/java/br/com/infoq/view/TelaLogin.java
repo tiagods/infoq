@@ -12,7 +12,6 @@ import java.awt.event.KeyEvent;
 import java.util.Arrays;
 import java.util.Optional;
 
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,7 +122,8 @@ public class TelaLogin extends javax.swing.JFrame {
     private javax.swing.JPasswordField txt_senha;
     private javax.swing.JTextField txt_usuario;
 
-    public void logar() {
+    @SuppressWarnings("static-access")
+	public void logar() {
         try {
             Usuario usuario = usuarios.validarLoginESenha(txt_usuario.getText().trim(), new String(txt_senha.getPassword()));
             Optional<String> optPerfil = Optional.ofNullable(usuario.getPerfil());

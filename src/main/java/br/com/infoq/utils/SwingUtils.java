@@ -36,7 +36,8 @@ public class SwingUtils {
 
     }
     
-    public static void limpar(Component c) {
+    @SuppressWarnings("rawtypes")
+	public static void limpar(Component c) {
         if (c instanceof JTextField) {
             ((JTextField) c).setText(clean);
         } else if (c instanceof JTextArea) {

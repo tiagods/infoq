@@ -9,13 +9,12 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import br.com.infoq.exception.ClienteNotFoundException;
 import br.com.infoq.model.Cliente;
 import br.com.infoq.repository.ClienteRepository;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 
 /**
  *
@@ -30,10 +29,6 @@ public class ClienteService {
         return repository.save(cliente);
     }
 
-    private List<Cliente> listar() {
-        return repository.findAll();
-    }
-    
     public List<Cliente> listar(Sort.Direction direction, String properties){
         return repository.findAll(Sort.by(direction, properties));
     }

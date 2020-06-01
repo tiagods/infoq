@@ -10,7 +10,12 @@ package br.com.infoq.exception;
  * @author tiagods
  */
 public class UsuarioNotFoundException extends Exception {
-    public UsuarioNotFoundException(String message){
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 7647954193406373224L;
+
+	public UsuarioNotFoundException(String message){
         super(message);
     }
 }

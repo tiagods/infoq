@@ -10,7 +10,12 @@ package br.com.infoq.exception;
  * @author tiagods
  */
 public class EmpresaNotFoundException extends Exception {
-    public EmpresaNotFoundException(String message){
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -3053134318627464469L;
+
+	public EmpresaNotFoundException(String message){
         super(message);
     }
 }

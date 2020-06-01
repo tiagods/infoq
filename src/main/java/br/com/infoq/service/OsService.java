@@ -5,15 +5,17 @@
  */
 package br.com.infoq.service;
 
-import br.com.infoq.exception.OsNotFoundException;
-import br.com.infoq.model.Os;
-import br.com.infoq.repository.OsRepository;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import br.com.infoq.exception.OsNotFoundException;
+import br.com.infoq.model.Os;
+import br.com.infoq.repository.OsRepository;
 
 /**
  *
@@ -48,10 +50,6 @@ public class OsService  {
     }
     private boolean verificarSeExiste(Long id){
         return repository.existsById(id);
-    }
-
-    private List<Os> listar() {
-        return repository.findAll();
     }
     
     public List<Os> listar(Sort.Direction direction, String properties){

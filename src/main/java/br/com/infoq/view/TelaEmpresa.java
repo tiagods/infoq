@@ -1,43 +1,29 @@
 package br.com.infoq.view;
 
 
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Arrays;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.JTextPane;
+import javax.swing.text.MaskFormatter;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import br.com.infoq.exception.EmpresaNotFoundException;
-import br.com.infoq.exception.IdIncorretoException;
 import br.com.infoq.model.Empresa;
 import br.com.infoq.model.Estado;
 import br.com.infoq.service.EmpresaService;
 import br.com.infoq.service.SwingOptions;
-import br.com.infoq.utils.SwingUtils;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JFormattedTextField;
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.text.MaskFormatter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Component;
-import javax.swing.GroupLayout.Alignment;
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.swing.GroupLayout;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import java.awt.Font;
-import javax.swing.JLabel;
-import javax.swing.JComboBox;
-import javax.swing.JTextField;
-import javax.swing.JTextPane;
-import javax.swing.JTextArea;
-import javax.swing.JScrollPane;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 /**
  *
@@ -93,15 +79,14 @@ public class TelaEmpresa extends javax.swing.JInternalFrame {
         );
     }
 
-    private String onlyNumber(String value){
+    @SuppressWarnings("unused")
+	private String onlyNumber(String value){
         return value.replace("(", "")
                 .replace(")", "")
                 .replace("-", "")
                 .replace(".", "")
                 .replace("/", "").trim();
     }
-
-    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 

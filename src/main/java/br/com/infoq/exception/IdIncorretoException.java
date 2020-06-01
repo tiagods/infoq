@@ -10,7 +10,12 @@ package br.com.infoq.exception;
  * @author tiagods
  */
 public class IdIncorretoException extends Exception{
-    public IdIncorretoException(String message){
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -3770526910862417386L;
+
+	public IdIncorretoException(String message){
         super(message);
     }
 }

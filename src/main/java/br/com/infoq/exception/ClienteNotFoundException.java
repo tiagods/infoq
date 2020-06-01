@@ -10,7 +10,12 @@ package br.com.infoq.exception;
  * @author tiagods
  */
 public class ClienteNotFoundException extends Exception {
-    public ClienteNotFoundException(String message){
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 4261462705313406393L;
+
+	public ClienteNotFoundException(String message){
         super(message);
     }
 }

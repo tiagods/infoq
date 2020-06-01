@@ -5,24 +5,23 @@
  */
 package br.com.infoq.view;
 
-import br.com.infoq.service.SwingOptions;
-import br.com.infoq.utils.Relatorio;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import javax.swing.JMenuItem;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+
+import br.com.infoq.service.SwingOptions;
+import br.com.infoq.utils.Relatorio;
 /**
  *
  * @author hugov, tiagods
  */
 @Component
-@Slf4j
 public class TelaPrincipal extends javax.swing.JFrame {
     /**
     * 

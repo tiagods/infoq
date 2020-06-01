@@ -1,26 +1,20 @@
 package br.com.infoq.view;
 
-import br.com.infoq.exception.IdIncorretoException;
+import java.util.List;
 import java.util.Optional;
 
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import br.com.infoq.exception.IdIncorretoException;
 import br.com.infoq.exception.UsuarioNotFoundException;
-import br.com.infoq.model.Cliente;
 import br.com.infoq.model.Usuario;
 import br.com.infoq.service.SwingOptions;
 import br.com.infoq.service.UsuarioService;
 import br.com.infoq.utils.SwingUtils;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.GroupLayout;
-import javax.swing.LayoutStyle.ComponentPlacement;
 /**
  *
  * @author tiagods
@@ -180,7 +174,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
         });
 
         cbPerfil.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        cbPerfil.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "user", "admin" }));
+        cbPerfil.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "user", "admin" }));
         cbPerfil.setToolTipText("");
         cbPerfil.setMaximumSize(new java.awt.Dimension(0, 0));
         cbPerfil.addActionListener(new java.awt.event.ActionListener() {
@@ -267,7 +261,11 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
                 "ID", "LOGIN", "NOME", "PERFIL"
             }
         ) {
-            boolean[] canEdit = new boolean [] {
+            /**
+			 * 
+			 */
+			private static final long serialVersionUID = 3794838593713119354L;
+			boolean[] canEdit = new boolean [] {
                 false, false, false, false
             };
 

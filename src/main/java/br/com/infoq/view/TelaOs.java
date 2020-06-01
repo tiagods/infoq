@@ -26,6 +26,7 @@ import br.com.infoq.utils.DateUtil;
 import br.com.infoq.utils.Relatorio;
 import br.com.infoq.utils.SwingUtils;
 import br.com.infoq.utils.Validator;
+import java.awt.Font;
 
 /**
  *
@@ -116,7 +117,6 @@ public class TelaOs extends javax.swing.JInternalFrame {
         txtTecnico.setText(sessao.getUsuario()!=null?sessao.getUsuario().getLogin():"");
     }
 
-    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -138,19 +138,20 @@ public class TelaOs extends javax.swing.JInternalFrame {
         txtAparelho = new javax.swing.JTextField();
         txtAparelho.setBounds(155, 339, 378, 25);
         txtTecnico = new javax.swing.JTextField();
-        txtTecnico.setBounds(705, 370, 168, 25);
+        txtTecnico.setBounds(666, 369, 168, 25);
         jLabel7 = new javax.swing.JLabel();
         jLabel7.setBounds(28, 376, 53, 15);
         txtDefeito = new javax.swing.JTextField();
         txtDefeito.setBounds(155, 370, 378, 25);
         txtGarantia = new javax.swing.JTextField();
-        txtGarantia.setBounds(705, 403, 168, 25);
+        txtGarantia.setFont(new Font("Tahoma", Font.PLAIN, 15));
+        txtGarantia.setBounds(666, 402, 168, 25);
         txtServico = new javax.swing.JTextField();
         txtServico.setBounds(155, 401, 378, 25);
         jLabel8 = new javax.swing.JLabel();
         jLabel8.setBounds(28, 407, 53, 15);
         jLabel9 = new javax.swing.JLabel();
-        jLabel9.setBounds(592, 376, 54, 15);
+        jLabel9.setBounds(543, 376, 54, 15);
         btnNovo = new javax.swing.JButton();
         btnNovo.setBounds(63, 565, 149, 73);
         btnSalvar = new javax.swing.JButton();
@@ -158,7 +159,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
         btnDeletar = new javax.swing.JButton();
         btnDeletar.setBounds(451, 565, 154, 73);
         jLabel10 = new javax.swing.JLabel();
-        jLabel10.setBounds(592, 473, 76, 15);
+        jLabel10.setBounds(543, 473, 76, 15);
         btnImprimir = new javax.swing.JButton();
         btnImprimir.setBounds(658, 565, 163, 73);
         jLabel11 = new javax.swing.JLabel();
@@ -167,17 +168,19 @@ public class TelaOs extends javax.swing.JInternalFrame {
         jScrollPane2.setBounds(155, 434, 378, 113);
         txtObs = new javax.swing.JTextPane();
         jLabel12 = new javax.swing.JLabel();
-        jLabel12.setBounds(592, 406, 61, 16);
+        jLabel12.setBounds(543, 406, 61, 16);
         jLabel13 = new javax.swing.JLabel();
-        jLabel13.setBounds(592, 441, 87, 15);
+        jLabel13.setBounds(543, 441, 87, 15);
         txtValor = new javax.swing.JFormattedTextField();
-        txtValor.setBounds(705, 434, 168, 26);
+        txtValor.setBounds(666, 433, 168, 26);
         txtEntrada = new javax.swing.JFormattedTextField();
-        txtEntrada.setBounds(705, 466, 168, 26);
+        txtEntrada.setBounds(666, 465, 168, 26);
         jLabel14 = new javax.swing.JLabel();
-        jLabel14.setBounds(592, 500, 99, 24);
+        jLabel14.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        jLabel14.setBounds(543, 500, 115, 24);
         txtTotal = new javax.swing.JTextField();
-        txtTotal.setBounds(705, 499, 168, 26);
+        txtTotal.setFont(new Font("Tahoma", Font.PLAIN, 15));
+        txtTotal.setBounds(666, 498, 168, 26);
         jButton1 = new javax.swing.JButton();
         jButton1.setBounds(873, 11, 40, 40);
         txtCodOs = new javax.swing.JTextField();
@@ -185,13 +188,15 @@ public class TelaOs extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel1.setBounds(28, 315, 47, 14);
         txtData = new javax.swing.JTextField();
-        txtData.setBounds(705, 339, 168, 22);
+        txtData.setBounds(666, 338, 168, 22);
         jLabel2 = new javax.swing.JLabel();
-        jLabel2.setBounds(592, 344, 30, 16);
+        jLabel2.setBounds(543, 344, 30, 16);
         rbos = new javax.swing.JRadioButton();
-        rbos.setBounds(782, 307, 125, 23);
+        rbos.setFont(new Font("Tahoma", Font.PLAIN, 10));
+        rbos.setBounds(743, 305, 149, 23);
         rbgarantia = new javax.swing.JRadioButton();
-        rbgarantia.setBounds(705, 307, 77, 23);
+        rbgarantia.setFont(new Font("Tahoma", Font.PLAIN, 10));
+        rbgarantia.setBounds(666, 305, 77, 23);
         jPanel3 = new javax.swing.JPanel();
         jPanel3.setBounds(10, 11, 440, 286);
         txPesquisarOs = new javax.swing.JTextField();
@@ -200,7 +205,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
         tbOs = new javax.swing.JTable();
         cbBuscarTipo = new javax.swing.JComboBox<String>();
         jLabel16 = new javax.swing.JLabel();
-        jLabel16.setBounds(592, 315, 30, 16);
+        jLabel16.setBounds(543, 313, 30, 16);
 
         setClosable(true);
         setTitle("ORÇAMENTO"); // NOI18N
@@ -225,7 +230,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
         jLabel3.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel3.setText("SITUAÇÃO:");
 
-        cbSituacao.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "NA BANCADA", "ENTREGA FEIRA", "ORÇAMENTO REPROVADO", "AGUARDANDO APROVAÇÃO", "AGUARDANDO PEÇA", "ABANDOANDO PELO CLIENTE", "RETORNOU", "ESTÁ PRONTO, AVISAR CLIENTE", "SEM CONSERTO", " ", " " }));
+        cbSituacao.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "NA BANCADA", "ENTREGA FEIRA", "ORÇAMENTO REPROVADO", "AGUARDANDO APROVAÇÃO", "AGUARDANDO PEÇA", "ABANDOANDO PELO CLIENTE", "RETORNOU", "ESTÁ PRONTO, AVISAR CLIENTE", "SEM CONSERTO", " ", " " }));
         cbSituacao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbSituacaoActionPerformed(evt);
@@ -267,7 +272,11 @@ public class TelaOs extends javax.swing.JInternalFrame {
                 "ID", "NOME", "TELEFONE", "CELULAR"
             }
         ) {
-            boolean[] canEdit = new boolean [] {
+            /**
+			 * 
+			 */
+			private static final long serialVersionUID = -2427908438363465714L;
+			boolean[] canEdit = new boolean [] {
                 false, false, false, false
             };
 
@@ -323,7 +332,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
 
         txtAparelho.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
 
-        txtTecnico.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        txtTecnico.setFont(new Font("Tahoma", Font.PLAIN, 15)); // NOI18N
         txtTecnico.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtTecnicoActionPerformed(evt);
@@ -397,7 +406,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
         jLabel13.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel13.setText("VALOR: R$");
 
-        txtValor.setFont(new java.awt.Font("Ubuntu", 0, 15)); // NOI18N
+        txtValor.setFont(new Font("Tahoma", Font.PLAIN, 15)); // NOI18N
         txtValor.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtValorFocusLost(evt);
@@ -409,7 +418,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
             }
         });
 
-        txtEntrada.setFont(new java.awt.Font("Ubuntu", 0, 15)); // NOI18N
+        txtEntrada.setFont(new Font("Tahoma", Font.PLAIN, 15)); // NOI18N
         txtEntrada.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtEntradaFocusLost(evt);
@@ -439,7 +448,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
         jLabel1.setText("Nº OS:");
 
         txtData.setEditable(false);
-        txtData.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        txtData.setFont(new Font("Tahoma", Font.PLAIN, 15)); // NOI18N
         txtData.setEnabled(false);
 
         jLabel2.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
@@ -497,7 +506,11 @@ public class TelaOs extends javax.swing.JInternalFrame {
                 "ID", "APARELHO", "SITUACAO", "CLIENTE"
             }
         ) {
-            boolean[] canEdit = new boolean [] {
+            /**
+			 * 
+			 */
+			private static final long serialVersionUID = -1092875436430474418L;
+			boolean[] canEdit = new boolean [] {
                 false, false, false, false
             };
 
@@ -516,7 +529,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
             tbOs.getColumnModel().getColumn(0).setPreferredWidth(2);
         }
 
-        cbBuscarTipo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "CODIGO OS", "NOME CLIENTE", "APARELHO" }));
+        cbBuscarTipo.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "CODIGO OS", "NOME CLIENTE", "APARELHO" }));
         cbBuscarTipo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbBuscarTipoActionPerformed(evt);
@@ -840,7 +853,8 @@ public class TelaOs extends javax.swing.JInternalFrame {
             txtTotal.setText("RS " + total.toString().replace(".", ","));
     }
 
-    private void emitirOs() {
+    @SuppressWarnings("unused")
+	private void emitirOs() {
         if (!validar()) {
             return;
         }
@@ -894,7 +908,6 @@ public class TelaOs extends javax.swing.JInternalFrame {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private void imprimir(Os os) {
         if (txtCodOs.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Pesquise uma OS para Impressao!!");

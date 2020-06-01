@@ -10,7 +10,12 @@ package br.com.infoq.exception;
  * @author tiagods
  */
 public class UsuarioInvalidCredentialsException extends Exception {
-    public UsuarioInvalidCredentialsException(String message){
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5871742492599200711L;
+
+	public UsuarioInvalidCredentialsException(String message){
         super(message);
     }
 }

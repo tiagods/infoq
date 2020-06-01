@@ -1,18 +1,5 @@
 package br.com.infoq.config;
 
-import br.com.infoq.model.Cliente;
-import br.com.infoq.model.Os;
-import br.com.infoq.utils.FileUtils;
-
-import com.itextpdf.html2pdf.ConverterProperties;
-import com.itextpdf.html2pdf.HtmlConverter;
-import com.itextpdf.html2pdf.css.CssConstants;
-import static com.itextpdf.html2pdf.css.CssConstants.LANDSCAPE;
-import com.itextpdf.kernel.geom.PageSize;
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.styledxmlparser.css.media.MediaDeviceDescription;
-import com.itextpdf.styledxmlparser.css.media.MediaType;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,9 +9,19 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
+
+import com.itextpdf.html2pdf.ConverterProperties;
+import com.itextpdf.html2pdf.HtmlConverter;
+import com.itextpdf.kernel.geom.PageSize;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+
+import br.com.infoq.model.Cliente;
+import br.com.infoq.model.Os;
 
 /**
  *
@@ -43,7 +40,7 @@ public class RelatorioTest {
 
         Context context = new Context();
         
-        List<Cliente> lista = new ArrayList();
+        List<Cliente> lista = new ArrayList<Cliente>();
         StringBuilder st = new StringBuilder();
         Cliente cli = new Cliente(
             1L,
@@ -93,7 +90,7 @@ public class RelatorioTest {
 
         Context context = new Context();
         
-        List<Os> lista = new ArrayList();
+        List<Os> lista = new ArrayList<Os>();
         StringBuilder st = new StringBuilder();
         
         Cliente cli = new Cliente(
@@ -162,7 +159,6 @@ public class RelatorioTest {
 
         Context context = new Context();
         
-        List<Os> lista = new ArrayList();
         StringBuilder st = new StringBuilder();
         
         Cliente cli = new Cliente(

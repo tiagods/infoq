@@ -10,7 +10,12 @@ package br.com.infoq.exception;
  * @author tiagods
  */
 public class OsNotFoundException extends Exception {
-    public OsNotFoundException(String message){
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 6938458181779411277L;
+
+	public OsNotFoundException(String message){
         super(message);
     }
 }
