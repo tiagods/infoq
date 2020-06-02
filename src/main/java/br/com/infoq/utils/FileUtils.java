@@ -67,12 +67,12 @@ public class FileUtils {
                     zipOut.write(bytes, 0, length);
                 }
             }
-          
             apagarAntigos(backupFolder);
         } catch (FileNotFoundException ex) {
             JOptionPane.showMessageDialog(null, "Falha ao gerar backup : "+ex.getMessage());
         } catch (IOException ex){
-            JOptionPane.showMessageDialog(null, "Falha ao gerar backup : "+ex.getMessage());
+            //JOptionPane.showMessageDialog(null, "Falha ao gerar backup : "+ex.getMessage());
+        	log.error("Falha ao gerar backup : "+ex.getMessage());
         } finally {
             try {
                 if(fos != null) fos.close();

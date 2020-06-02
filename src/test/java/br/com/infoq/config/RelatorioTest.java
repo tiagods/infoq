@@ -22,6 +22,8 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 
 import br.com.infoq.model.Cliente;
 import br.com.infoq.model.Os;
+import br.com.infoq.model.Os.Situacao;
+import br.com.infoq.model.Os.Tipo;
 
 /**
  *
@@ -111,7 +113,7 @@ public class RelatorioTest {
         Os os = new Os(
                 1L,
                 Calendar.getInstance(),
-                "Garantia",
+                Tipo.GARANTIA,
                 "Mac Book",
                 "Não Liga",
                 "Reset placa",
@@ -120,7 +122,7 @@ public class RelatorioTest {
                 cli,
                 "asjdkfljasldjflasjdflkjaklsdfjlkasjdfkl",
                 "Tiago",
-                "NA BANCADA",
+                Situacao.NA_BANCADA,
                 "3 MESES",
                 BigDecimal.ZERO
         );
@@ -179,7 +181,7 @@ public class RelatorioTest {
         Os os = new Os(
                 1L,
                 Calendar.getInstance(),
-                "Garantia",
+                Tipo.GARANTIA,
                 "Mac Book",
                 "Não Liga",
                 "Reset placa",
@@ -188,7 +190,7 @@ public class RelatorioTest {
                 cli,
                 "asjdkfljasldjflasjdflkjaklsdfjlkasjdfkl",
                 "Tiago",
-                "NA BANCADA",
+                Situacao.NA_BANCADA,
                 "3 MESES",
                 BigDecimal.ZERO
         );

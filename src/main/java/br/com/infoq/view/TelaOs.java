@@ -1,8 +1,10 @@
 package br.com.infoq.view;
 
+import java.awt.Font;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +20,8 @@ import br.com.infoq.exception.IdIncorretoException;
 import br.com.infoq.exception.OsNotFoundException;
 import br.com.infoq.model.Cliente;
 import br.com.infoq.model.Os;
+import br.com.infoq.model.Os.Situacao;
+import br.com.infoq.model.Os.Tipo;
 import br.com.infoq.service.ClienteService;
 import br.com.infoq.service.OsService;
 import br.com.infoq.service.SwingOptions;
@@ -26,7 +30,6 @@ import br.com.infoq.utils.DateUtil;
 import br.com.infoq.utils.Relatorio;
 import br.com.infoq.utils.SwingUtils;
 import br.com.infoq.utils.Validator;
-import java.awt.Font;
 
 /**
  *
@@ -42,8 +45,6 @@ public class TelaOs extends javax.swing.JInternalFrame {
     @Autowired private SwingOptions swing;
     @Autowired private UsuarioSessao sessao;
     
-    private String Tipo;
-
     public TelaOs() {
         initComponents();
         ((javax.swing.plaf.basic.BasicInternalFrameUI)this.getUI()).setNorthPane(null);
@@ -53,7 +54,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
         return new Os(
                 result.isPresent() ? result.get() : -1L,
                 Calendar.getInstance(),
-                Tipo,
+                rbgarantia.isSelected()?Tipo.GARANTIA:Tipo.OS,
                 txtAparelho.getText().toUpperCase().trim(),
                 txtDefeito.getText().toUpperCase().trim(),
                 txtServico.getText().toUpperCase().trim(),
@@ -62,7 +63,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
                 new Cliente(Long.parseLong(txtClienteCodigo.getText().trim())),
                 txtObs.getText().toUpperCase(),
                 txtTecnico.getText().toUpperCase().trim(),
-                cbSituacao.getSelectedItem().toString(),
+                (Situacao)cbSituacao.getSelectedItem(),
                 txtGarantia.getText(),
                 BigDecimal.ZERO
         );
@@ -123,7 +124,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
         buttonGroup1 = new javax.swing.ButtonGroup();
         jLabel3 = new javax.swing.JLabel();
         jLabel3.setBounds(250, 309, 62, 16);
-        cbSituacao = new javax.swing.JComboBox<String>();
+        cbSituacao = new javax.swing.JComboBox<Situacao>();
         cbSituacao.setBounds(330, 308, 203, 20);
         jPanel2 = new javax.swing.JPanel();
         jPanel2.setBounds(460, 52, 475, 240);
@@ -207,6 +208,15 @@ public class TelaOs extends javax.swing.JInternalFrame {
         jLabel16 = new javax.swing.JLabel();
         jLabel16.setBounds(543, 313, 30, 16);
 
+        
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+            	cbSituacao.removeAllItems();
+                Arrays.asList(Situacao.values()).forEach(item->cbSituacao.addItem(item));
+                cbSituacao.setSelectedItem(Situacao.NA_BANCADA);
+            }
+        });
+        
         setClosable(true);
         setTitle("ORÇAMENTO"); // NOI18N
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
@@ -230,7 +240,6 @@ public class TelaOs extends javax.swing.JInternalFrame {
         jLabel3.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel3.setText("SITUAÇÃO:");
 
-        cbSituacao.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "NA BANCADA", "ENTREGA FEIRA", "ORÇAMENTO REPROVADO", "AGUARDANDO APROVAÇÃO", "AGUARDANDO PEÇA", "ABANDOANDO PELO CLIENTE", "RETORNOU", "ESTÁ PRONTO, AVISAR CLIENTE", "SEM CONSERTO", " ", " " }));
         cbSituacao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbSituacaoActionPerformed(evt);
@@ -456,19 +465,8 @@ public class TelaOs extends javax.swing.JInternalFrame {
 
         buttonGroup1.add(rbos);
         rbos.setText("ORDEM DE SERVIÇO");
-        rbos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbosActionPerformed(evt);
-            }
-        });
-
         buttonGroup1.add(rbgarantia);
         rbgarantia.setText("GARANTIA");
-        rbgarantia.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbgarantiaActionPerformed(evt);
-            }
-        });
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Pesquisar OS"));
         jPanel3.setToolTipText("");
@@ -646,18 +644,9 @@ public class TelaOs extends javax.swing.JInternalFrame {
         pesquisarCliente();
     }//GEN-LAST:event_txtClienteNomeKeyReleased
 
-    private void rbgarantiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbgarantiaActionPerformed
-        Tipo = "Garantia";
-    }//GEN-LAST:event_rbgarantiaActionPerformed
-
-    private void rbosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbosActionPerformed
-        Tipo = "OS";
-    }//GEN-LAST:event_rbosActionPerformed
-
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
         pesquisarCliente();
         rbos.setSelected(true);
-        Tipo = "OS";
     }//GEN-LAST:event_formInternalFrameOpened
 
     private void cbSituacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbSituacaoActionPerformed
@@ -721,7 +710,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnSalvar;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox<String> cbBuscarTipo;
-    private javax.swing.JComboBox<String> cbSituacao;
+    private javax.swing.JComboBox<Situacao> cbSituacao;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -762,7 +751,6 @@ public class TelaOs extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtTecnico;
     private javax.swing.JTextField txtTotal;
     private javax.swing.JFormattedTextField txtValor;
-    // End of variables declaration//GEN-END:variables
 
     public void pesquisarCliente() {
         SwingUtils.limparTabela(tblClientes);
@@ -803,11 +791,26 @@ public class TelaOs extends javax.swing.JInternalFrame {
         DefaultTableModel dm = (DefaultTableModel)tbOs.getModel();
         lista.forEach(c->dm.addRow(new Object[]{c.getId(), c.getAparelho(), c.getSituacao(), c.getCliente().getNome()}));
     }
-
     
     private void setarCamposCliente() {
         int setar = tblClientes.getSelectedRow();
-        txtClienteCodigo.setText(setar == -1? "": tblClientes.getModel().getValueAt(setar, 0).toString());
+        String valor = "";
+        if(setar!=-1) {
+        	try {
+        		Optional<Long> value = validarId(tblClientes.getModel().getValueAt(setar, 0).toString());
+        		if(value.isPresent()) {
+        			Optional<Cliente> result = clientes.buscarPorId(value.get());
+        			if(result.isPresent()) { valor = String.valueOf(result.get().getId());}
+        		}
+        	}catch (IdIncorretoException e) {
+				JOptionPane.showMessageDialog(null, e.getMessage());
+				pesquisarCliente();
+			} catch (ClienteNotFoundException e) {
+				JOptionPane.showMessageDialog(null, "Não foi encontrado o cliente, talvez tenha sido removido. Atualizado ...");
+				pesquisarCliente();
+			}
+        }
+        txtClienteCodigo.setText(valor);
     }
     
     private void setarCamposOs() {
@@ -819,23 +822,23 @@ public class TelaOs extends javax.swing.JInternalFrame {
             Optional<Os> opt = osService.buscarPorId(result.get());
             Os os = opt.get();
             preencherCampos(os);
+            pesquisarOs();
         } catch (OsNotFoundException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
+            JOptionPane.showMessageDialog(null, "Os não localizada, talvez tenha sido excluída.");
+            pesquisarOs();
         } catch (IdIncorretoException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
+            pesquisarOs();
         }
     }
     private void preencherCampos(Os os){
         txtCodOs.setText("" + os.getId());
             txtData.setText(DateUtil.formatarData(os.getData().getTime()));
-            String rbTipo = os.getTipo();
-            if (rbTipo.equals("OS")) {
+            Tipo rbTipo = os.getTipo();
+            if (rbTipo.equals(Tipo.OS)) {
                 rbos.setSelected(true);
-                Tipo = "OS";
-
             } else {
                 rbgarantia.setSelected(true);
-                Tipo = "Garantia";
             }
             BigDecimal valor = os.getValor();
             BigDecimal entrada = os.getEntrada();

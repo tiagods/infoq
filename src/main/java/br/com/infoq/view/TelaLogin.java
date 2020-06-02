@@ -48,7 +48,6 @@ public class TelaLogin extends javax.swing.JFrame {
         txt_usuario = new javax.swing.JTextField();
         txt_senha = new javax.swing.JPasswordField();
         btn_login = new javax.swing.JButton();
-        lblstatus = new javax.swing.JLabel();
         lb_fundo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -83,12 +82,6 @@ public class TelaLogin extends javax.swing.JFrame {
         getContentPane().add(btn_login);
         btn_login.setBounds(303, 233, 210, 50);
 
-        lblstatus.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        lblstatus.setForeground(new java.awt.Color(248, 248, 248));
-        lblstatus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/dberro.png"))); // NOI18N
-        getContentPane().add(lblstatus);
-        lblstatus.setBounds(10, 20, 50, 40);
-
         lb_fundo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/login.jpg"))); // NOI18N
         lb_fundo.setMinimumSize(new java.awt.Dimension(450, 230));
         lb_fundo.setPreferredSize(new java.awt.Dimension(450, 230));
@@ -118,7 +111,6 @@ public class TelaLogin extends javax.swing.JFrame {
 
     private javax.swing.JButton btn_login;
     private javax.swing.JLabel lb_fundo;
-    private javax.swing.JLabel lblstatus;
     private javax.swing.JPasswordField txt_senha;
     private javax.swing.JTextField txt_usuario;
 
