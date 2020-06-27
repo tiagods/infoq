@@ -12,6 +12,7 @@ import java.awt.event.KeyEvent;
 import java.util.Arrays;
 import java.util.Optional;
 
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,8 @@ public class TelaLogin extends javax.swing.JFrame {
 
     public TelaLogin() {
         initComponents();
-
+        ImageIcon icone = new ImageIcon(getClass().getResource("/icons/user.png"));
+        setIconImage(icone.getImage());
     }
 
     private void initComponents() {

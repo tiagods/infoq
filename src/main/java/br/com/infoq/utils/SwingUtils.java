@@ -48,7 +48,7 @@ public class SwingUtils {
             ((JPasswordField) c).setText(clean);
         } else if (c instanceof JFormattedTextField) {
             ((JFormattedTextField) c).setText(clean);
-        } else if (c instanceof JComboBox) {
+        } else if (c instanceof JComboBox && ((JComboBox) c).getItemCount()>=1) {
             ((JComboBox) c).setSelectedIndex(0);
         } else if (c instanceof JPanel) {
             limparCampos((Container) c);

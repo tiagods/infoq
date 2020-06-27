@@ -6,6 +6,8 @@
 
 package br.com.infoq.utils;
 
+import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -13,6 +15,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,7 +23,15 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+
+import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.filechooser.FileSystemView;
+
+import org.springframework.data.util.Pair;
+
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -32,6 +43,82 @@ public class FileUtils {
     
     static String appDir = System.getProperty("user.dir");
     static String tmpDir = System.getProperty("java.io.tmpdir");
+    static File imagem = new File(appDir+"\\images\\logo.jpg");
+    
+    public static void main(String[] args) {
+		calcularRedimensionamento(1280, 720, 1200, 800);
+		calcularRedimensionamento(1280, 720, 1380, 700);
+		calcularRedimensionamento(1280, 720, 1380, 800);
+	}
+    
+    public static Pair<Integer, Integer> calcularRedimensionamento(double largulaMax, double alturaMax, double componenteLargula, double componenteAltura) {
+    	Double novaImgLargura = componenteLargula;
+    	Double novaImgAltura = componenteAltura;
+		if(componenteLargula > largulaMax) {
+			novaImgLargura = largulaMax;
+			novaImgAltura = (componenteAltura/componenteLargula)*novaImgLargura;
+		}
+		if (componenteAltura > alturaMax){
+			novaImgAltura = alturaMax;
+			novaImgLargura = componenteLargula/componenteAltura*novaImgAltura;
+		}
+		log.info("Medidas Limites "+largulaMax+"*"+alturaMax+" Componente "+componenteLargula+"*"+componenteAltura);
+		log.info("Medida final "+novaImgLargura+"*"+novaImgAltura);
+		return Pair.of(novaImgLargura.intValue(), novaImgAltura.intValue());
+    }
+    
+    public static File carregarArquivo() {
+        JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+        fileChooser.setToolTipText("Carregar");
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fileChooser.setAcceptAllFileFilterUsed(false);
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("PNG and JPG images", "png", "jpg", "jpeg");
+		fileChooser.addChoosableFileFilter(filter);
+        int result = fileChooser.showOpenDialog(null);
+        
+        if( result == JFileChooser.APPROVE_OPTION) {
+        	File file = fileChooser.getSelectedFile();
+        	return file;
+        }
+        return null;
+    }
+    
+    public static void moverImagem(File image) {
+    	if(Files.notExists(image.toPath())) {
+			JOptionPane.showMessageDialog(null, "Falha ao copiar, o arquivo de imagem não existe");
+			return;
+    	}
+    	try {
+    		if(image.getName().toLowerCase().endsWith(".jpg")) {
+        		convertFormat(image.getAbsolutePath());
+        	} else {
+        		Files.copy(image.toPath(), imagem.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        	}
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Falha ao copiar o arquivo: "+ image.getAbsolutePath()+"\nTente novamente");
+		}
+    }
+    
+    private static void convertFormat(String inputImagePath) throws IOException {
+    	FileInputStream inputStream = new FileInputStream(inputImagePath);
+		FileOutputStream outputStream = null;
+		try{
+			outputStream = new FileOutputStream(imagem);
+			BufferedImage inputImage = ImageIO.read(inputStream);
+			BufferedImage newBufferedImage = null;
+			if(inputImagePath.toLowerCase().endsWith(".png")) {
+				newBufferedImage = new BufferedImage(inputImage.getWidth(),
+						inputImage.getHeight(), BufferedImage.TYPE_INT_RGB);
+				newBufferedImage.createGraphics().drawImage(inputImage, 0, 0, Color.WHITE, null);
+			} else {
+				newBufferedImage = inputImage;
+			}
+			ImageIO.write(newBufferedImage, "jpg", outputStream);
+		} finally {
+			inputStream.close();
+			outputStream.close();
+		}
+	}
     
     static File arquivoTemporario(String dir, String nome,String extensao){
         StringBuilder sb = new StringBuilder();

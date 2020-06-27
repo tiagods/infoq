@@ -71,6 +71,10 @@ public class SwingOptions {
         sobre.setVisible(true);
     }
     
+    public void carregarLogo() {
+    	menu.carregarLogoOficial();
+    }
+    
     public void timeForever(JLabel data, JLabel hora){
         Runnable run = () -> {
             boolean forever = true;

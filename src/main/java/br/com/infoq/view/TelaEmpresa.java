@@ -4,16 +4,21 @@ package br.com.infoq.view;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.Arrays;
+import java.util.Optional;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.SwingConstants;
 import javax.swing.text.MaskFormatter;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +26,13 @@ import org.springframework.stereotype.Component;
 
 import br.com.infoq.exception.EmpresaNotFoundException;
 import br.com.infoq.model.Empresa;
+import br.com.infoq.model.Endereco;
 import br.com.infoq.model.Estado;
 import br.com.infoq.service.EmpresaService;
 import br.com.infoq.service.SwingOptions;
+import br.com.infoq.utils.EnderecoUtil;
+import br.com.infoq.utils.FileUtils;
+import br.com.infoq.utils.Validator;
 
 /**
  *
@@ -210,7 +219,7 @@ public class TelaEmpresa extends javax.swing.JInternalFrame {
         getContentPane().add(lblCep);
         
         txtCep = new JFormattedTextField(formatoCep);
-        txtCep.setBounds(109, 235, 175, 26);
+        txtCep.setBounds(109, 235, 76, 26);
         txtCep.setFont(new Font("Dialog", Font.PLAIN, 15));
         txtCep.setFocusLostBehavior(JFormattedTextField.COMMIT);
         getContentPane().add(txtCep);
@@ -267,9 +276,9 @@ public class TelaEmpresa extends javax.swing.JInternalFrame {
                     }
                 });
                 btnSalvar = new javax.swing.JButton();
-                btnSalvar.setBounds(367, 541, 167, 73);
+                btnSalvar.setBounds(308, 539, 167, 73);
                 
-                btnSalvar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+                btnSalvar.setFont(new Font("Tahoma", Font.PLAIN, 10)); // NOI18N
                 btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/salvar.png"))); // NOI18N
                 btnSalvar.setText("Salvar");
                 btnSalvar.setToolTipText("Alterar");
@@ -303,9 +312,83 @@ public class TelaEmpresa extends javax.swing.JInternalFrame {
                 });
                 btnNewButton.setBounds(563, 391, 62, 33);
                 getContentPane().add(btnNewButton);
+                
+                JButton btnBuscarCep = new JButton("");
+                btnBuscarCep.addActionListener(new ActionListener() {
+                	public void actionPerformed(ActionEvent evt) {
+                		btnBuscarCepActionPerformed(evt);
+                	}
+                });
+                btnBuscarCep.setIcon(new ImageIcon(TelaEmpresa.class.getResource("/icons/buscar pequeno.png")));
+                btnBuscarCep.setBounds(222, 235, 62, 26);
+                getContentPane().add(btnBuscarCep);
+                
+                JPanel panel = new JPanel();
+                panel.setBounds(634, 98, 214, 270);
+                getContentPane().add(panel);
+                panel.setLayout(null);
+                
+                lblNewLabel = new JLabel("Medida painel: 925 X 655");
+                lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 11));
+                lblNewLabel.setBounds(10, 11, 194, 190);
+                lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+                panel.add(lblNewLabel);
+                
+                btnCarregarImagem = new JButton("Carregar Imagem");
+                btnCarregarImagem.addActionListener(new ActionListener() {
+                	public void actionPerformed(ActionEvent e) {
+                		btnCarregarImagemActionPerformed(e);
+                	}
+                });
+                btnCarregarImagem.setBounds(37, 247, 140, 23);
+                panel.add(btnCarregarImagem);
+                
+                lblImagem = new JLabel("");
+                lblImagem.setBounds(10, 212, 194, 24);
+                panel.add(lblImagem);
+                
+                btnCancelar = new JButton();
+                btnCancelar.addActionListener(new ActionListener() {
+                	public void actionPerformed(ActionEvent e) {
+                		btnCancelarActionPerformed(e);
+                	}
+                });
+                btnCancelar.setIcon(new ImageIcon(TelaEmpresa.class.getResource("/icons/deletar.png")));
+                btnCancelar.setToolTipText("Cancelar");
+                btnCancelar.setText("Cancelar");
+                btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 10));
+                btnCancelar.setBounds(504, 539, 167, 73);
+                getContentPane().add(btnCancelar);
 
         setBounds(0, 0, 940, 695);
     }// </editor-fold>//GEN-END:initComponents
+    protected void btnCarregarImagemActionPerformed(ActionEvent evt) {
+    	Optional<File> result = Optional.ofNullable(FileUtils.carregarArquivo());
+    	if(result.isPresent()) {
+    		lblImagem.setText(result.get().getAbsolutePath());
+    	}
+	}
+    protected void btnCancelarActionPerformed(ActionEvent evt) {
+    	buscarEmpresa();
+	}
+    
+    protected void btnBuscarCepActionPerformed(ActionEvent evt) {
+    	if(Validator.validarCep(txtCep.getText())) {
+	    	Optional<Endereco> result = EnderecoUtil.pegarCEP(txtCep.getText().replace(".", ""));
+	    	if(result.isPresent()) {
+	    		Endereco end = result.get();
+	    		txtEnd.setText(end.getLogradouro());
+	    		txtBairro.setText(end.getBairro());
+	    		txtCidade.setText(end.getLocalidade());
+	    		cbEstado.setSelectedItem(end.getUf());
+	    	}
+	    	else {
+	    		JOptionPane.showMessageDialog(null, "Algo deu errado, verifique sua conexão com a internet");
+	    	}
+    	} else {
+    		JOptionPane.showMessageDialog(null, "O cep informado esta incorreto");
+    	}
+	}
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         salvar();
@@ -350,13 +433,16 @@ public class TelaEmpresa extends javax.swing.JInternalFrame {
     private JLabel lblObservacao;
     private JComboBox<Estado> cbEstado;
     private JTextPane txtMensagem;
+    private JButton btnCarregarImagem;
+    private JLabel lblNewLabel;
+    private JLabel lblImagem;
+    private JButton btnCancelar;
     // End of variables declaration//GEN-END:variables
 
     public void buscarEmpresa() {
     	try {
-            empresas.buscarPorId(1L).ifPresent(c->setarCampos(c));
-        } catch (EmpresaNotFoundException ex) {
-        }
+            empresas.buscarPorId(1L).ifPresent(c-> setarCampos(c));
+        } catch (EmpresaNotFoundException ex) {}
     }
     
     public void setarCampos(Empresa c) {
@@ -372,12 +458,17 @@ public class TelaEmpresa extends javax.swing.JInternalFrame {
         txtEmail.setText(c.getEmail());
         txtSite.setText(c.getSite());
         txtMensagem.setText(c.getMensagem());
+        lblImagem.setText("");
     }
-
-    
+        
     private void salvar() {
         if (!validar()) {
             return;
+        }
+        if(!lblImagem.getText().trim().equals("")) {
+        	File file = new File(lblImagem.getText());
+        	FileUtils.moverImagem(file);
+        	swing.carregarLogo();
         }
         Empresa empresa = empresas.salvarOuAtualizar(empresaBuilder());
         JOptionPane.showMessageDialog(null, "Registro Salvo com Sucesso!");

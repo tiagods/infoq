@@ -256,7 +256,7 @@ public class TelaCliente extends javax.swing.JInternalFrame {
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel6.setText("ENDEREÇO:");
 
-        btnNovo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnNovo.setFont(new Font("Tahoma", Font.PLAIN, 10)); // NOI18N
         btnNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/inserir.png"))); // NOI18N
         btnNovo.setText("Novo");
         btnNovo.setToolTipText("Adicionar");
@@ -267,9 +267,9 @@ public class TelaCliente extends javax.swing.JInternalFrame {
             }
         });
 
-        btnDeletar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnDeletar.setFont(new Font("Tahoma", Font.PLAIN, 10)); // NOI18N
         btnDeletar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/deletar.png"))); // NOI18N
-        btnDeletar.setText("EXCLUIR");
+        btnDeletar.setText("Excluir");
         btnDeletar.setToolTipText("Remover");
         btnDeletar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnDeletar.addActionListener(new java.awt.event.ActionListener() {
@@ -278,7 +278,7 @@ public class TelaCliente extends javax.swing.JInternalFrame {
             }
         });
 
-        btnSalvar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnSalvar.setFont(new Font("Tahoma", Font.PLAIN, 10)); // NOI18N
         btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/salvar.png"))); // NOI18N
         btnSalvar.setText("Salvar");
         btnSalvar.setToolTipText("Alterar");

@@ -1,9 +1,21 @@
 package br.com.infoq.view;
 
-import br.com.infoq.service.SwingOptions;
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import br.com.infoq.service.SwingOptions;
 
 /**
  *
@@ -18,17 +30,50 @@ public class TelaMenu extends javax.swing.JInternalFrame {
     public TelaMenu() {
         initComponents();
         ((javax.swing.plaf.basic.BasicInternalFrameUI) this.getUI()).setNorthPane(null);
+        carregarLogoOficial();
+    }
+    
+    public void carregarLogoOficial() {
+        File logoFile = new File(System.getProperty("user.dir")+"\\images\\logo.jpg");
+        if(Files.exists(logoFile.toPath())) {
+        	BufferedImage img = null;
+        	ImageIcon image = null;
+        	try {
+				img = ImageIO.read(logoFile);
+				if(img.getWidth() > lbLogo.getWidth() || img.getHeight() > lbLogo.getHeight()) {
+					//Pair<Integer, Integer> value = FileUtils.calcularRedimensionamento((double)lbLogo.getWidth()-20, (double)lbLogo.getHeight(), (double)img.getWidth(), (double)img.getHeight());
+		        	//Image dimg = img.getScaledInstance(value.getFirst(), value.getSecond(), Image.SCALE_SMOOTH);
+					Image dimg = img.getScaledInstance(lbLogo.getWidth(), lbLogo.getHeight(), Image.SCALE_SMOOTH);
+			        image = new ImageIcon(dimg);
+				}
+				else {
+					image = new ImageIcon(img);
+				}
+		        image.getImage().flush();
+		        lbLogo.setIcon(image); 
+		        lbLogo.setText("");
+			} catch (IOException e) {
+		    	lbLogo.setText("Não foi vincular uma logo no sistema\nAcesse a guia Perfil e inclua uma imagem");
+			}
+	    } else {
+        	lbLogo.setText("Não foi encontrado uma logo para o sistema\nAcesse a guia Perfil e inclua uma imagem");
+        }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         btn_os = new javax.swing.JButton();
+        btn_os.setFont(new Font("Tahoma", Font.PLAIN, 10));
         btn_sair = new javax.swing.JButton();
+        btn_sair.setFont(new Font("Tahoma", Font.PLAIN, 10));
         btn_usuarios = new javax.swing.JButton();
+        btn_usuarios.setFont(new Font("Tahoma", Font.PLAIN, 10));
         btn_clientes = new javax.swing.JButton();
+        btn_clientes.setFont(new Font("Tahoma", Font.PLAIN, 10));
         btn_empresas = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
+        btn_empresas.setFont(new Font("Tahoma", Font.PLAIN, 10));
+        lbLogo = new javax.swing.JLabel();
+        lbLogo.setHorizontalAlignment(SwingConstants.CENTER);
 
         setBackground(new java.awt.Color(255, 255, 255));
         setTitle("Menu do Sistema");
@@ -95,10 +140,8 @@ public class TelaMenu extends javax.swing.JInternalFrame {
         });
         getContentPane().add(btn_empresas);
         btn_empresas.setBounds(590, 20, 170, 78);
-
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/imagem de fundo.jpeg"))); // NOI18N
-        getContentPane().add(jLabel2);
-        jLabel2.setBounds(0, 0, 930, 750);
+        getContentPane().add(lbLogo);
+        lbLogo.setBounds(0, 0, 925, 655);
 
         setBounds(0, 0, 940, 685);
     }// </editor-fold>//GEN-END:initComponents
@@ -132,6 +175,6 @@ public class TelaMenu extends javax.swing.JInternalFrame {
     private javax.swing.JButton btn_os;
     private javax.swing.JButton btn_sair;
     public static javax.swing.JButton btn_usuarios;
-    private javax.swing.JLabel jLabel2;
+    private static javax.swing.JLabel lbLogo;
     // End of variables declaration//GEN-END:variables
 }

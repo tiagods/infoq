@@ -154,14 +154,18 @@ public class TelaOs extends javax.swing.JInternalFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel9.setBounds(543, 376, 54, 15);
         btnNovo = new javax.swing.JButton();
+        btnNovo.setFont(new Font("Tahoma", Font.PLAIN, 10));
         btnNovo.setBounds(63, 565, 149, 73);
         btnSalvar = new javax.swing.JButton();
+        btnSalvar.setFont(new Font("Tahoma", Font.PLAIN, 10));
         btnSalvar.setBounds(250, 565, 154, 73);
         btnDeletar = new javax.swing.JButton();
+        btnDeletar.setFont(new Font("Tahoma", Font.PLAIN, 10));
         btnDeletar.setBounds(451, 565, 154, 73);
         jLabel10 = new javax.swing.JLabel();
         jLabel10.setBounds(543, 473, 76, 15);
         btnImprimir = new javax.swing.JButton();
+        btnImprimir.setFont(new Font("Tahoma", Font.PLAIN, 10));
         btnImprimir.setBounds(658, 565, 163, 73);
         jLabel11 = new javax.swing.JLabel();
         jLabel11.setBounds(28, 460, 81, 15);
@@ -372,7 +376,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
         });
 
         btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/salvar.png"))); // NOI18N
-        btnSalvar.setText("SALVAR");
+        btnSalvar.setText("Salvar");
         btnSalvar.setToolTipText("Salvar");
         btnSalvar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnSalvar.addActionListener(new java.awt.event.ActionListener() {
@@ -382,7 +386,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
         });
 
         btnDeletar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/deletar.png"))); // NOI18N
-        btnDeletar.setText("EXCLUIR");
+        btnDeletar.setText("Excluir");
         btnDeletar.setToolTipText("Remover");
         btnDeletar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnDeletar.addActionListener(new java.awt.event.ActionListener() {
@@ -395,7 +399,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
         jLabel10.setText("ENTRADA: R$");
 
         btnImprimir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/print.png"))); // NOI18N
-        btnImprimir.setText("IMPRIMIR");
+        btnImprimir.setText("Imprimir");
         btnImprimir.setToolTipText("Imprimir");
         btnImprimir.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnImprimir.addActionListener(new java.awt.event.ActionListener() {

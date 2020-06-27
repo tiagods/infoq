@@ -39,14 +39,23 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         desktop = new javax.swing.JDesktopPane();
+        desktop.setBounds(0, 0, 941, 672);
         lblUsuario = new javax.swing.JLabel();
+        lblUsuario.setBounds(1054, 59, 52, 17);
         lblData = new javax.swing.JLabel();
+        lblData.setBounds(945, 177, 194, 15);
         jLabel1 = new javax.swing.JLabel();
+        jLabel1.setBounds(948, 38, 60, 60);
         jLabel2 = new javax.swing.JLabel();
+        jLabel2.setBounds(948, 106, 60, 60);
         jLabel4 = new javax.swing.JLabel();
+        jLabel4.setBounds(974, 610, 163, 13);
         jLabel5 = new javax.swing.JLabel();
+        jLabel5.setBounds(974, 629, 163, 14);
         jLabel3 = new javax.swing.JLabel();
+        jLabel3.setBounds(959, 397, 180, 180);
         lblHora = new javax.swing.JLabel();
+        lblHora.setBounds(1014, 126, 125, 15);
         menu = new javax.swing.JMenuBar();
         menuCad = new javax.swing.JMenu();
         menuCadCli = new javax.swing.JMenuItem();
@@ -105,8 +114,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jLabel5.setForeground(new java.awt.Color(102, 102, 102));
         jLabel5.setText("www.mfsystem.com.br");
-
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/mf.png"))); // NOI18N
 
         lblHora.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         lblHora.setForeground(new java.awt.Color(102, 102, 102));
@@ -208,73 +215,16 @@ public class TelaPrincipal extends javax.swing.JFrame {
         menu.add(menuSair);
 
         setJMenuBar(menu);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(desktop, javax.swing.GroupLayout.PREFERRED_SIZE, 941, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(jLabel5))
-                            .addComponent(jLabel4))
-                        .addGap(43, 43, 43))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(7, 7, 7)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel2)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(lblHora, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel1)
-                                        .addGap(46, 46, 46)
-                                        .addComponent(lblUsuario)
-                                        .addGap(0, 0, Short.MAX_VALUE))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel3)))
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblData, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(38, 38, 38)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(59, 59, 59)
-                        .addComponent(lblUsuario)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(lblHora)
-                        .addGap(36, 36, 36)))
-                .addComponent(lblData)
-                .addGap(205, 205, 205)
-                .addComponent(jLabel3)
-                .addGap(33, 33, 33)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel5)
-                .addGap(29, 29, 29))
-            .addComponent(desktop, javax.swing.GroupLayout.DEFAULT_SIZE, 688, Short.MAX_VALUE)
-        );
+        getContentPane().setLayout(null);
+        getContentPane().add(desktop);
+        getContentPane().add(jLabel5);
+        getContentPane().add(jLabel4);
+        getContentPane().add(jLabel2);
+        getContentPane().add(lblHora);
+        getContentPane().add(jLabel1);
+        getContentPane().add(lblUsuario);
+        getContentPane().add(jLabel3);
+        getContentPane().add(lblData);
 
         setSize(new java.awt.Dimension(1163, 732));
         setLocationRelativeTo(null);

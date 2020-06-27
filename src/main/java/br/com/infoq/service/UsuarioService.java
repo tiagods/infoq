@@ -66,4 +66,10 @@ public class UsuarioService  {
     public List<Usuario> buscarPorNome(String nome) {
         return repository.findAllByUsuarioIgnoreCaseContaining(nome);
     }
+    
+    public Long contar() {
+        return repository.count();
+    }
+    
+    
 }

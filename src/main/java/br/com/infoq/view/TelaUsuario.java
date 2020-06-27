@@ -14,6 +14,7 @@ import br.com.infoq.exception.UsuarioNotFoundException;
 import br.com.infoq.model.Usuario;
 import br.com.infoq.service.SwingOptions;
 import br.com.infoq.service.UsuarioService;
+import br.com.infoq.service.UsuarioSessao;
 import br.com.infoq.utils.SwingUtils;
 /**
  *
@@ -28,6 +29,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
     
     @Autowired private UsuarioService usuarios;
     @Autowired private SwingOptions swing;
+    @Autowired private UsuarioSessao sessao;
     
     public TelaUsuario() {
         initComponents();
@@ -469,11 +471,20 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
     }
 
     private void remover() {
-        int confirma = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir?", "Atenção", JOptionPane.YES_NO_OPTION);
+    	if(!validarQuantidadeDeUsuariosSistema()) {
+    		JOptionPane.showMessageDialog(null, "Existe apenas um usuario cadastrado. Você não pode removê-lo");
+    		return;
+    	}
+    	int confirma = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir?", "Atenção", JOptionPane.YES_NO_OPTION);
         if (confirma == JOptionPane.YES_OPTION) {
             try {
                 Optional<Long> result = validarId();
                 if (!result.isPresent()) { return; }
+                
+                if(validarSeLogado(result.get())) {
+            		JOptionPane.showMessageDialog(null, "Esse usuario esta logado no sistema, entre com outra conta");
+            		return;
+            	}
                 usuarios.deletar(result.get());
                 JOptionPane.showMessageDialog(null, "Registro Apagado com Sucesso!");
                 limparCampos();
@@ -485,5 +496,16 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
             pesquisar();
         }
     }
+
+	private boolean validarSeLogado(Long id) {
+		boolean value = sessao.getUsuario()!=null && sessao.getUsuario().getId().equals(id);
+		return value;
+	}
+
+	private boolean validarQuantidadeDeUsuariosSistema() {
+		return usuarios.contar()>1;
+	}
+    
+    
 
 }
