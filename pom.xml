@@ -70,16 +70,16 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>me.soliveirajr</groupId>
-            <artifactId>menta-bean</artifactId>
-            <version>2.2.2</version>
-        </dependency>
-        <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>1.4.199</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20151123</version>
+		</dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -95,6 +95,11 @@
             <artifactId>html2pdf</artifactId>
             <version>3.0.0</version>
         </dependency>
+        <dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-databind</artifactId>
+		    <version>2.9.8</version>
+		</dependency>
 
     </dependencies>
 

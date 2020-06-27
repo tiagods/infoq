@@ -4,7 +4,10 @@ import java.awt.Font;
 import java.util.List;
 import java.util.Optional;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
@@ -16,9 +19,15 @@ import org.springframework.stereotype.Component;
 import br.com.infoq.exception.ClienteNotFoundException;
 import br.com.infoq.exception.IdIncorretoException;
 import br.com.infoq.model.Cliente;
+import br.com.infoq.model.Endereco;
 import br.com.infoq.service.ClienteService;
 import br.com.infoq.service.SwingOptions;
+import br.com.infoq.utils.EnderecoUtil;
 import br.com.infoq.utils.SwingUtils;
+import br.com.infoq.utils.Validator;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 /**
  *
@@ -31,7 +40,7 @@ public class TelaCliente extends javax.swing.JInternalFrame {
     @Autowired private ClienteService clientes;
     @Autowired private SwingOptions swing;
     
-    private MaskFormatter formatoCpf, formatoCnpj, formatoCelular, formatoTelefone;
+    private MaskFormatter formatoCpf, formatoCnpj, formatoCelular, formatoTelefone, formatoCep;
     
     private TelaCliente() {
         initComponents();
@@ -131,17 +140,17 @@ public class TelaCliente extends javax.swing.JInternalFrame {
         txtEmail = new javax.swing.JTextField();
         txtEmail.setBounds(550, 356, 174, 25);
         jLabel6 = new javax.swing.JLabel();
-        jLabel6.setBounds(187, 449, 76, 17);
+        jLabel6.setBounds(187, 491, 76, 17);
         btnNovo = new javax.swing.JButton();
-        btnNovo.setBounds(132, 557, 133, 73);
+        btnNovo.setBounds(142, 581, 133, 73);
         btnDeletar = new javax.swing.JButton();
-        btnDeletar.setBounds(532, 557, 155, 73);
+        btnDeletar.setBounds(542, 581, 155, 73);
         btnSalvar = new javax.swing.JButton();
-        btnSalvar.setBounds(331, 557, 137, 73);
+        btnSalvar.setBounds(341, 581, 137, 73);
         jLabel7 = new javax.swing.JLabel();
         jLabel7.setBounds(726, 519, 140, 111);
         txtEnd = new javax.swing.JTextField();
-        txtEnd.setBounds(281, 445, 174, 25);
+        txtEnd.setBounds(281, 487, 174, 25);
         jLabel5 = new javax.swing.JLabel();
         jLabel5.setBounds(187, 20, 51, 17);
         txtBuscar = new javax.swing.JTextField();
@@ -154,19 +163,19 @@ public class TelaCliente extends javax.swing.JInternalFrame {
         txtId = new javax.swing.JTextField();
         txtId.setBounds(10, 272, 41, 20);
         jLabel1 = new javax.swing.JLabel();
-        jLabel1.setBounds(478, 492, 53, 17);
+        jLabel1.setBounds(478, 534, 53, 17);
         txtBairro = new javax.swing.JTextField();
-        txtBairro.setBounds(550, 488, 172, 25);
+        txtBairro.setBounds(550, 530, 172, 25);
         jLabel8 = new javax.swing.JLabel();
-        jLabel8.setBounds(478, 449, 60, 17);
+        jLabel8.setBounds(478, 491, 60, 17);
         txtCom = new javax.swing.JTextField();
-        txtCom.setBounds(281, 488, 84, 25);
+        txtCom.setBounds(281, 530, 84, 25);
         jLabel9 = new javax.swing.JLabel();
         jLabel9.setBounds(478, 403, 62, 17);
         jLabel10 = new javax.swing.JLabel();
-        jLabel10.setBounds(187, 492, 49, 17);
+        jLabel10.setBounds(187, 534, 49, 17);
         txtNum = new javax.swing.JTextField();
-        txtNum.setBounds(550, 445, 86, 25);
+        txtNum.setBounds(550, 487, 86, 25);
         jLabel11 = new javax.swing.JLabel();
         jLabel11.setBounds(187, 316, 29, 17);
         try {
@@ -206,6 +215,16 @@ public class TelaCliente extends javax.swing.JInternalFrame {
         txtCpf.setBounds(281, 311, 150, 26);
         jButton2 = new javax.swing.JButton();
         jButton2.setBounds(868, 8, 46, 33);
+        
+        try {
+            formatoCep = new MaskFormatter("#####-###");
+        }catch(Exception erro){
+            JOptionPane.showMessageDialog(null ,"Não foi possivel receber o valor do cep: " +erro);
+        }
+        txtCep = new JFormattedTextField(formatoCep);
+        txtCep.setFont(new Font("Dialog", Font.PLAIN, 15));
+        txtCep.setFocusLostBehavior(JFormattedTextField.COMMIT);
+        txtCep.setBounds(281, 445, 150, 26);
 
         setClosable(true);
         setTitle("Clientes");
@@ -405,11 +424,42 @@ public class TelaCliente extends javax.swing.JInternalFrame {
         getContentPane().add(btnSalvar);
         getContentPane().add(btnDeletar);
         getContentPane().add(jLabel7);
+        getContentPane().add(txtCep);
+        
+        JLabel lblCep = new JLabel();
+        lblCep.setText("CEP:");
+        lblCep.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        lblCep.setBounds(187, 450, 70, 17);
+        getContentPane().add(lblCep);
+        
+        JButton btnBuscarCep = new JButton("");
+        btnBuscarCep.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent evt) {
+        		btnBuscarCepActionPerformed(evt);
+        	}
+        });
+        btnBuscarCep.setIcon(new ImageIcon(TelaCliente.class.getResource("/icons/buscar pequeno.png")));
+        btnBuscarCep.setBounds(441, 445, 62, 26);
+        getContentPane().add(btnBuscarCep);
 
         setBounds(0, 0, 940, 695);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+    protected void btnBuscarCepActionPerformed(ActionEvent evt) {
+    	if(Validator.validarCep(txtCep.getText())) {
+	    	Optional<Endereco> result = EnderecoUtil.pegarCEP(txtCep.getText().replace(".", ""));
+	    	if(result.isPresent()) {
+	    		Endereco end = result.get();
+	    		txtEnd.setText(end.getLogradouro());
+	    		txtBairro.setText(end.getBairro());
+	    	}
+	    	else {
+	    		JOptionPane.showMessageDialog(null, "Algo deu errado, verifique sua conexão com a internet");
+	    	}
+    	}
+	}
+
+	private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
         limparCampos();
     }//GEN-LAST:event_btnNovoActionPerformed
 
@@ -489,6 +539,7 @@ public class TelaCliente extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtNum;
     private javax.swing.JFormattedTextField txtRg;
     private javax.swing.JFormattedTextField txtTel;
+    private javax.swing.JFormattedTextField txtCep;
     // End of variables declaration//GEN-END:variables
 
     public void pesquisar() {
@@ -539,5 +590,4 @@ public class TelaCliente extends javax.swing.JInternalFrame {
             pesquisar();
         }
     }
-
 }
