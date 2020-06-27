@@ -456,6 +456,8 @@ public class TelaCliente extends javax.swing.JInternalFrame {
 	    	else {
 	    		JOptionPane.showMessageDialog(null, "Algo deu errado, verifique sua conexão com a internet");
 	    	}
+    	} else {
+    		JOptionPane.showMessageDialog(null, "O cep informado esta incorreto");
     	}
 	}
 
