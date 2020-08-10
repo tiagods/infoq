@@ -28,6 +28,10 @@ public class SwingUtils {
 
     private final static String clean = "";
 
+    public enum SIMNAO{
+    	SIM, NAO
+    }
+    
     public static void limparCampos(Container container) {
         List<Component> lista = Arrays.asList(container.getComponents());
         lista.forEach(c -> {

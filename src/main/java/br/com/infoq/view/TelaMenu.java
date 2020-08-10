@@ -30,7 +30,7 @@ public class TelaMenu extends javax.swing.JInternalFrame {
     public TelaMenu() {
         initComponents();
         ((javax.swing.plaf.basic.BasicInternalFrameUI) this.getUI()).setNorthPane(null);
-        carregarLogoOficial();
+        //carregarLogoOficial();
     }
     
     public void carregarLogoOficial() {
@@ -140,9 +140,11 @@ public class TelaMenu extends javax.swing.JInternalFrame {
         });
         getContentPane().add(btn_empresas);
         btn_empresas.setBounds(590, 20, 170, 78);
+        
+        lbLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/logo-oficial.jpg"))); // NOI18N
         getContentPane().add(lbLogo);
-        lbLogo.setBounds(0, 0, 925, 655);
-
+        lbLogo.setBounds(0, 0, 930, 750);
+        //lbLogo.setBounds(0, 0, 925, 655);
         setBounds(0, 0, 940, 685);
     }// </editor-fold>//GEN-END:initComponents
 

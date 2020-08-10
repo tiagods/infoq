@@ -2,6 +2,7 @@ package br.com.infoq.view;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -16,6 +17,13 @@ import br.com.infoq.service.SwingOptions;
 import br.com.infoq.service.UsuarioService;
 import br.com.infoq.service.UsuarioSessao;
 import br.com.infoq.utils.SwingUtils;
+import br.com.infoq.utils.SwingUtils.SIMNAO;
+
+import javax.swing.JComboBox;
+import java.awt.Font;
+import java.awt.Dimension;
+import javax.swing.JLabel;
+import javax.swing.JCheckBox;
 /**
  *
  * @author tiagods
@@ -43,7 +51,9 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
                 txtTel.getText(),
                 txtLogin.getText(),
                 new String(txtSenha.getPassword()),
-                cbPerfil.getSelectedItem().toString()
+                cbPerfil.getSelectedItem().toString(),
+                ckPerfilTecnico.isSelected(),
+                ((SIMNAO)cbAtivo.getSelectedItem()).equals(SIMNAO.SIM)
         );
         return usuario;
     }
@@ -70,6 +80,8 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
         SwingUtils.limparCampos(getContentPane());
         txtLogin.setEditable(true);
         cbPerfil.setSelectedIndex(0);
+        cbAtivo.setSelectedIndex(0);
+        ckPerfilTecnico.setSelected(true);
     }
 
     /**
@@ -103,11 +115,11 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel6.setBounds(190, 362, 40, 17);
         btnNovo = new javax.swing.JButton();
-        btnNovo.setBounds(211, 425, 129, 73);
+        btnNovo.setBounds(210, 513, 129, 73);
         btnDeletar = new javax.swing.JButton();
-        btnDeletar.setBounds(580, 425, 143, 73);
+        btnDeletar.setBounds(598, 513, 143, 73);
         btnSalvar = new javax.swing.JButton();
-        btnSalvar.setBounds(400, 425, 139, 73);
+        btnSalvar.setBounds(399, 513, 139, 73);
         jLabel7 = new javax.swing.JLabel();
         jLabel7.setBounds(749, 85, 128, 109);
         txtTel = new javax.swing.JFormattedTextField();
@@ -119,7 +131,9 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
         txPesquisar = new javax.swing.JTextField();
         jScrollPane3 = new javax.swing.JScrollPane();
         tbUsuarios = new javax.swing.JTable();
-
+        cbAtivo = new JComboBox<SIMNAO>();
+        Stream.of(SIMNAO.values()).forEach(c->cbAtivo.addItem(c));
+        
         setClosable(true);
         setTitle("Usuários");
         setPreferredSize(new java.awt.Dimension(948, 688));
@@ -323,6 +337,24 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
         getContentPane().add(btnDeletar);
         getContentPane().add(jButton1);
         getContentPane().add(jLabel7);
+        
+        cbAtivo.setToolTipText("");
+        cbAtivo.setMaximumSize(new Dimension(0, 0));
+        cbAtivo.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        cbAtivo.setBounds(251, 399, 152, 23);
+        getContentPane().add(cbAtivo);
+        
+        JLabel lblAtivo = new JLabel();
+        lblAtivo.setText("Ativo:");
+        lblAtivo.setMaximumSize(new Dimension(0, 0));
+        lblAtivo.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        lblAtivo.setBounds(190, 402, 41, 17);
+        getContentPane().add(lblAtivo);
+        
+        ckPerfilTecnico = new JCheckBox("Usuario também é técnico");
+        ckPerfilTecnico.setSelected(true);
+        ckPerfilTecnico.setBounds(538, 401, 200, 23);
+        getContentPane().add(ckPerfilTecnico);
 
         setBounds(0, 0, 940, 685);
     }// </editor-fold>//GEN-END:initComponents
@@ -398,6 +430,8 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtNome;
     private javax.swing.JPasswordField txtSenha;
     private javax.swing.JFormattedTextField txtTel;
+    private JComboBox<SwingUtils.SIMNAO> cbAtivo;
+    private JCheckBox ckPerfilTecnico;
     // End of variables declaration//GEN-END:variables
 
     public void pesquisar() {
@@ -437,6 +471,8 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
         txtSenha.setText(us.getSenha());
         cbPerfil.setSelectedItem(us.getPerfil());
         txtLogin.setEditable(false);
+        ckPerfilTecnico.setSelected(us.isTecnico());
+        cbAtivo.setSelectedItem(us.isAtivo()?SIMNAO.SIM:SIMNAO.NAO);
     }
 
     private void salvar() {
@@ -505,7 +541,4 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
 	private boolean validarQuantidadeDeUsuariosSistema() {
 		return usuarios.contar()>1;
 	}
-    
-    
-
 }

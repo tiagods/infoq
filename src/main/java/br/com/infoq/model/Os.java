@@ -37,7 +37,7 @@ public class Os {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Temporal(TemporalType.TIMESTAMP)
-    private Calendar data;
+    private Calendar data;    
     @Enumerated(EnumType.STRING)
     private Tipo tipo;
     private String aparelho;
@@ -51,12 +51,17 @@ public class Os {
     @JoinColumn(name = "cli_id")
     private Cliente cliente;
     private String obs;
-    private String tecnico;
+    @ManyToOne
+    @JoinColumn(name = "tecnico_id")
+    private Usuario tecnico;
     @Enumerated(EnumType.STRING)
     private Situacao situacao;
     private String garantia = "";
     @Transient
     private BigDecimal pagar= BigDecimal.ZERO;
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
     
     public enum Tipo {
     	GARANTIA, OS
@@ -82,7 +87,7 @@ public class Os {
 		}
     	@Override
     	public String toString() {
-    		return getDescricao();
+    		return getDescricao().toUpperCase();
     	}
     }
 }

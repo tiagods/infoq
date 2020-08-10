@@ -22,6 +22,7 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 
 import br.com.infoq.model.Cliente;
 import br.com.infoq.model.Os;
+import br.com.infoq.model.Usuario;
 import br.com.infoq.model.Os.Situacao;
 import br.com.infoq.model.Os.Tipo;
 
@@ -121,10 +122,11 @@ public class RelatorioTest {
                 new BigDecimal("0.00"),
                 cli,
                 "asjdkfljasldjflasjdflkjaklsdfjlkasjdfkl",
-                "Tiago",
+                new Usuario(1L,"Tiago",null,null,null,null,true,true),
                 Situacao.NA_BANCADA,
                 "3 MESES",
-                BigDecimal.ZERO
+                BigDecimal.ZERO,
+                new Usuario(1L,"Tiago",null,null,null,null,true,true)
         );
         st.append(cli.getNum().trim().length()>0? " "+cli.getNum()+" "+cli.getComp(): "");
         st.append(cli.getBairro().trim().length()>0 ? " - "+cli.getBairro() : "");
@@ -189,10 +191,11 @@ public class RelatorioTest {
                 new BigDecimal("0.00"),
                 cli,
                 "asjdkfljasldjflasjdflkjaklsdfjlkasjdfkl",
-                "Tiago",
+                new Usuario(1L,"Tiago",null,null,null,null,true,true),
                 Situacao.NA_BANCADA,
                 "3 MESES",
-                BigDecimal.ZERO
+                BigDecimal.ZERO,
+                new Usuario(1L,"Tiago",null,null,null,null,true,true)
         );
         os.setPagar(os.getValor().subtract(os.getEntrada()));
         

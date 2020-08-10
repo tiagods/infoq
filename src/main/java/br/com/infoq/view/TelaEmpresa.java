@@ -346,6 +346,8 @@ public class TelaEmpresa extends javax.swing.JInternalFrame {
                 lblImagem = new JLabel("");
                 lblImagem.setBounds(10, 212, 194, 24);
                 panel.add(lblImagem);
+                panel.setVisible(false);
+                
                 
                 btnCancelar = new JButton();
                 btnCancelar.addActionListener(new ActionListener() {

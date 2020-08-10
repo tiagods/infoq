@@ -9,6 +9,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -22,9 +23,11 @@ import br.com.infoq.model.Cliente;
 import br.com.infoq.model.Os;
 import br.com.infoq.model.Os.Situacao;
 import br.com.infoq.model.Os.Tipo;
+import br.com.infoq.model.Usuario;
 import br.com.infoq.service.ClienteService;
 import br.com.infoq.service.OsService;
 import br.com.infoq.service.SwingOptions;
+import br.com.infoq.service.UsuarioService;
 import br.com.infoq.service.UsuarioSessao;
 import br.com.infoq.utils.DateUtil;
 import br.com.infoq.utils.Relatorio;
@@ -44,14 +47,20 @@ public class TelaOs extends javax.swing.JInternalFrame {
     @Autowired private ClienteService clientes;
     @Autowired private SwingOptions swing;
     @Autowired private UsuarioSessao sessao;
+    @Autowired private UsuarioService usuarios;
     
     public TelaOs() {
         initComponents();
         ((javax.swing.plaf.basic.BasicInternalFrameUI)this.getUI()).setNorthPane(null);
     }
 
+    private Usuario usuarioNull() {
+    	return new Usuario(-1L,"Selecione um tecnico",null,null,null,null,true,true);
+    };
+    
     private Os osBuilder(Optional<Long> result) {
-        return new Os(
+    	Usuario tecnico = ((Usuario)cbTecnico.getSelectedItem()==null || ((Usuario)cbTecnico.getSelectedItem()).getId()==-1L)?null:(Usuario)cbTecnico.getSelectedItem();
+    	return new Os(
                 result.isPresent() ? result.get() : -1L,
                 Calendar.getInstance(),
                 rbgarantia.isSelected()?Tipo.GARANTIA:Tipo.OS,
@@ -62,16 +71,17 @@ public class TelaOs extends javax.swing.JInternalFrame {
                 new BigDecimal(txtEntrada.getText().replace(",", ".")),
                 new Cliente(Long.parseLong(txtClienteCodigo.getText().trim())),
                 txtObs.getText().toUpperCase(),
-                txtTecnico.getText().toUpperCase().trim(),
+                tecnico,
                 (Situacao)cbSituacao.getSelectedItem(),
                 txtGarantia.getText(),
-                BigDecimal.ZERO
+                BigDecimal.ZERO,
+                sessao.getUsuario()
         );
     }
 
     private boolean validar() {
         if (txtClienteCodigo.getText().isEmpty() || txtAparelho.getText().isEmpty() || txtDefeito.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Preencha todos os campos!");
+            JOptionPane.showMessageDialog(null, "Preencha todos os campos (Cliente, Aparelho e Defeito)!");
             return false;
         }
         if (!Validator.validarNumero(txtClienteCodigo.getText())) {
@@ -101,7 +111,15 @@ public class TelaOs extends javax.swing.JInternalFrame {
         }
         return true;
     }
-
+    
+    private boolean validarTecnico(){
+    	if(cbTecnico.getSelectedItem()!=null && ((Usuario)cbTecnico.getSelectedItem()).getId()!=-1L) {
+    		return true;
+    	}
+    	int result = JOptionPane.showConfirmDialog(null, "Não foi selecionado um técnico para essa O.S,\nDeseja salvar essa O.S sem técnico?", "Aviso!",JOptionPane.YES_NO_OPTION);
+    	return (result == JOptionPane.YES_OPTION); 
+    }
+    
     private Optional<Long> validarId(String value) throws IdIncorretoException {
         if(value.trim().length()==0) return Optional.empty();
         try {
@@ -115,12 +133,14 @@ public class TelaOs extends javax.swing.JInternalFrame {
     public void limparCampos() {
         SwingUtils.limparCampos(getContentPane());
         txtTotal.setText("R$ 0,00");
-        txtTecnico.setText(sessao.getUsuario()!=null?sessao.getUsuario().getLogin():"");
+        cbTecnico.removeAllItems();
+        cbTecnico.addItem(usuarioNull());
+        usuarios.listarTecnicos().forEach(c-> cbTecnico.addItem(c));
+        cbTecnico.setSelectedIndex(0);
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
         buttonGroup1 = new javax.swing.ButtonGroup();
         jLabel3 = new javax.swing.JLabel();
         jLabel3.setBounds(250, 309, 62, 16);
@@ -138,8 +158,6 @@ public class TelaOs extends javax.swing.JInternalFrame {
         jLabel6.setBounds(28, 339, 64, 15);
         txtAparelho = new javax.swing.JTextField();
         txtAparelho.setBounds(155, 339, 378, 25);
-        txtTecnico = new javax.swing.JTextField();
-        txtTecnico.setBounds(666, 369, 168, 25);
         jLabel7 = new javax.swing.JLabel();
         jLabel7.setBounds(28, 376, 53, 15);
         txtDefeito = new javax.swing.JTextField();
@@ -343,14 +361,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel6.setText("APARELHO:");
 
-        txtAparelho.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-
-        txtTecnico.setFont(new Font("Tahoma", Font.PLAIN, 15)); // NOI18N
-        txtTecnico.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtTecnicoActionPerformed(evt);
-            }
-        });
+        txtAparelho.setFont(new java.awt.Font("Tahoma", 0, 15));
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel7.setText("DEFEITO:");
@@ -596,7 +607,6 @@ public class TelaOs extends javax.swing.JInternalFrame {
         getContentPane().add(rbos);
         getContentPane().add(txtTotal);
         getContentPane().add(txtGarantia);
-        getContentPane().add(txtTecnico);
         getContentPane().add(txtValor);
         getContentPane().add(txtEntrada);
         getContentPane().add(txtData);
@@ -604,6 +614,10 @@ public class TelaOs extends javax.swing.JInternalFrame {
         getContentPane().add(btnSalvar);
         getContentPane().add(btnDeletar);
         getContentPane().add(btnImprimir);
+        
+        cbTecnico = new JComboBox<Usuario>();
+        cbTecnico.setBounds(666, 374, 168, 20);
+        getContentPane().add(cbTecnico);
 
         jPanel2.getAccessibleContext().setAccessibleName("CLIENTES");
         jPanel3.getAccessibleContext().setAccessibleName("Pesquisar Os");
@@ -669,10 +683,6 @@ public class TelaOs extends javax.swing.JInternalFrame {
 
 
     }//GEN-LAST:event_txtEntradaFocusLost
-
-    private void txtTecnicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTecnicoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtTecnicoActionPerformed
 
     private void txtValorFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtValorFocusLost
         // TODO add your handling code here:
@@ -752,9 +762,9 @@ public class TelaOs extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtGarantia;
     private javax.swing.JTextPane txtObs;
     private javax.swing.JTextField txtServico;
-    private javax.swing.JTextField txtTecnico;
     private javax.swing.JTextField txtTotal;
     private javax.swing.JFormattedTextField txtValor;
+    private JComboBox<Usuario> cbTecnico;
 
     public void pesquisarCliente() {
         SwingUtils.limparTabela(tblClientes);
@@ -850,13 +860,13 @@ public class TelaOs extends javax.swing.JInternalFrame {
             txtAparelho.setText(os.getAparelho());
             txtDefeito.setText(os.getDefeito());
             txtServico.setText(os.getServico());
-            txtTecnico.setText(os.getTecnico());
+            cbTecnico.setSelectedItem(os.getTecnico()==null?usuarioNull():os.getTecnico());
             txtValor.setText(valor.toString().replace(".", ","));
             txtEntrada.setText(entrada.toString().replace(".", ","));
             txtClienteCodigo.setText(os.getCliente().getId() + "");
             txtObs.setText(os.getObs());
             txtGarantia.setText(os.getGarantia());
-            BigDecimal total = valor.subtract(entrada).setScale(2, RoundingMode.UP);
+            BigDecimal total = valor.subtract(entrada).setScale(2, RoundingMode.HALF_UP);
             txtTotal.setText("RS " + total.toString().replace(".", ","));
     }
 
@@ -874,7 +884,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
     }
     
     private void salvar() {
-        if (!validar()) {
+        if (!validar() || !validarTecnico()) {
             return;
         }
         try {

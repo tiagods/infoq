@@ -63,6 +63,10 @@ public class UsuarioService  {
         return repository.findAll();
     }
 
+    public List<Usuario> listarTecnicos(){
+    	return repository.findAllByTecnicoTrueAndAtivoTrueOrderByUsuario();
+    }
+    
     public List<Usuario> buscarPorNome(String nome) {
         return repository.findAllByUsuarioIgnoreCaseContaining(nome);
     }
