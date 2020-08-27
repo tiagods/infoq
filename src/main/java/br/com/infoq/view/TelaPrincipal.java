@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import br.com.infoq.service.SwingOptions;
 import br.com.infoq.utils.Relatorio;
+import javax.swing.SwingConstants;
 /**
  *
  * @author hugov, tiagods
@@ -41,7 +42,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
         desktop = new javax.swing.JDesktopPane();
         desktop.setBounds(0, 0, 941, 672);
         lblUsuario = new javax.swing.JLabel();
-        lblUsuario.setBounds(1054, 59, 52, 17);
+        lblUsuario.setHorizontalAlignment(SwingConstants.CENTER);
+        lblUsuario.setBounds(1014, 62, 123, 17);
         lblData = new javax.swing.JLabel();
         lblData.setBounds(945, 177, 194, 15);
         jLabel1 = new javax.swing.JLabel();

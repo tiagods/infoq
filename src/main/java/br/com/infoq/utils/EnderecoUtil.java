@@ -10,7 +10,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Optional;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,7 +19,7 @@ import br.com.infoq.model.Endereco;
 public class EnderecoUtil {
 	
 	public static Optional<Endereco> pegarCEP(String cep){
-        String url = "http://viacep.com.br/ws/"+ cep +"/json";
+        String url = "https://viacep.com.br/ws/"+ cep +"/json";
         JSONObject payload = getJSONFromUrl(url);
         if(payload!=null) return Optional.ofNullable(getEndereco(payload.toString()));
         else return Optional.empty();
@@ -28,19 +27,8 @@ public class EnderecoUtil {
 	
 	public static void main(String[] args){
         String cep ="05765200";
-        String url = "http://viacep.com.br/ws/"+ cep +"/json";
-        JSONObject payload = null;
-        try {
-            payload = getJSONFromUrl(url);
-        }catch (JSONException e){
-            e.printStackTrace();
-        }
-        if(payload!=null){
-            Endereco e = getEndereco(payload.toString());
-            System.out.println(e.getLogradouro());
-        }
-        else
-            System.out.println("Verifique sua conexão com a internet ou");
+        Optional<Endereco> result = pegarCEP("029452000");
+        System.out.println(result.isPresent()?result.get().toString():"Nao trouxe nada");
     }
 	
 	private static JSONObject getJSONFromUrl(String urli) {
@@ -55,8 +43,10 @@ public class EnderecoUtil {
             JSONObject json = new JSONObject(linhas.toString());
             return json;
         } catch (FileNotFoundException e) {
+        	e.printStackTrace();
             return null;
         } catch (IOException e) {
+        	e.printStackTrace();
             return null;
         } finally {
             urlConnection.disconnect();

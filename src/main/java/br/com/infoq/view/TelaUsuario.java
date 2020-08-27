@@ -115,11 +115,14 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel6.setBounds(190, 362, 40, 17);
         btnNovo = new javax.swing.JButton();
-        btnNovo.setBounds(210, 513, 129, 73);
+        btnNovo.setFont(new Font("Tahoma", Font.PLAIN, 10));
+        btnNovo.setBounds(210, 513, 139, 73);
         btnDeletar = new javax.swing.JButton();
+        btnDeletar.setFont(new Font("Tahoma", Font.PLAIN, 10));
         btnDeletar.setBounds(598, 513, 143, 73);
         btnSalvar = new javax.swing.JButton();
-        btnSalvar.setBounds(399, 513, 139, 73);
+        btnSalvar.setFont(new Font("Tahoma", Font.PLAIN, 10));
+        btnSalvar.setBounds(406, 513, 139, 73);
         jLabel7 = new javax.swing.JLabel();
         jLabel7.setBounds(749, 85, 128, 109);
         txtTel = new javax.swing.JFormattedTextField();
