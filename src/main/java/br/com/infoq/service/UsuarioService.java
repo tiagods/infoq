@@ -24,7 +24,7 @@ public class UsuarioService  {
     @Autowired private UsuarioRepository repository;
     
     public Usuario validarLoginESenha(String login, String senha) throws UsuarioInvalidCredentialsException{
-        Optional<Usuario> user = repository.findByLoginIgnoreCaseAndSenhaIgnoreCase(login, senha);
+        Optional<Usuario> user = repository.findByLoginIgnoreCaseAndSenhaIgnoreCaseAndAtivoTrue(login, senha);
         if(user.isPresent()) return user.get();
         else throw new UsuarioInvalidCredentialsException("Dados de acesso invalidos");
     }
